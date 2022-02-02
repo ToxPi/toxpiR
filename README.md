@@ -1,8 +1,8 @@
 # toxpiR <img src="man/figures/toxpiR-blue.png" width="150" align="right" />
 
 <!-- badges: start -->
-  [![codecov](https://codecov.io/gh/daynefiler/toxpiR/branch/master/graph/badge.svg?token=IWZVNP9NVH)](https://codecov.io/gh/daynefiler/toxpiR)
-[![R-CMD-check](https://github.com/daynefiler/toxpiR/workflows/R-CMD-check/badge.svg)](https://github.com/daynefiler/toxpiR/actions)
+  [![codecov](https://codecov.io/gh/ToxPi/toxpiR/branch/master/graph/badge.svg)](https://codecov.io/gh/ToxPi/toxpiR)
+[![R-CMD-check](https://github.com/ToxPi/toxpiR/workflows/R-CMD-check/badge.svg)](https://github.com/ToxPi/toxpiR/actions)
 <!-- badges: end -->
 
 R package for the Toxicological Priority Index (ToxPi) prioritization algorithm. Package developed and maintained by the [Reif Lab](http://reif-lab.org). 
