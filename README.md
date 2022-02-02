@@ -1,7 +1,7 @@
 # toxpiR <img src="man/figures/toxpiR-blue.png" width="150" align="right" />
 
 <!-- badges: start -->
-  [![codecov](https://codecov.io/gh/ToxPi/toxpiR/branch/master/graph/badge.svg)](https://codecov.io/gh/ToxPi/toxpiR)
+  [![codecov](https://codecov.io/gh/ToxPi/toxpiR/branch/master/graph/badge.svg?token=7yocvT0KzZ)](https://codecov.io/gh/ToxPi/toxpiR)
 [![R-CMD-check](https://github.com/ToxPi/toxpiR/workflows/R-CMD-check/badge.svg)](https://github.com/ToxPi/toxpiR/actions)
 <!-- badges: end -->
 
