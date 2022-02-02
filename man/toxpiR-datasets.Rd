@@ -6,7 +6,7 @@
 \alias{txp_example_model}
 \title{toxpiR data objects}
 \source{
-\url{https://github.com/ToxPi/exampleFiles}
+\url{https://github.com/ToxPi/ToxPi-example-files}
 }
 \usage{
 data(txp_example_input, package = "toxpiR")

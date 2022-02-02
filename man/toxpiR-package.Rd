@@ -8,6 +8,15 @@
 \description{
 Enables users to build ToxPi prioritization models and provides functionality within the grid framework for plotting ToxPi graphs. toxpiR allows for more customization than the ToxPi GUI (toxpi.org) and integration into existing workflows for greater ease-of-use, reproducibility, and transparency. toxpiR package behaves nearly identically to the GUI; the package documentation includes notes about all differences.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/ToxPi/toxpiR}
+  \item \url{https://toxpi.github.io/toxpiR/}
+  \item Report bugs at \url{https://github.com/ToxPi/toxpiR/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Dayne L Filer \email{dayne.filer@gmail.com} (\href{https://orcid.org/0000-0002-3443-5315}{ORCID})
 

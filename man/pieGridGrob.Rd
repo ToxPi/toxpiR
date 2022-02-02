@@ -55,6 +55,7 @@ below the label}
 Make grid of pieGrobs
 }
 \examples{
+\donttest{
 library(grid)
 
 s <- seq(0.2, 1, by = 0.1)
@@ -82,5 +83,5 @@ grid.edit("pie-1", wts = rep(1, 9), rads = rep(1, 9))
 for (s in sprintf("pie-\%d-radSum", 2:4)) {
   grid.edit(s, gp = gpar(font = 2, col = "blue"))
 }
-
+}
 }

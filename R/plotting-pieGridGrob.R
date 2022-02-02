@@ -17,6 +17,7 @@
 #' @param name,gp,vp Passed to [grid::gTree]
 #' 
 #' @examples 
+#' \donttest{
 #' library(grid)
 #' 
 #' s <- seq(0.2, 1, by = 0.1)
@@ -44,7 +45,7 @@
 #' for (s in sprintf("pie-%d-radSum", 2:4)) {
 #'   grid.edit(s, gp = gpar(font = 2, col = "blue"))
 #' }
-#' 
+#' }
 #' @import grid
 #' @importFrom rlang is_scalar_integerish is_scalar_logical
 #' @importFrom grDevices colorRampPalette

@@ -31,7 +31,7 @@ TXP_FILLS = c("dodgerblue",
 #'   \item{metric#}{Input data for ToxPi models}
 #' }
 #' 
-#' @source <https://github.com/ToxPi/exampleFiles>
+#' @source <https://github.com/ToxPi/ToxPi-example-files>
 #' 
 #' @section txp_example_model:
 #' 
