@@ -53,5 +53,6 @@ Config/testthat/edition: 3
 Config/testthat/parallel: true
 VignetteBuilder: knitr
 License: GPL (>= 3)
-URL: https://github.com/ToxPi/toxpiR
+URL: https://github.com/ToxPi/toxpiR,
+    https://toxpi.github.io/toxpiR/
 BugReports: https://github.com/ToxPi/toxpiR/issues
