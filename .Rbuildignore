@@ -1,0 +1,11 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^codecov\.yml$
+^\.github$
+^CONTRIBUTING\.md$
+^README\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^LICENSE\.md$
+^man-roxygen$

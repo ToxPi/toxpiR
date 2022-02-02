@@ -1,0 +1,15 @@
+,,,,2,2,1,3,3,3,3,2
+,,,,Slice1,Slice1,Slice2,Slice3,Slice3,Slice3,Slice3,Slice4
+,,,,assay,pathway,exposure,assay,pathway,chemprop,exposure,pathway
+,,,,NA,NA,NA,NA,NA,NA,NA,NA
+Row,Source,CASRN,Name,metric1,metric2,metric4,metric1,metric2,metric3,metric4,metric2
+1,source1,11-111-1111,chem1,74,77,25,74,77,97,25,77
+2,source2,22-222-2222,chem2,28,20,72,28,20,68,72,20
+3,source3,33-333-3333,chem3,61,3,73,61,3,24,73,3
+4,source4,44-444-4444,chem4,NA,40,20,NA,40,22,20,40
+5,source5,55-555-5555,chem5,29,53,44,29,53,4,44,53
+6,source6,66-666-6666,chem6,12,43,83,12,43,85,83,43
+7,source7,77-777-7777,chem7,29,NA,NA,29,NA,38,NA,NA
+8,source8,88-888-8888,chem8,58,66,70,58,66,NA,70,66
+9,source9,99-999-9999,chem9,51,84,58,51,84,NA,58,84
+10,source10,11-222-3333,chem10,60,40,32,60,40,38,32,40
