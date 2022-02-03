@@ -13,7 +13,6 @@
 #' @details 
 #' The default coloring can be set with `options("txp.fills")`.
 #' 
-#' @import grid 
 #' 
 #' @examples
 #' library(grid)
@@ -36,6 +35,9 @@
 #' grid.ls() ## show the grid elements
 #' grid.edit("myPie", fills = 1:9, wts = 9:1)
 #' 
+#' @return `pieGrob` [grid::grob] object
+#' 
+#' @import grid 
 #' @export
 
 pieGrob <- function(rads, fills = NULL, wts = NULL, 

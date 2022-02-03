@@ -53,6 +53,8 @@
 #' dev.off()
 #' }
 #' 
+#' @return No return value; called for side effect (i.e. drawing in current
+#' graphics device.)
 
 NULL
 

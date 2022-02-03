@@ -46,6 +46,9 @@
 #'   grid.edit(s, gp = gpar(font = 2, col = "blue"))
 #' }
 #' }
+#' 
+#' @return `pieGrob` [grid::grob] object
+#' 
 #' @import grid
 #' @importFrom rlang is_scalar_integerish is_scalar_logical
 #' @importFrom grDevices colorRampPalette

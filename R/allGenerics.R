@@ -10,6 +10,8 @@
 #' @param x toxpiR S4 object
 #' @param value Replacement value
 #' @param ... Included for extendability; not currently used
+#' 
+#' @return See specific methods for details.
 
 NULL
 

@@ -18,6 +18,9 @@ grid.pieGrob(rads, fills = NULL, wts = NULL, name = NULL, vp = NULL, gp = NULL)
 
 \item{name, vp, gp}{Passed to \link[grid:grid.grob]{grid::gTree}}
 }
+\value{
+\code{pieGrob} \link[grid:grid.grob]{grid::grob} object
+}
 \description{
 Create a pie grob
 }

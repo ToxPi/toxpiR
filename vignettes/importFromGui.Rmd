@@ -89,6 +89,6 @@ nClusters <- 3
 km <- kmeans(txpSliceScores(res), nClusters)
 pc <- prcomp(txpSliceScores(res))
 coord <- predict(pc) * -sum(txpWeights(res))
-par(mar = c(5, 4, 0.5, 0.5) + 0.1)
-plot(coord[,1], coord[,2], col = km$cluster, xlab = 'PC1', ylab = 'PC2')
+plot(coord[,1], coord[,2], col = km$cluster, 
+     xlab = 'PC1', ylab = 'PC2', pch = 16)
 ```

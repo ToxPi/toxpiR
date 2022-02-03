@@ -53,6 +53,9 @@ txpRanks(x, ...)
 
 \item{value}{Replacement value}
 }
+\value{
+See specific methods for details.
+}
 \description{
 toxpiR package generics; see class man pages for associated
 methods

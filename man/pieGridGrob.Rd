@@ -51,6 +51,9 @@ below the label}
 
 \item{name, gp, vp}{Passed to \link[grid:grid.grob]{grid::gTree}}
 }
+\value{
+\code{pieGrob} \link[grid:grid.grob]{grid::grob} object
+}
 \description{
 Make grid of pieGrobs
 }
@@ -84,4 +87,5 @@ for (s in sprintf("pie-\%d-radSum", 2:4)) {
   grid.edit(s, gp = gpar(font = 2, col = "blue"))
 }
 }
+
 }
