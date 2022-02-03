@@ -19,13 +19,15 @@ Authors@R:
              email = "reif.david@gmail.com",
              comment = c(ORCID = "0000-0001-7815-6767")))
 Description: 
-  Enables users to build ToxPi prioritization models and provides 
+  Enables users to build 'ToxPi' prioritization models and provides 
   functionality within the grid framework for plotting ToxPi graphs.
-  toxpiR allows for more customization than the ToxPi GUI (toxpi.org)
-  and integration into existing workflows for greater ease-of-use, 
-  reproducibility, and transparency.
+  'toxpiR' allows for more customization than the 'ToxPi GUI' 
+  (<https://toxpi.org>) and integration into existing workflows for greater 
+  ease-of-use, reproducibility, and transparency.
   toxpiR package behaves nearly identically to the GUI; the package 
   documentation includes notes about all differences.
+  The vignettes download example files from 
+  <https://github.com/ToxPi/ToxPi-example-files>.
 Imports: 
     grDevices,
     methods,

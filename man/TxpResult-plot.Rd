@@ -54,6 +54,10 @@ when plotting ranks}
 \item{margins}{Passed to \link[grid:plotViewport]{grid::plotViewport}; only affects the scatterplot
 region margins}
 }
+\value{
+No return value; called for side effect (i.e. drawing in current
+graphics device.)
+}
 \description{
 Plot \link{TxpResult} objects
 }
