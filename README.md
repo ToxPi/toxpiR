@@ -3,7 +3,7 @@
 <!-- badges: start -->
   [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
   [![R-CMD-check](https://github.com/ToxPi/toxpiR/workflows/R-CMD-check/badge.svg)](https://github.com/ToxPi/toxpiR/actions)
-  [![cran-version](https://www.r-pkg.org/badges/version-last-release/toxpiR)](https://cran.r-project.org/web/packages/toxpiR/index.html)
+  [![cran-version](https://www.r-pkg.org/badges/version-last-release/toxpiR?color=blue)](https://cran.r-project.org/web/packages/toxpiR/index.html)
   [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/toxpiR)](https://cranlogs.r-pkg.org/badges/grand-total/toxpiR)
   [![codecov](https://codecov.io/gh/ToxPi/toxpiR/branch/main/graph/badge.svg?token=7yocvT0KzZ)](https://codecov.io/gh/ToxPi/toxpiR)
 <!-- badges: end -->
