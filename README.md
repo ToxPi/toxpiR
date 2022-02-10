@@ -1,4 +1,4 @@
-# toxpiR <img src="man/figures/toxpiR-blue.png" width="150" align="right" />
+# toxpiR <img src="man/figures/logo-hex.png" width="150" align="right" />
 
 <!-- badges: start -->
   [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
