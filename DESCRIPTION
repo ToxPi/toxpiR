@@ -1,7 +1,7 @@
 Package: toxpiR
 Type: Package
 Title: Create ToxPi Prioritization Models
-Version: 1.0.3
+Version: 1.1.0
 Authors@R: 
     c(person("Dayne L", "Filer", 
              role = c("aut", "cre", "fnd"), 
