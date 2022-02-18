@@ -1,10 +1,10 @@
 Package: toxpiR
 Type: Package
 Title: Create ToxPi Prioritization Models
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: 
     c(person("Dayne L", "Filer", 
-             role = c("aut", "cre"), 
+             role = c("aut", "cre", "fnd"), 
              email = "dayne.filer@gmail.com",
              comment = c(ORCID = "0000-0002-3443-5315")),
       person("Dillon T", "Lloyd",
@@ -13,9 +13,12 @@ Authors@R:
              role = "aut",
              comment = c(ORCID = "0000-0001-5447-0129")),
       person("Skylar W", "Marvel",
-             role = "aut"),      
+             role = "aut"),
+      person("Allison A", "Motsinger-Reif",
+             role = c("aut", "fnd"),
+             comment = c(ORCID = "0000-0003-1346-2493")),
       person("David M", "Reif",
-             role = c("aut"),
+             role = c("aut", "fnd"),
              email = "reif.david@gmail.com",
              comment = c(ORCID = "0000-0001-7815-6767")))
 Description: 
