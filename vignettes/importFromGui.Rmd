@@ -1,11 +1,33 @@
 ---
-title: "Import ToxPi GUI Files"
+title: "Import and Export ToxPi GUI Files"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Import ToxPi GUI Files}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+<style type="text/css">
+
+h1.title {
+  font-size: 28px;
+}
+h1 { /* Header 1 */
+  font-size: 20px;
+}
+h2 { /* Header 2 */
+    font-size: 20px;
+}
+h3 { /* Header 3 */
+  font-size: 18px;
+}
+h4 { /* Header 4 */
+  font-size: 16px;
+   color: DarkBlue;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+</style>
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -14,7 +36,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette will show how to load a data file that was saved using the ToxPi Java GUI, which can be downloaded from [here](https://toxpi.org/). The ToxPi Java GUI will save data files using file format "C" described in the ToxPi User Manual. This vignette will use the "format_C.csv" file to demonstrate how to import GUI data.
+# Import GUI Files
+
+This section will show how to load a data file that was saved using the ToxPi Java GUI, which can be downloaded from [here](https://toxpi.org/). The ToxPi Java GUI will save data files using file format "C" described in the ToxPi User Manual. This vignette will use the "format_C.csv" file to demonstrate how to import GUI data.
 
 ```{r setup}
 library(toxpiR)
@@ -92,3 +116,107 @@ coord <- predict(pc) * -sum(txpWeights(res))
 plot(coord[,1], coord[,2], col = km$cluster, 
      xlab = 'PC1', ylab = 'PC2', pch = 16)
 ```
+
+# Export toxpiR Results to GUI Format
+
+To export a toxpiR model object to the GUI format B input, you can follow this example below and modify to fit your own data
+We recommend keeping analysis withen the R package enviorment once started, but this is a way for backwards compatability 
+
+```{r}
+library(tidyverse) #used for the bind_rows function
+
+#recreate results 
+data(txp_example_input, package = "toxpiR")
+slice2.trans <- TxpTransFuncList(func1 = function(x) x^2, func2 = NULL)
+
+f.slices <- TxpSliceList(Slice1 = TxpSlice("metric1"), 
+                         Slice2 = TxpSlice(c("metric2", "metric3"), 
+                                           txpTransFuncs = slice2.trans ))
+final.trans <- TxpTransFuncList(f1 = NULL, f2 = function(x) log10(x)) 
+
+f.model <- TxpModel(txpSlices = f.slices, 
+                    txpWeights = c(2,1),
+                    txpTransFuncs = final.trans)
+f.results <- txpCalculateScores(model = f.model, 
+                                input = txp_example_input,
+                                id.var = 'name' ) 
+
+```
+
+
+Format B takes data in the format of SliceName, Slice Weight, Plotting Color and Transformation function, all separated by "!" as the rows in the first column of the dataset
+
+```{r}
+
+#Get weights
+Slice1_Weight <- txpWeights(f.results)[1]
+Slice2_Weight <- txpWeights(f.results)[2]
+
+#Write out specific slice information
+Slice1 <- paste0("# ","Slice1","!",Slice1_Weight,"0xFF0000","!","")
+Slice2 <-  paste0("# ","Slice2","!",Slice2_Weight,"0xFF0000","!",'x^2')
+```
+
+
+First we get the names and locations of all features used in each slice
+
+```{r}
+
+#Extract what features each slice is composed of
+Slice1_names <- f.results@txpModel@txpSlices@listData[["Slice1"]]@txpValueNames #Choose whatever your slice is named
+Slice2_names <- f.results@txpModel@txpSlices@listData[["Slice2"]]@txpValueNames
+
+#Get index of those features in orginal data 
+slice1_idx <- grep(paste0(Slice1_names,collapse = "|"), colnames(txp_example_input))
+
+slice2_idx <- grep(paste0(Slice2_names,collapse = "|"), colnames(txp_example_input))
+
+```
+
+Next, we create the header rows for each slice and place an "x" above each feature used 
+
+```{r}
+
+#Add markers for what features go into each slice
+Slice1_Row<- rep(NA,ncol(txp_example_input))
+Slice2_Row<- rep(NA,ncol(txp_example_input))
+
+Slice1_Row[slice1_idx] <- "x"
+Slice2_Row[slice2_idx] <- "x"
+
+slice_data <- as.data.frame(rbind(Slice1_Row,Slice2_Row))
+
+#Add in Slice information
+rownames(slice_data) <- rbind(Slice1,Slice2)
+
+```
+
+Finally, we add the final two empty lines in the header, then combine together into output dataframe
+We can export from there, taking off the column names since they will not be used by the GUI
+
+```{r}
+#Make final header
+header <- data.frame(matrix(NA, ncol = ncol(txp_example_input), nrow = 2))  
+
+#Get column names of input data that becomes a row
+r1 <-as.data.frame(t((names(txp_example_input))))
+
+#set column names equal for binding
+colnames(slice_data) = colnames(header) = colnames(r1)
+
+#Bind rows together 
+final_header <- bind_rows(slice_data,header,r1)
+
+colnames(final_header) = colnames(txp_example_input)
+
+#set all data to char so that it binds properly 
+txp_example_input[] <- lapply(txp_example_input, as.character)
+
+#bind together
+gui_format <- bind_rows(final_header,txp_example_input)
+
+#write with no column names to avoid GUI issues
+write.table(gui_format,sep = ",",file= "gui_export.csv",col.names = FALSE)
+
+```
+
