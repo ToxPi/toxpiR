@@ -70,7 +70,7 @@ f.slices <- TxpSliceList(Slice1 = TxpSlice("metric1"),
                          Slice2 = TxpSlice(c("metric2", "metric3"), 
                                            txpTransFuncs = slice2.trans ))
 
-# NOTE: transfer functions using all metrics in a slice are not supported
+# NOTE: transformation functions using all metrics in a slice are not supported
 final.trans <- NULL
 
 # NOTE: weights can be either integers or ratios of integers
