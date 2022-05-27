@@ -62,15 +62,16 @@ library(toxpiR)
 
 data(txp_example_input, package = "toxpiR")
 
-# NOTE: different transformation functions within a slice are not supported, e.g.
-# slice2.trans <- TxpTransFuncList(func1 = function(x) x^2, func2 = NULL)
-slice2.trans <- NULL
+# NOTE: different transformation functions within a slice are not supported
+slice2.trans <- TxpTransFuncList(function(x) log10(x), function(x) log10(x))
 
+# NOTE: "NULL" txpTransFuncs (e.g. as for Slice1) are set as "linear(x)" below
 f.slices <- TxpSliceList(Slice1 = TxpSlice("metric1"), 
                          Slice2 = TxpSlice(c("metric2", "metric3"), 
                                            txpTransFuncs = slice2.trans ))
-# NOTE: "NULL" is set as "linear(x)" below
-final.trans <- TxpTransFuncList(f1 = NULL, f2 = function(x) log10(x))
+
+# NOTE: transfer functions using all metrics in a slice are not supported
+final.trans <- NULL
 
 # NOTE: weights can be either integers or ratios of integers
 f.model <- TxpModel(txpSlices = f.slices, 
