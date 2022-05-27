@@ -1,0 +1,145 @@
+---
+title: "Export ToxPi GUI Files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Export ToxPi GUI Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+<style type="text/css">
+
+h1.title {
+  font-size: 28px;
+}
+h1 { /* Header 1 */
+  font-size: 20px;
+}
+h2 { /* Header 2 */
+    font-size: 20px;
+}
+h3 { /* Header 3 */
+  font-size: 18px;
+}
+h4 { /* Header 4 */
+  font-size: 16px;
+   color: DarkBlue;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+</style>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+To export a toxpiR model object to the GUI format D input you can follow the example below and modify to fit your own data. We recommend keeping analyses within the R package environment once started, but this is a way for backwards compatibility.
+
+Note on slice weights: Currently the Java GUI only allows weights that are either an integer or a ratio of integers. If your weights are irrational, the best approximation would be to find an integer ratio with the closest value.
+
+Note on slice scaling: Currently the Java GUI only allows specific scaling functions as listed below. These are hardcoded and must match exactly, otherwise the scaling will default to "linear(x)". If your scaling requirement is not found, an alternative approach would be to transform your data first and then use the "linear(x)" scaling option. In addition, only a single scaling function can be applied per slice, the ability to apply different scaling functions on each metric within a slice is not supported in the Java GUI.
+
+Current Java scaling options:
+
+* "linear(x)"
+* "hit count"
+* "-log10(x)"
+* "-log10(x)+log10(max(x))"
+* "-log10(x)+6"
+* "-ln(x)"
+* "log10(x)"
+* "sqrt(x)"
+* "zscore(x)"
+* "uniform(x)"
+
+```{r}
+library(toxpiR)
+
+# Modified example from the "toxpiR Introduction" vignette
+
+data(txp_example_input, package = "toxpiR")
+
+# NOTE: different transformation functions within a slice are not supported, e.g.
+# slice2.trans <- TxpTransFuncList(func1 = function(x) x^2, func2 = NULL)
+slice2.trans <- NULL
+
+f.slices <- TxpSliceList(Slice1 = TxpSlice("metric1"), 
+                         Slice2 = TxpSlice(c("metric2", "metric3"), 
+                                           txpTransFuncs = slice2.trans ))
+# NOTE: "NULL" is set as "linear(x)" below
+final.trans <- TxpTransFuncList(f1 = NULL, f2 = function(x) log10(x))
+
+# NOTE: weights can be either integers or ratios of integers
+f.model <- TxpModel(txpSlices = f.slices, 
+                    txpWeights = c(1,1/2),
+                    txpTransFuncs = final.trans)
+f.results <- txpCalculateScores(model = f.model, 
+                                input = txp_example_input,
+                                id.var = 'name' )
+```
+
+The first column of slice information consists of the name, weight, plotting color and scaling function, all separated by "!".
+
+```{r}
+
+# Collect slice information
+
+# Names
+slice_names <- names(txpSlices(f.model))
+
+# Weights
+(slice_weights <- txpWeights(f.model))
+# Replace any fractions with integer ratios
+slice_weights[2] <- '1/2'
+
+# Colors - use hex representation
+# Default toxpiR colors: c("dodgerblue", "bisque", "darkolivegreen3",
+#                          "darkorchid3", "mistyrose2", "darkgoldenrod1")
+slice_fill <- apply(
+  format(as.hexmode(col2rgb(c("dodgerblue", "bisque"))), width = 2),
+  2, paste, collapse = ''
+)
+
+# Scaling
+slice_scaling <- c('linear(x)', 'log10(x)')
+
+# Combine to create slice information
+slice_info <- paste(paste('#', slice_names), slice_weights,
+                    paste0('0x', slice_fill), slice_scaling, sep = '!')
+```
+
+The remaining columns of the slice information are used to indicate which metrics are included in each slice.
+
+```{r}
+slice_metrics <- txpValueNames(txpSlices(f.model))
+
+slice_idx <- lapply(slice_metrics, function(x) {
+  grep(paste0(x,collapse = "|"), colnames(txp_example_input)[-1])
+})
+```
+
+Next, we create the header rows for each slice and place an "x" above each feature used 
+
+```{r}
+for ( i in seq_along(slice_info) ) {
+  marks <- rep('', ncol(txp_example_input) - 1)
+  marks[slice_idx[[i]]] <- 'x'
+  slice_info[i] <- paste(c(slice_info[i], marks), collapse = ',')
+}
+```
+
+First write the data to allow appropriate handling of quoting strings, then add the header lines at the top.
+
+```{r}
+output_file <- 'gui_export.csv'
+
+write.csv(txp_example_input, output_file, na = '', row.names = F)
+f <- file(output_file, 'r+')
+dat <- readLines(f)
+writeLines(c(slice_info, dat), f)
+close(f)
+```
+
