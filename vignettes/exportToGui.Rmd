@@ -36,9 +36,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-To export a toxpiR model object to the GUI format D input you can follow the example below and modify to fit your own data. We recommend keeping analyses within the R package environment once started, but this is a way for backwards compatibility.
+To export a toxpiR model object to the GUI format D input, you can follow the example below and modify to fit your own data. We recommend keeping analyses within the R package environment once started, but this is an option for backwards compatibility.
 
-Note on slice weights: Currently the Java GUI only allows weights that are either an integer or a ratio of integers. If your weights are irrational, the best approximation would be to find an integer ratio with the closest value.
+Note on slice weights: Currently the Java GUI only allows weights that are either an integer or a ratio of integers. If your weights are irrational numbers, the best approximation would be to find an integer ratio with the closest value.
 
 Note on slice scaling: Currently the Java GUI only allows specific scaling functions as listed below. These are hardcoded and must match exactly, otherwise the scaling will default to "linear(x)". If your scaling requirement is not found, an alternative approach would be to transform your data first and then use the "linear(x)" scaling option. In addition, only a single scaling function can be applied per slice, the ability to apply different scaling functions on each metric within a slice is not supported in the Java GUI.
 
