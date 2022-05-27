@@ -1,6 +1,6 @@
 # Slice1!1!0x1e90ff!linear(x),x,,,,,,,
 # Slice2!1/2!0xffe4c4!log10(x),,x,x,,,,,
-"name","metric1","metric2","metric3","metric4","metric5","metric6","metric7","metric8"
+"","metric1","metric2","metric3","metric4","metric5","metric6","metric7","metric8"
 "chem01",74,77,25,74,77,97,25,77
 "chem02",28,20,72,28,20,68,72,20
 "chem03",61,3,73,61,3,24,73,3

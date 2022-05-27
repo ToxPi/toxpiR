@@ -136,6 +136,9 @@ First write the data to allow appropriate handling of quoting strings, then add 
 ```{r}
 output_file <- 'gui_export.csv'
 
+# First column name of data must be blank
+dimnames(txp_example_input)[[2]][1] <- ''
+
 write.csv(txp_example_input, output_file, na = '', row.names = F)
 f <- file(output_file, 'r+')
 dat <- readLines(f)
