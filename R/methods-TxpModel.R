@@ -18,6 +18,7 @@
 #' @param x,y TxpModel object
 #' @param value Replacement value
 #' @param adjusted Scalar logical, when `TRUE` weights are adjusted to sum to 1
+#' @param simplify Scalar logical, when `TRUE` the returned `list` is simplified
 #' 
 #' @examples 
 #' ## Create TxpSliceList & TxpTransFuncList objects
@@ -141,6 +142,17 @@ setReplaceMethod("txpTransFuncs", "TxpModel", function(x, value) {
   x@txpTransFuncs <- value
   validObject(x)
   x
+})
+
+#' @describeIn TxpModel-class Return `list` of `txpValueNames` slots for the 
+#' contained [TxpSliceList] object, or `vector` when `simplify = TRUE`
+#' @importFrom rlang is_scalar_logical
+#' @export
+
+setMethod("txpValueNames", "TxpModel", function(x, simplify = FALSE) {
+  stopifnot(is_scalar_logical(simplify))
+  nms <- txpValueNames(txpSlices(x), simplify = simplify)
+  nms
 })
 
 #' @describeIn TxpModel-class Return slice names; shortcut for 

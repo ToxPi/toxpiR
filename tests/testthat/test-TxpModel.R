@@ -37,6 +37,9 @@ test_that("TxpModel accessors return expected slots", {
   expect_equal(txpWeights(md), rep(1, 2))
   expect_equal(txpWeights(md, adjust = TRUE), rep(0.5, 2))
   expect_s4_class(txpTransFuncs(md), "TxpTransFuncList")
+  expect_equal(txpValueNames(md), list(S1 = "input1", S2 = "input2"))
+  expect_equal(txpValueNames(md, simplify = TRUE), 
+               c(S1 = "input1", S2 = "input2"))
   expect_named(md, c("S1", "S2"))
   expect_length(md, 2)
 })
