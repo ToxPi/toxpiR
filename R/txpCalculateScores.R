@@ -30,57 +30,41 @@
 
 NULL
 
+.sumNA <- function(x) {
+  if (all(is.na(x))) return(NA_real_)
+  sum(x, na.rm = TRUE)
+}
+
+.z2o <- function(x) {
+  (x - min(x, na.rm = TRUE))/diff(range(x, na.rm = TRUE))
+}
+
+.sumSlice <- function(slice, input) {
+  # Applies input-level transformation functions and sums the values to give
+  # a raw slice score
+  nms <- txpValueNames(slice)
+  dat <- input[nms]
+  tfs <- txpTransFuncs(slice)
+  for (i in seq_along(nms)) {
+    if (is.null(tfs[[i]])) next 
+    dat[[i]] <- tfs[[i]](dat[[i]])
+  }
+  apply(dat, MARGIN = 1, .sumNA)
+}
+
 .calculateScores <- function(model, input, 
                              id.var = NULL,
                              rank.ties.method = c("average", "first", "last", 
                                                   "random", "max", "min")) {
   
   ## Test inputs
-  stopifnot(is(model, "TxpModel"))
-  stopifnot(is.data.frame(input))
-  valNms <- txpValueNames(txpSlices(model), simplify = TRUE)
-  inptNms <- names(input)
-  if (!all(valNms %in% inptNms)) {
-    miss <- valNms[!valNms %in% inptNms]
-    msg <- "'input' missing the following data specified by 'model':\n    %s"
-    stop(sprintf(msg, paste(miss, collapse = ", ")))
-  }
-  tstClass <- function(x) is.numeric(input[[x]])
-  inptCls <- sapply(valNms, tstClass)
-  if (!all(inptCls)) {
-    nc2n <- valNms[!inptCls]
-    msg <- "The following 'input' columns not numeric:\n    %s"
-    stop(sprintf(msg, paste(nc2n, collapse = ", ")))
-  }
+  .chkModelInput(model = model, input = input)
   
   ## Clean up infinite in input
-  notFinite <- sapply(valNms, function(x) any(is.infinite(input[[x]])))
-  if (any(notFinite)) {
-    warning("Some of the given inputs contained infinite values.")
-    for (i in valNms[notFinite]) input[[i]][is.infinite(input[[i]])] <- NaN
-  }
+  input <- .rmInfinite(model = model, input = input)
    
-  ## Helper functions
-  mySum <- function(x) {
-    if (all(is.na(x))) return(NA_real_)
-    sum(x, na.rm = TRUE)
-  }
-  sumSlice <- function(x) {
-    # Applies input-level transformation functions and sums the values to give
-    # a raw slice score
-    nms <- txpValueNames(x)
-    dat <- input[nms]
-    tfs <- txpTransFuncs(x)
-    for (i in seq_along(nms)) {
-      if (is.null(tfs[[i]])) next 
-      dat[[i]] <- tfs[[i]](dat[[i]])
-    }
-    apply(dat, MARGIN = 1, mySum)
-  }
-  z2o <- function(x) (x - min(x, na.rm = TRUE))/diff(range(x, na.rm = TRUE))
-  
   ## Calculate raw slice scores
-  slc <- sapply(txpSlices(model), sumSlice)
+  slc <- sapply(txpSlices(model), .sumSlice, input = input)
   
   ## Look for and apply slice-level transformation functions
   tfs <- txpTransFuncs(model)
@@ -95,7 +79,7 @@ NULL
   slc[is.infinite(slc)] <- NaN
   
   ## Scale slice scores from 0 to 1
-  slc <- apply(slc, 2, z2o)
+  slc <- apply(slc, 2, .z2o)
   
   ## Make NA 0
   slc[is.na(slc)] <- 0

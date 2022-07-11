@@ -11,6 +11,7 @@
 \alias{txpWeights<-,TxpModel-method}
 \alias{txpTransFuncs,TxpModel-method}
 \alias{txpTransFuncs<-,TxpModel-method}
+\alias{txpValueNames,TxpModel-method}
 \alias{names,TxpModel-method}
 \alias{names<-,TxpModel-method}
 \alias{length,TxpModel-method}
@@ -30,6 +31,8 @@ TxpModel(txpSlices, txpWeights = NULL, txpTransFuncs = NULL)
 \S4method{txpTransFuncs}{TxpModel}(x)
 
 \S4method{txpTransFuncs}{TxpModel}(x) <- value
+
+\S4method{txpValueNames}{TxpModel}(x, simplify = FALSE)
 
 \S4method{names}{TxpModel}(x)
 
@@ -52,6 +55,8 @@ TxpModel(txpSlices, txpWeights = NULL, txpTransFuncs = NULL)
 
 \item{adjusted}{Scalar logical, should the returned weights be adjusted
 such that they sum to 1?}
+
+\item{simplify}{Scalar logical, when \code{TRUE} the returned \code{list} is simplified}
 }
 \description{
 S4 class to store ToxPi models
@@ -63,6 +68,9 @@ S4 class to store ToxPi models
 \item \code{txpWeights,TxpModel-method}: Return \code{txpWeights} slot
 
 \item \code{txpTransFuncs,TxpModel-method}: Return \code{txpTransFuncs} slot
+
+\item \code{txpValueNames,TxpModel-method}: Return \code{list} of \code{txpValueNames} slots for the
+contained \link{TxpSliceList} object, or \code{vector} when \code{simplify = TRUE}
 
 \item \code{names,TxpModel-method}: Return slice names; shortcut for
 \code{names(txpSlices(x))}
