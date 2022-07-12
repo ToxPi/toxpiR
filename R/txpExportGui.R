@@ -45,7 +45,7 @@ txpExportGui <- function(fileName = "txpModel.csv",
   .chkModelInput(model = model, input = input)
   
   ## Clean up infinite in input
-  input <- .rmInfinite(input)
+  input <- .rmInfinite(model, input)
   
   slcWts <- txpWeights(model)
   if (any(slcWts%%1 != 0)) {

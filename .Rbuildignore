@@ -9,3 +9,4 @@
 ^pkgdown$
 ^LICENSE\.md$
 ^man-roxygen$
+man/figures/logo*

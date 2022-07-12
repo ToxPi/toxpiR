@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1280 640" style="enable-background:new 0 0 1280 640;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#88CEFA;}
+	.st1{fill:#ED1C24;}
+	.st2{fill:#F06F22;}
+	.st3{fill:#7F3F98;}
+	.st4{fill:#00A14B;}
+	.st5{fill:#21409A;}
+	.st6{fill:#FFDE17;}
+	.st7{fill:#FFFFFF;}
+	.st8{font-family:'CourierPrime-Bold';}
+	.st9{font-size:174.8722px;}
+	.st10{font-size:51.692px;}
+	.st11{display:none;}
+	.st12{display:inline;fill:none;stroke:#000000;}
+</style>
+<g id="Layer_2">
+	<rect class="st0" width="1280" height="640"/>
+	<g>
+		<polygon class="st1" points="452.37,28.39 452.37,345.58 726.98,186.99 		"/>
+		<polygon class="st2" points="452.37,345.58 683.93,479.32 683.93,211.83 		"/>
+		<polygon class="st3" points="452.37,345.58 452.37,156.96 289.08,251.27 		"/>
+		<polygon class="st4" points="452.37,345.58 264.72,453.88 452.37,562.18 		"/>
+		<polygon class="st5" points="199.11,199.41 452.37,345.58 199.11,491.75 		"/>
+		<polygon class="st6" points="452.37,345.58 452.37,489.94 577.08,417.7 		"/>
+		<text transform="matrix(1 0 0 1 137.8076 391.3649)" class="st7 st8 st9">toxpiR</text>
+	</g>
+	<text transform="matrix(1 0 0 1 750.1641 491.7461)" class="st7 st8 st10">reif-lab.org</text>
+</g>
+<g id="Layer_1" class="st11">
+	<rect class="st12" width="1280" height="640"/>
+	<rect x="76.93" y="77.74" class="st12" width="1124.42" height="484.43"/>
+</g>
+</svg>
