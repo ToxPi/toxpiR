@@ -67,15 +67,49 @@ txpExportGui <- function(fileName = "txpModel.csv",
     ## can have different transformation functions
     vnmVec <-  txpValueNames(model, simplify = TRUE)
     slcVec <- names(model)
-    itfs <- txpTransFuncs(txpSlices(model), simplify = TRUE)
-    mat <- matrix(NA_real_, nrow = NROW(input), ncol = length(vnmVec))
-    for (i in seq_along(vnmVec)) {
-      if (is.null(itfs[[i]])) {
-        mat[ , i]  <- input[ , vnmVec[i]]
-      } else {
-        mat[ , i] <- itfs[[i]](input[ , vnmVec[i]])
+    # itfs <- txpTransFuncs(txpSlices(model), simplify = TRUE)
+    # mat <- matrix(NA_real_, nrow = NROW(input), ncol = length(vnmVec))
+    # for (i in seq_along(vnmVec)) {
+    #   if (is.null(itfs[[i]])) {
+    #     mat[ , i]  <- input[ , vnmVec[i]]
+    #   } else {
+    #     mat[ , i] <- itfs[[i]](input[ , vnmVec[i]])
+    #   }
+    # }
+    vnmLst <-  txpValueNames(model)
+    itfsLst <- txpTransFuncs(txpSlices(model))
+    matLst <- list()
+    for (i in seq_along(vnmLst)) {
+      mat <- matrix(NA_real_, nrow = NROW(input), ncol = length(vnmLst[[i]]))
+      for (j in seq_along(vnmLst[[i]])) {
+        if (is.null(itfsLst[[i]][[j]])) {
+          mat[ , j]  <- input[ , vnmLst[[i]][[j]]]
+        } else {
+          mat[ , j] <- itfsLst[[i]][[j]](input[ , vnmLst[[i]][[j]]])
+        }
       }
+      # Make sure transformed values are positive
+      minMat <- min(mat[is.finite(mat)])
+      if (minMat < 0) {
+        x <- -floor(minMat)
+        # If slices contain multiple components and any missing values, then those
+        # missing values must be replaced with the added constant to produce the same
+        # slice/toxpi scores because slice scores are computed by sum not mean
+        if (ncol(mat) > 1 & any(!is.finite(mat))) {
+          mat[!is.finite(mat)] <- 0
+          warning("Slice \"", slcVec[i], "\" contains both missing and negative values ",
+                  "after applying transformations so missing values were replaced with 0 ",
+                  "and then all values were increased by x = ", x, ".")
+        } else {
+          warning("Slice \"", slcVec[i], "\" contains negative values ",
+                  "after applying transformations so all values were increased by x = ", x, ".")
+        }
+        # Shift all values by a constant to make them positive
+        mat <- mat + x
+      }
+      matLst[[i]] <- mat
     }
+    mat <- do.call(cbind, matLst)
   }
   
   ## Make infinite NaN
@@ -90,10 +124,19 @@ txpExportGui <- function(fileName = "txpModel.csv",
   fills <- .col2hex(fills)
   fills <- sub("^#", "0x", fills)
   
+  ## Rename any duplicated column names
+  vnmLst <- txpValueNames(model)
+  if (any(duplicated(vnmVec))) {
+    dup <- unique(vnmVec[duplicated(vnmVec)])
+    for (i in seq_along(vnmLst)) {
+      vnmLst[[i]] <- gsub(paste0('^(', paste(dup, collapse = '|'), ')$'), paste0('\\1_slice', i), vnmLst[[i]])
+    }
+    vnmVec <- unlist(vnmLst)
+  }
+
   ## Prepare the header
   slcMeta <- paste(slcVec, slcWts, fills, "linear(x)", sep = "!")
   slcMeta <- paste("#", slcMeta)
-  vnmLst <- txpValueNames(model)
   slcVnmInd <- vector(mode = "list", length = nSlices)
   names(slcVnmInd) <- slcVec
   for (i in slcVec) {
