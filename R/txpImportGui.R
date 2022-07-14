@@ -64,7 +64,10 @@ txpImportGui <- function(guiDataFile) {
   }
   sliceInfo$ind <- apply(gui[sliceInfoInd, ], 1, function(x) which(x == "x"))
   
-  inputStart <- which(gui[ , "V1"] == "row" | gui[ , "V1"] == "Row")
+  inputStart <- which(grepl('^row$', gui[ , 1], ignore.case = TRUE))
+  if (length(inputStart) != 1) {
+    inputStart <- which(gui[ , 1] == '') # Format D
+  }
   inputNms <- as.character(gui[inputStart, ])
   input <- gui[(inputStart + 1):nrow(gui), ]
   input[] <- lapply(input, type.convert, as.is = TRUE)
