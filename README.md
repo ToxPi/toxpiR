@@ -31,8 +31,7 @@ Build from GitHub (current dev version):
 
 ```r
 if (!require(remotes)) install.packages("remotes")
-remotes::install_github("ToxPi/toxpiR",
-                        ref = dev,
+remotes::install_github("ToxPi/toxpiR@dev",
                         dependencies = TRUE, 
                         build_vignettes = TRUE)
 ```
