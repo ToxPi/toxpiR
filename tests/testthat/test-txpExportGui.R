@@ -24,6 +24,21 @@ test_that("We can export GUI-ready files", {
       fills = gui$fills
     )
   })
+  # Non-integer weights
+  test_model <- gui$model
+  expect_warning({
+    # See Note1 above
+    txpWeights(test_model)[1] <- 0.5
+  })
+  expect_error({
+    txpExportGui(
+      fileName = data_exported,
+      input = gui$input,
+      model = test_model,
+      id.var = 'Name',
+      fills = gui$fills
+    )
+  })
   # Slice-level transformation function
   test_model <- gui$model
   expect_warning({
