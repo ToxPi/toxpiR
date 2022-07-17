@@ -6,6 +6,10 @@
 
 .coolcat <- function(...) coolcat(..., indent = 2)
 
+.catslot <- function(x, object) {
+  cat("  ", x, ":", " ", slot(object = object, name = x), "\n", sep = "")
+}
+
 .repFunc <- function(func, times) {
   lst <- vector(mode = "list", length = times)
   for (i in 1:times) lst[[i]] <- func

@@ -175,7 +175,8 @@ setReplaceMethod("names", "TxpModel", function(x, value) {
 .TxpModel.calc <- function(model, input, 
                            id.var = NULL,
                            rank.ties.method = c("average", "first", "last", 
-                                                "random", "max", "min")) {
+                                                "random", "max", "min"),
+                           negative.value.handling = c("keep", "missing")) {
   .calculateScores(model = model, 
                    input = input, 
                    id.var = id.var, 

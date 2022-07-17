@@ -13,7 +13,8 @@
 #' @slot txpRanks `vector(<numeric>)` with rank of scores
 #' @slot txpModel [TxpModel] object
 #' @slot txpIDs `vector(<character>)` of observation IDs
-#' 
+#' @slot txpResultParam [TxpResultParam] object
+#'
 #' @param x [TxpResult] object
 #' @param value Replacement value
 #' @param adjusted Logical scalar, when `TRUE` the weights are adjusted to sum
@@ -100,13 +101,14 @@ NULL
 ## constructor -- NOT exported
 
 TxpResult <- function(txpScores, txpSliceScores, txpRanks, 
-                      txpModel, txpIDs = NULL) {
+                      txpModel, txpIDs = NULL, txpResultParam) {
   new2("TxpResult", 
        txpScores = txpScores, 
        txpSliceScores = txpSliceScores,
        txpRanks = txpRanks,
        txpModel = txpModel, 
-       txpIDs = txpIDs)
+       txpIDs = txpIDs,
+       txpResultParam = txpResultParam)
 }
 
 ##----------------------------------------------------------------------------##
@@ -136,6 +138,11 @@ setMethod("txpSliceScores", "TxpResult", function(x, adjusted = TRUE) {
 #' @export
 
 setMethod("txpRanks", "TxpResult", function(x) { x@txpRanks })
+
+#' @describeIn TxpResult-class Return `txpResultParam` slot
+#' @export
+
+setMethod("txpResultParam", "TxpResult", function(x) { x@txpResultParam })
 
 #' @describeIn TxpResult-class Return `txpModel` slot
 #' @export
@@ -206,7 +213,8 @@ setMethod("txpValueNames", "TxpResult", function(x, simplify = FALSE) {
             txpSliceScores = ss,
             txpRanks = txpRanks(x)[i],
             txpModel = txpModel(x),
-            txpIDs = txpIDs(x)[i]) 
+            txpIDs = txpIDs(x)[i],
+            txpResultParam = txpResultParam(x)) 
 }
 
 #' @rdname TxpResult-class
@@ -341,7 +349,6 @@ setMethod("as.data.frame", "TxpResult", .TxpResult.as.data.frame)
 .TxpResult.show <- function(object) {
   cat(sprintf("TxpResult of length %s\n", length(object)))
   .coolcat("names(%d): %s\n", names(object))
-  # .coolcat("")
 }
 
 setMethod("show", "TxpResult", .TxpResult.show)

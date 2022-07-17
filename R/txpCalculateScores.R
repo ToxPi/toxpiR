@@ -9,7 +9,7 @@
 #' @param model [TxpModel] object or [TxpModelList] object
 #' @param input data.frame object containing the model input data
 #' @param id.var Character scalar, column in 'input' to store in 
-#' @param rank.ties.method Character scalar, passed to [base::rank]
+#' @inheritParams TxpResultParam-class
 #' @inheritParams txpGenerics
 #' 
 #' @details 
@@ -18,7 +18,7 @@
 #' 
 #' Ranks are calculated such that the highest ToxPi score has a rank of 1.
 #' 
-#' @seealso [TxpModel], [TxpResult]
+#' @seealso [TxpModel], [TxpResult], [TxpResultParam]
 #' 
 #' @template roxgn-loadExamples
 #' @template roxgn-calcTxpModel
@@ -55,10 +55,13 @@ NULL
 .calculateScores <- function(model, input, 
                              id.var = NULL,
                              rank.ties.method = c("average", "first", "last", 
-                                                  "random", "max", "min")) {
+                                                  "random", "max", "min"),
+                             negative.value.handling = c("keep", "missing")) {
   
   ## Test inputs
   .chkModelInput(model = model, input = input)
+  param <- TxpResultParam(rank.ties.method = rank.ties.method[1],
+                          negative.value.handling = negative.value.handling[1])
   
   ## Clean up infinite in input
   input <- .rmInfinite(model = model, input = input)
@@ -98,7 +101,8 @@ NULL
             txpSliceScores = slc, 
             txpRanks = rnks, 
             txpModel = model,
-            txpIDs = ids)
+            txpIDs = ids,
+            txpResultParam = param)
   
 }
 

@@ -64,3 +64,6 @@ setGeneric("txpIDs<-", function(x, ..., value) standardGeneric("txpIDs<-"))
 
 #' @rdname txpGenerics
 setGeneric("txpRanks", function(x, ...) standardGeneric("txpRanks"))
+
+#' @rdname txpGenerics
+setGeneric("txpResultParam", function(x, ...) standardGeneric("txpResultParam"))

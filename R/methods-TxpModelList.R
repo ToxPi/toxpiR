@@ -71,7 +71,8 @@ setValidity2("TxpModelList", .TxpModelList.validity)
 .TxpModelList.calc <- function(model, input, 
                                id.var = NULL,
                                rank.ties.method = c("average", "first", "last", 
-                                                    "random", "max", "min")) {
+                                                    "random", "max", "min"),
+                               negative.value.handling = c("keep", "missing")) {
   if (is.list(model)) {
     model <- try(as.TxpModelList(model), silent = TRUE)
     if (is(model, "try-error")) {
