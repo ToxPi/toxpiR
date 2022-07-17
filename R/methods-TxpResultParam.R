@@ -15,6 +15,21 @@
 #' @param rank.ties.method Passed to `rank.ties.method` slot
 #' @param negative.value.handling Passed to `negative.value.handling` slot
 #' 
+#' @details 
+#' If more than one value is passed to `TxoResultParam` scalar options, e.g. 
+#' `rank.ties.method`, only the first value is kept. 
+#' 
+#' The `rank.ties.method` slot is passed to [base::rank] for calculating the 
+#' ranks of observations, with the highest-scoring observation having the rank
+#' of 1. 
+#' 
+#' `negative.value.handling` indicates how to handle negative values in the 
+#' inputs. The ToxPi algorithm originally intended to accept non-negative 
+#' potency values; the GUI, therefore, treats negative values in the input as 
+#' missing. By default, [txpCalculateScores] keeps negative values
+#' (`negative.value.handling = "keep"`). To replicate the GUI behavior, users
+#' can set `negative.value.handling = "missing"`. 
+#' 
 #' @seealso [txpCalculateScores], [TxpResult]
 #' 
 
@@ -25,8 +40,8 @@ NULL
 
 TxpResultParam <- function(rank.ties.method, negative.value.handling) {
   new2("TxpResultParam", 
-       rank.ties.method = rank.ties.method, 
-       negative.value.handling = negative.value.handling)
+       rank.ties.method = rank.ties.method[1], 
+       negative.value.handling = negative.value.handling[1])
 }
 
 ##----------------------------------------------------------------------------##

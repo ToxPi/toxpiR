@@ -39,11 +39,12 @@ NULL
   (x - min(x, na.rm = TRUE))/diff(range(x, na.rm = TRUE))
 }
 
-.sumSlice <- function(slice, input) {
+.sumSlice <- function(slice, input, negative.value.handling) {
   # Applies input-level transformation functions and sums the values to give
   # a raw slice score
   nms <- txpValueNames(slice)
   dat <- input[nms]
+  if (negative.value.handling == "missing") dat[dat < 0]  <- NA
   tfs <- txpTransFuncs(slice)
   for (i in seq_along(nms)) {
     if (is.null(tfs[[i]])) next 
@@ -60,14 +61,17 @@ NULL
   
   ## Test inputs
   .chkModelInput(model = model, input = input)
-  param <- TxpResultParam(rank.ties.method = rank.ties.method[1],
-                          negative.value.handling = negative.value.handling[1])
+  param <- TxpResultParam(rank.ties.method = rank.ties.method,
+                          negative.value.handling = negative.value.handling)
   
   ## Clean up infinite in input
   input <- .rmInfinite(model = model, input = input)
    
   ## Calculate raw slice scores
-  slc <- sapply(txpSlices(model), .sumSlice, input = input)
+  slc <- sapply(txpSlices(model), 
+                .sumSlice, 
+                input = input, 
+                negative.value.handling = slot(param, "rank.ties.method"))
   
   ## Look for and apply slice-level transformation functions
   tfs <- txpTransFuncs(model)

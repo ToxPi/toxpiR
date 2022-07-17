@@ -13,6 +13,21 @@
 \description{
 S4 class to store ToxPi result calculation parameters
 }
+\details{
+If more than one value is passed to \code{TxoResultParam} scalar options, e.g.
+\code{rank.ties.method}, only the first value is kept.
+
+The \code{rank.ties.method} slot is passed to \link[base:rank]{base::rank} for calculating the
+ranks of observations, with the highest-scoring observation having the rank
+of 1.
+
+\code{negative.value.handling} indicates how to handle negative values in the
+inputs. The ToxPi algorithm originally intended to accept non-negative
+potency values; the GUI, therefore, treats negative values in the input as
+missing. By default, \link{txpCalculateScores} keeps negative values
+(\code{negative.value.handling = "keep"}). To replicate the GUI behavior, users
+can set \code{negative.value.handling = "missing"}.
+}
 \section{Slots}{
 
 \describe{
