@@ -93,11 +93,11 @@ test_that("We reproduce GUI results", {
       i,
       function(x) x,                                        # 1: linear(x)
       function(x) as.integer(x != 0),                       # 2: hit count
-      function(x) -log10(x),                                # 3: -log10(x)
-      function(x) -log10(x) + log10(max(x, na.rm = TRUE)),  # 4: -log10(x)+log10(max(x))
-      function(x) -log10(x) + 6,                            # 5: -log10(x)+6
-      function(x) -log(x),                                  # 6: -ln(x)
-      function(x) log10(x),                                 # 7: log10(x)
+      function(x) ifelse(x <= 0, NA, -log10(x)),            # 3: -log10(x)
+      function(x) ifelse(x <= 0, NA, -log10(x) + log10(max(x, na.rm = TRUE))), # 4: -log10(x)+log10(max(x))
+      function(x) ifelse(x <= 0, NA, -log10(x) + 6),        # 5: -log10(x)+6
+      function(x) ifelse(x <= 0, NA, -log(x)),              # 6: -ln(x)
+      function(x) ifelse(x <= 0, NA, log10(x)),             # 7: log10(x)
       function(x) sqrt(x),                                  # 8: sqrt(x)
       function(x) (x - mean(x, na.rm = TRUE))/sd(x, na.rm = TRUE), # 9:  zscore(x)
       function(x) (x - min(x, na.rm = TRUE))/diff(range(x, na.rm = TRUE)), # 10: uniform(x)
