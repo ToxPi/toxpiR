@@ -67,15 +67,6 @@ txpExportGui <- function(fileName = "txpModel.csv",
     ## can have different transformation functions
     vnmVec <-  txpValueNames(model, simplify = TRUE)
     slcVec <- names(model)
-    # itfs <- txpTransFuncs(txpSlices(model), simplify = TRUE)
-    # mat <- matrix(NA_real_, nrow = NROW(input), ncol = length(vnmVec))
-    # for (i in seq_along(vnmVec)) {
-    #   if (is.null(itfs[[i]])) {
-    #     mat[ , i]  <- input[ , vnmVec[i]]
-    #   } else {
-    #     mat[ , i] <- itfs[[i]](input[ , vnmVec[i]])
-    #   }
-    # }
     vnmLst <-  txpValueNames(model)
     itfsLst <- txpTransFuncs(txpSlices(model))
     matLst <- list()
@@ -95,8 +86,10 @@ txpExportGui <- function(fileName = "txpModel.csv",
         # If slices contain multiple components and any missing values, then those
         # missing values must be replaced with the added constant to produce the same
         # slice/toxpi scores because slice scores are computed by sum not mean
+        # However, if all values are missing in a row, the leave it alone
         if (ncol(mat) > 1 & any(!is.finite(mat))) {
-          mat[!is.finite(mat)] <- 0
+          idxNA <- apply(mat, 1, function(x) all(is.na(x)))
+          mat[!idxNA & !is.finite(mat)] <- 0
           warning("Slice \"", slcVec[i], "\" contains both missing and negative values ",
                   "after applying transformations so missing values were replaced with 0 ",
                   "and then all values were increased by x = ", x, ".")
