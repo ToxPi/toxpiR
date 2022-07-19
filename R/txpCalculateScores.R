@@ -71,7 +71,7 @@ NULL
   slc <- sapply(txpSlices(model), 
                 .sumSlice, 
                 input = input, 
-                negative.value.handling = slot(param, "rank.ties.method"))
+                negative.value.handling = slot(param, "negative.value.handling"))
   
   ## Look for and apply slice-level transformation functions
   tfs <- txpTransFuncs(model)

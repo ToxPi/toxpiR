@@ -180,7 +180,8 @@ setReplaceMethod("names", "TxpModel", function(x, value) {
   .calculateScores(model = model, 
                    input = input, 
                    id.var = id.var, 
-                   rank.ties.method = rank.ties.method)
+                   rank.ties.method = rank.ties.method,
+                   negative.value.handling = negative.value.handling)
 }
 
 #' @describeIn TxpModel-class Return number of slices in model; shortcut for
