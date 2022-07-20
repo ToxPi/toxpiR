@@ -16,6 +16,7 @@
 \alias{txpIDs}
 \alias{txpIDs<-}
 \alias{txpRanks}
+\alias{txpResultParam}
 \title{toxpiR package generics}
 \usage{
 txpValueNames(x, ...)
@@ -45,6 +46,8 @@ txpIDs(x, ...)
 txpIDs(x, ...) <- value
 
 txpRanks(x, ...)
+
+txpResultParam(x, ...)
 }
 \arguments{
 \item{x}{toxpiR S4 object}

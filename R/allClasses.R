@@ -85,6 +85,16 @@ setClass("TxpModelList",
          prototype = prototype(elementType = "TxpModel"))
 
 ##----------------------------------------------------------------------------##
+## TxpResultParam
+
+#' @name TxpResultParam-class
+#' @exportClass TxpResultParam
+
+setClass("TxpResultParam", 
+         slots = c(rank.ties.method = "character", 
+                   negative.value.handling = "character"))
+
+##----------------------------------------------------------------------------##
 ## TxpResult
 
 #' @name TxpResult-class
@@ -95,7 +105,8 @@ setClass("TxpResult",
                    txpSliceScores = "matrix",
                    txpRanks = "numeric",
                    txpModel = "TxpModel",
-                   txpIDs = "character_OR_NULL"))
+                   txpIDs = "character_OR_NULL",
+                   txpResultParam = "TxpResultParam"))
 
 setClassUnion("TxpResult_OR_NULL", members = c("TxpResult", "NULL"))
 

@@ -7,6 +7,7 @@
 \alias{txpScores,TxpResult-method}
 \alias{txpSliceScores,TxpResult-method}
 \alias{txpRanks,TxpResult-method}
+\alias{txpResultParam,TxpResult-method}
 \alias{txpModel,TxpResult-method}
 \alias{txpIDs,TxpResult-method}
 \alias{txpIDs<-,TxpResult-method}
@@ -30,6 +31,8 @@
 \S4method{txpSliceScores}{TxpResult}(x, adjusted = TRUE)
 
 \S4method{txpRanks}{TxpResult}(x)
+
+\S4method{txpResultParam}{TxpResult}(x)
 
 \S4method{txpModel}{TxpResult}(x)
 
@@ -113,6 +116,8 @@ S4 class to store ToxPi results
 
 \item \code{txpRanks,TxpResult-method}: Return \code{txpRanks} slot
 
+\item \code{txpResultParam,TxpResult-method}: Return \code{txpResultParam} slot
+
 \item \code{txpModel,TxpResult-method}: Return \code{txpModel} slot
 
 \item \code{txpIDs,TxpResult-method}: Return \code{txpIDs} slot
@@ -154,6 +159,8 @@ individual slice scores}
 \item{\code{txpModel}}{\link{TxpModel} object}
 
 \item{\code{txpIDs}}{\verb{vector(<character>)} of observation IDs}
+
+\item{\code{txpResultParam}}{\link{TxpResultParam} object}
 }}
 
 \examples{

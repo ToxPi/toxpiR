@@ -1,0 +1,110 @@
+---
+title: "Export ToxPi GUI Files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Export ToxPi GUI Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+<style type="text/css">
+.small-text {
+  font-size: 10px;
+}
+</style>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette will show how to save a toxpiR model that will be compatible with the ToxPi Java GUI, which can be downloaded from [here](https://toxpi.org/). The toxpiR package and ToxPi Java GUI are not directly compatible and there are several key differences to keep in mind.
+
+## Key differences between Java GUI and toxpiR
+
+### Slice weights
+
+The Java GUI only allows weights that are either integers or a ratio of integers whereas the toxpiR package has no restrictions. The `txpExportGui()` function requires all weights to be integers, so the user may need to change the model weights to acceptable approximations prior to calling the export function.
+
+### Transformation/scaling functions
+
+Currently the Java GUI only allows specific scaling functions and applies them independently to every input within a slice. The toxpiR package allows user-defined transformation functions at the input-level and slice-level. To account for these differences, all input-level transformation functions are applied before the data is exported. If slice-level transformations are applied, then the export function will create a data file that has the final slice scores rather than input-level data.
+
+The Java GUI does not allow negative input values and will treat them a missing data. This causes a problem if negative values exist after applying any user-defined transformations. If negative values occur within a slice, then all values of that slice will be shifted up by a constant so that no negative values remain. If a slice has both negative transformed values and missing values, then missing values are replaced with the added constant. In this last case, the toxpi and slice scores will be computed correctly, however, the Java GUI should not be used to compute bootstrapped confidence intervals because replacing missing data during the export process will cause the resampling step to be incorrect.
+
+### Metrics in multiple slices
+
+The Java GUI does not allow multiple columns to have the same name, unless the data in those columns matches exactly. If a toxpiR model includes an input column in multiple slices, then the name will be appended with the slice index for each occurrence.
+
+## Example use
+
+First create a toxpiR model with accompanying data. Here we'll load the "Format C" data example using the `txpImportGui()` function.
+
+```{r}
+library(toxpiR)
+
+# Load example model from "Import ToxPi GUI Files" vignette
+data_format_C <- tempfile()
+download.file(
+  url = "https://raw.githubusercontent.com/ToxPi/ToxPi-example-files/main/format_C.csv",
+  destfile = data_format_C,
+  quiet = TRUE
+)
+gui1 <- txpImportGui(data_format_C)
+```
+
+Now we can use to export function to create a new data file. Notice the warnings for negative and missing values.
+
+```{r}
+# Export back into GUI format
+data_exported <- tempfile()
+txpExportGui(
+  fileName = data_exported,
+  input = gui1$input,
+  model = gui1$model,
+  id.var = 'Name',
+  fills = gui1$fills
+)
+```
+
+### Compare the data files
+
+Take a moment to observe differences between the original data file (`data_format_C`) and the exported version (`data_exported`).
+
+**`data_format_C`**
+
+```{r echo=FALSE}
+knitr::kable(read.csv(data_format_C, header = FALSE, stringsAsFactors = FALSE))
+```
+
+**`data_exported`**
+
+<div style="white-space: nowrap">
+```{r echo=FALSE}
+df <- read.csv(data_exported, header = FALSE, stringsAsFactors = FALSE)
+df[6:nrow(df), 2:ncol(df)] <- format(as.numeric(as.matrix(df[6:nrow(df), 2:ncol(df)])), digits = 4)
+knitr::kable(df)
+```
+</div>
+
+### Compare results
+
+Although the data files are visually different, they will result in the same toxpi and slice scores.
+
+```{r}
+gui2 <- txpImportGui(data_exported)
+
+res1 <- txpCalculateScores(gui1$model, gui1$input)
+res2 <- txpCalculateScores(gui2$model, gui2$input)
+
+all.equal(
+  txpScores(res1),
+  txpScores(res2)
+)
+
+all.equal(
+  txpSliceScores(res1),
+  txpSliceScores(res2)
+)
+```

@@ -64,7 +64,10 @@ txpImportGui <- function(guiDataFile) {
   }
   sliceInfo$ind <- apply(gui[sliceInfoInd, ], 1, function(x) which(x == "x"))
   
-  inputStart <- which(gui[ , "V1"] == "row" | gui[ , "V1"] == "Row")
+  inputStart <- which(grepl('^row$', gui[ , 1], ignore.case = TRUE))
+  if (length(inputStart) != 1) {
+    inputStart <- which(gui[ , 1] == '') # Format D
+  }
   inputNms <- as.character(gui[inputStart, ])
   input <- gui[(inputStart + 1):nrow(gui), ]
   input[] <- lapply(input, type.convert, as.is = TRUE)
@@ -107,13 +110,13 @@ txpImportGui <- function(guiDataFile) {
 TXP_GUI_FUNCS <- list(
   'linear(x)' = function(x) { x },
   'hit count' = function(x) { as.integer(x != 0) },
-  '-log10(x)' = function(x) { -log10(x) },
+  '-log10(x)' = function(x) { ifelse(x <= 0, NA, -log10(x)) },
   '-log10(x)+log10(max(x))' = function(x) {
-    -log10(x) + log10(max(x, na.rm = TRUE))
+    ifelse(x <= 0, NA, -log10(x) + log10(max(x, na.rm = TRUE)))
   },
-  '-log10(x)+6' = function(x) { -log10(x) + 6 },
-  '-ln(x)' = function(x) { -log(x) },
-  'log10(x)' = function(x) { log10(x) },
+  '-log10(x)+6' = function(x) { ifelse(x <= 0, NA, -log10(x) + 6) },
+  '-ln(x)' = function(x) { ifelse(x <= 0, NA, -log(x)) },
+  'log10(x)' = function(x) { ifelse(x <= 0, NA, log10(x)) },
   'sqrt(x)' = function(x) { sqrt(x) },
   'zscore(x)' = function(x) { (x - mean(x, na.rm = TRUE))/sd(x, na.rm = TRUE) },
   'uniform(x)' = function(x) {

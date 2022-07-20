@@ -44,10 +44,12 @@ gui$fills
 ```
 
 We calculate ToxPi scores using the `txpCalculateScores` function, which takes a model and input `data.frame`.
+Note that by default the ToxPi GUI does not accept negative values. However, the package keeps them by default. 
+To replicate the GUI functionailty, we set `negative.value.handling = "missing"`. 
 
 ```{r}
 ## Calculate ToxPi scores
-res <- txpCalculateScores(model = gui$model, input = gui$input, id.var = "Name")
+res <- txpCalculateScores(model = gui$model, input = gui$input, id.var = "Name",negative.value.handling = "missing")
 
 ## Overall ToxPi scores
 txpScores(res)
