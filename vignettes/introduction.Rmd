@@ -201,6 +201,8 @@ Calculate ToxPi Scores for the given ToxPi model and input data. This input data
 
 > *rank.ties.method* : character string specifying how ties are treated. Available options "average", "first", "last", "random", "max" and "min". Pased to base::rank function.
 
+> *negative.value.handling* : character string specifying how negative values are treated. Available options are "keep" and "missing". Defaults to keep. 
+
 **Usage**
 
 ```{r }
