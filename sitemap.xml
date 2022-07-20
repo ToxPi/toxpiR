@@ -10,6 +10,9 @@
     <loc>https://toxpi.github.io/toxpiR/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://toxpi.github.io/toxpiR/articles/exportToGui.html</loc>
+  </url>
+  <url>
     <loc>https://toxpi.github.io/toxpiR/articles/importFromGui.html</loc>
   </url>
   <url>
@@ -25,6 +28,9 @@
     <loc>https://toxpi.github.io/toxpiR/index.html</loc>
   </url>
   <url>
+    <loc>https://toxpi.github.io/toxpiR/news/index.html</loc>
+  </url>
+  <url>
     <loc>https://toxpi.github.io/toxpiR/reference/TxpModel-class.html</loc>
   </url>
   <url>
@@ -38,6 +44,9 @@
   </url>
   <url>
     <loc>https://toxpi.github.io/toxpiR/reference/TxpResultList-class.html</loc>
+  </url>
+  <url>
+    <loc>https://toxpi.github.io/toxpiR/reference/TxpResultParam-class.html</loc>
   </url>
   <url>
     <loc>https://toxpi.github.io/toxpiR/reference/TxpSlice-class.html</loc>
@@ -71,6 +80,9 @@
   </url>
   <url>
     <loc>https://toxpi.github.io/toxpiR/reference/txpCalculateScores.html</loc>
+  </url>
+  <url>
+    <loc>https://toxpi.github.io/toxpiR/reference/txpExportGui.html</loc>
   </url>
   <url>
     <loc>https://toxpi.github.io/toxpiR/reference/txpGenerics.html</loc>

@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="toxpiR Introduction">
 <meta property="og:description" content="toxpiR">
@@ -32,7 +32,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">toxpiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,9 +47,13 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/exportToGui.html">Export ToxPi GUI Files</a>
     <a class="dropdown-item" href="../articles/importFromGui.html">Import ToxPi GUI Files</a>
     <a class="dropdown-item" href="../articles/introduction.html">toxpiR Introduction</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -73,7 +77,7 @@
 
 
 <script src="introduction_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>toxpiR Introduction</h1>
             
       
@@ -108,21 +112,23 @@ code.r{ /* Code block */
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This document describes how to use the toxpiR package to easily import, recombine, and analyze high dimensional data. Users can also plot subsets of data using built-in plotting functions for visualizing and highlighting ToxPi results.</p>
+<p>This document introduces ToxPi and describes how to use the <code>toxpiR</code> package to easily import, recombine, analyze, and visualize high dimensional data. The <code>toxpiR</code> package is an R implementation of ToxPi that offers new features over what was previously available for data handling, recombination, and customization; provides formally packaged, open-source code for ToxPi; extends the application domain by supporting rapid analysis of massive datasets; and bridges with the stand-alone, <a href="https://toxpi.org" class="external-link">Graphical User Interface (GUI)</a> Java application and <a href="https://github.com/Jonathon-Fleming/ToxPi-GIS" class="external-link">ArcGIS Toolkit</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="what-is-toxpir">What is toxpiR?<a class="anchor" aria-label="anchor" href="#what-is-toxpir"></a>
+<h2 id="what-is-toxpi">What is ToxPi?<a class="anchor" aria-label="anchor" href="#what-is-toxpi"></a>
 </h2>
-<p>Toxicological Priority Index (ToxPi) is a decision support tool that allows transparent integration and visualization of data across disparate information domains to aid in prioritization.</p>
-<p>toxpiR is a system for transforming data into visual profiles by calculating toxpi scores in R. You provide the data, tell toxpiR how to integrate information, which transformation functions to use, and it takes care of the details. toxpiR was designed to enable exploration of data with flexible input formats, is compatible with input/output from the ToxPi GUI and behaves nearly identically to the GUI.</p>
+<p>Toxicological Priority Index (ToxPi) is a decision support tool that allows transparent integration and visualization of data across disparate information domains to aid in prioritization. ToxPi takes input data of disparate sources,from a biological assay or a computer predicted model,to genetic features or proteomic data, and combines all of these data types into one overall model. This model then calculates an overall score for each datapoint of interest. It does this by the user specifying one or more features to go into each “slice” of a unit circle, and the weights that these slices have. These slices can contain one or more features of any type in the same slice. The slice weights are user defined, and decided based on prior information that one may have about the analysis. When a slice has a higher weight, it takes up more room on the unit square. When a slice has a higher calculated score, it goes further out from the center of the circle. As shown below, a feature with a low score will have overall smaller slices than one with an overall higher score. This means that we can understand at a glance the top level differences between what we are interested in. The component slices also add up to the overall ToxPi score with the weights add importance to that specific slice. The metrics that make up each component slice are simulated in data in this case, but can be many different kinds of data that fits your own analysis. More information on the methodological details can be found at <a href="https://toxpi.org" class="external-link">toxpi.org</a>.</p>
+<center>
+<p><img src="embeddedFigures/txp_explain.png" width="700"></p>
+</center>
 </div>
 <div class="section level2">
 <h2 id="outline">Outline<a class="anchor" aria-label="anchor" href="#outline"></a>
 </h2>
 <p>There are three main steps in using this package:</p>
 <ul>
-<li><p><strong>Loading data</strong>: Users can load comma-separated value (csv) formatted data where slices are stored as columns and attributes are rows. The package also has a function to load data that is formatted in any one of the GUI layouts where slice information is presented in rows beginning with a hash tag(#).</p></li>
-<li><p><strong>Creating ToxPi Model</strong>: ToxPi model can be created by specifying information about each slice and its corresponding weights.</p></li>
+<li><p><strong>Loading data</strong>: Users can load comma-separated value (csv) formatted data where data features that will make up the slices are stored as columns and attributes are rows. If you are more famililar with the GUI data format, the package also has a function to load data that is formatted in any one of the GUI layouts where slice information is presented in rows beginning with a hash tag(#). However, new users should use a simple .csv file with the row and column layout.</p></li>
+<li><p><strong>Creating ToxPi Model</strong>: ToxPi model can be created by specifying information about each slice and its corresponding weights. Each slice can be made up of one or more features from the input data. You should also name the slices and provide their weights in this step.</p></li>
 <li><p><strong>Computing ToxPi Scores</strong>: Scores can be computed per attribute as well as for each slice. The S4 object resulting from this step will combine and store the ToxPi model and scores all in one place. This final object will contain all the information needed for plotting.</p></li>
 </ul>
 <p>Data contained within different slots of the S4 objects created using this package can be obtained using <em>accessor functions</em>. More details on how this can be done is present later in the document.</p>
@@ -134,17 +140,17 @@ code.r{ /* Code block */
 <h3 id="standard-installation">
 <strong>Standard installation</strong><a class="anchor" aria-label="anchor" href="#standard-installation"></a>
 </h3>
-<p>You can install toxpiR from <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html" class="external-link">CRAN</a> with:</p>
+<p>You can install <code>toxpiR</code> from <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"toxpiR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"toxpiR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="installation-from-github">
 <strong>Installation from GitHub</strong><a class="anchor" aria-label="anchor" href="#installation-from-github"></a>
 </h3>
-<p>Before attempting a direct installation from GitHub, please make sure you have <code>devtools</code> package on your system. Note, Windows users will need Rtools to install directly from GitHub.</p>
+<p>Any new features will be first added to the GitHub version of the package. However, it may be less stable than the release on CRAN. Before attempting a direct installation from GitHub, please make sure you have <code>devtools</code> package on your system. Note, Windows users will need Rtools to install directly from GitHub.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ToxPi/toxpiR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ToxPi/toxpiR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -152,7 +158,7 @@ code.r{ /* Code block */
 <strong>Launching package in R</strong><a class="anchor" aria-label="anchor" href="#launching-package-in-r"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ToxPi/toxpiR" class="external-link">toxpiR</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ToxPi/toxpiR" class="external-link">toxpiR</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="flowchart">Flowchart<a class="anchor" aria-label="anchor" href="#flowchart"></a>
@@ -160,7 +166,7 @@ code.r{ /* Code block */
 <center>
 <img src="embeddedFigures/toxpiR-flowchart.svg" width="700">
 </center>
-<p>This flowchart details the basic steps necessary to analyze data using toxpiR. A separate vignette describes how load and work with the GUI data file using txpImportGui() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:</p>
+<p>This flowchart details the basic steps necessary to analyze data using <code>toxpiR</code>. A separate vignette describes how load and work with the GUI data file using txpImportGui() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:</p>
 <blockquote>
 <p>lsf.str(“package:toxpiR”)</p>
 </blockquote>
@@ -168,30 +174,26 @@ code.r{ /* Code block */
 <div class="section level2">
 <h2 id="example-usage">Example usage<a class="anchor" aria-label="anchor" href="#example-usage"></a>
 </h2>
-<p>Data can either be entered as a regular csv file without the header lines specifying slice information, or in one of the GUI input formats. An example data set following the GUI input guidelines may look like:</p>
-<center>
-<p><img src="embeddedFigures/gui_format.JPG" width="700"></p>
-</center>
-<p>In the GUI data format, each row beginning with a hash tag (#) specifies a slice. For each slice, the first column will contain a string beginning with the hash tag followed by the slice name, weight, color and scaling, all separated by exclamation points (!). Any column with a non-empty string will indicate that the corresponding metric is included in that slice, e.g. Slice A contains metric1 while Slice C contains metric1 and metric4 in the example above.</p>
-<p>A flat file will simply begin from row 6, without lines specifying slice information. A simple example data set called <em>txp_example_input</em> is available within the package. We will use this 10 x 8 toy data to walk through the different functions available in this package.</p>
+<p>Data can either be entered as a regular csv file without the header lines specifying slice information, or in one of the GUI input formats. If you are using the GUI format, please refer to the <a href="https://cran.r-project.org/web/packages/toxpiR/vignettes/importFromGui.html" class="external-link">Import ToxPi GUI files</a> vignette.</p>
+<p>The standard data input is a standard R dataframe with rows as your datapoints and columns as features that may be turned into ToxPi slices. A simple example data set called <em>txp_example_input</em> is available within the package. We will use this 10 x 8 toy data to walk through a simple analysis and explain the functions available in this package. These metrics that we have specified can be in completely different scales and data type, but first we will show a simple example of the package usage.</p>
 <div class="section level3">
 <h3 id="load-the-dataset">Load the dataset<a class="anchor" aria-label="anchor" href="#load-the-dataset"></a>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">txp_example_input</span>, package <span class="op">=</span> <span class="st">"toxpiR"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">txp_example_input</span><span class="op">)</span>
-<span class="co">#&gt;     name metric1 metric2 metric3 metric4 metric5 metric6 metric7 metric8</span>
-<span class="co">#&gt; 1 chem01      74      77      25      74      77      97      25      77</span>
-<span class="co">#&gt; 2 chem02      28      20      72      28      20      68      72      20</span>
-<span class="co">#&gt; 3 chem03      61       3      73      61       3      24      73       3</span>
-<span class="co">#&gt; 4 chem04      NA      40      20      NA      40      22      20      40</span>
-<span class="co">#&gt; 5 chem05      29      53      44      29      53       4      44      53</span>
-<span class="co">#&gt; 6 chem06      12      43      83      12      43      85      83      43</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">txp_example_input</span>, package <span class="op">=</span> <span class="st">"toxpiR"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">txp_example_input</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     name metric1 metric2 metric3 metric4 metric5 metric6 metric7 metric8</span></span>
+<span><span class="co">#&gt; 1 chem01      74      77      25      74      77      97      25      77</span></span>
+<span><span class="co">#&gt; 2 chem02      28      20      72      28      20      68      72      20</span></span>
+<span><span class="co">#&gt; 3 chem03      61       3      73      61       3      24      73       3</span></span>
+<span><span class="co">#&gt; 4 chem04      NA      40      20      NA      40      22      20      40</span></span>
+<span><span class="co">#&gt; 5 chem05      29      53      44      29      53       4      44      53</span></span>
+<span><span class="co">#&gt; 6 chem06      12      43      83      12      43      85      83      43</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="specify-slice-information">Specify slice information<a class="anchor" aria-label="anchor" href="#specify-slice-information"></a>
 </h3>
-<p>The first step is to specify information about each slice before creating a Toxpi model. This can be done using the <strong>TxpSliceList()</strong> and <strong>TxpSlice()</strong> functions.</p>
+<p>The first step is to specify information about each slice before creating a Toxpi model. This can be done using the <strong>TxpSliceList()</strong> and <strong>TxpSlice()</strong> functions. These slices can be made up of one or more features from the input dataset and are specified by listing the features that go into each slice in the <strong>TxpSlice()</strong> function. We can also specify how we want to transform the slices with the <strong>TxpTransFuncList()</strong> function. This means we can do a different transformation per slice instead of having to transform the entire input dataset.</p>
 <div class="section level4">
 <h4 id="txpslicetxpvaluenames-txptransfuncs">TxpSlice(txpValueNames, txpTransFuncs)<a class="anchor" aria-label="anchor" href="#txpslicetxpvaluenames-txptransfuncs"></a>
 </h4>
@@ -214,22 +216,22 @@ code.r{ /* Code block */
 </blockquote>
 <p><strong>Basic Usage</strong></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co">## Goal - Create two slices with transformation functions </span>
-<span class="co"># Slice 1: Metric 1, No transformation </span>
-<span class="co"># Slice 2: Metric 2 (square) and Metric 3 (no transformation)</span>
-
-<span class="va">slice2.trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TxpTransFuncList-class.html">TxpTransFuncList</a></span><span class="op">(</span>func1 <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span>, func2 <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="va">f.slices</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TxpSliceList-class.html">TxpSliceList</a></span><span class="op">(</span>Slice1 <span class="op">=</span> <span class="fu"><a href="../reference/TxpSlice-class.html">TxpSlice</a></span><span class="op">(</span><span class="st">"metric1"</span><span class="op">)</span>, 
-                         Slice2 <span class="op">=</span> <span class="fu"><a href="../reference/TxpSlice-class.html">TxpSlice</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"metric2"</span>, <span class="st">"metric3"</span><span class="op">)</span>, 
-                                           txpTransFuncs <span class="op">=</span> <span class="va">slice2.trans</span> <span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co">## Goal - Create two slices with transformation functions </span></span>
+<span><span class="co"># Slice 1: Metric 1, No transformation </span></span>
+<span><span class="co"># Slice 2: Metric 2 (square) and Metric 3 (no transformation)</span></span>
+<span></span>
+<span><span class="va">slice2.trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TxpTransFuncList-class.html">TxpTransFuncList</a></span><span class="op">(</span>func1 <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span>, func2 <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">f.slices</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TxpSliceList-class.html">TxpSliceList</a></span><span class="op">(</span>Slice1 <span class="op">=</span> <span class="fu"><a href="../reference/TxpSlice-class.html">TxpSlice</a></span><span class="op">(</span><span class="st">"metric1"</span><span class="op">)</span>, </span>
+<span>                         Slice2 <span class="op">=</span> <span class="fu"><a href="../reference/TxpSlice-class.html">TxpSlice</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"metric2"</span>, <span class="st">"metric3"</span><span class="op">)</span>, </span>
+<span>                                           txpTransFuncs <span class="op">=</span> <span class="va">slice2.trans</span> <span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="create-toxpi-model">Create ToxPi model<a class="anchor" aria-label="anchor" href="#create-toxpi-model"></a>
 </h3>
-<p>Method to store ToxPi model objects. This object is needed in order to calculate ToxPi scores. Transformation functions can be specified at the input data level (shown above), or at the model level (for example 0 to 1 transformation of final slice value).</p>
+<p>The ToxPi model object is core for specifying how the created slices should behave when the scores are calculated. In this step, we need to specify what the slices we created above are and assign those slices weights. We can also assign transformation functions at this step. However, it is not necessary if you have already done so when creating the slices. The model is a core component of the analysis because it is going to specify how our calculations are performed.</p>
 <div class="section level4">
 <h4 id="txpmodel">TxpModel()<a class="anchor" aria-label="anchor" href="#txpmodel"></a>
 </h4>
@@ -248,23 +250,23 @@ code.r{ /* Code block */
 </blockquote>
 <p><strong>Usage</strong></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co">## Goal - Create ToxPi model.</span>
-<span class="co"># Slice 1, weight = 2</span>
-<span class="co"># Slice 2, weight = 1, apply log transform to final value. </span>
-
-<span class="co"># Object storing list of transformation functions.</span>
-<span class="va">final.trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TxpTransFuncList-class.html">TxpTransFuncList</a></span><span class="op">(</span>f1 <span class="op">=</span> <span class="cn">NULL</span>, f2 <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> 
-
-<span class="va">f.model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TxpModel-class.html">TxpModel</a></span><span class="op">(</span>txpSlices <span class="op">=</span> <span class="va">f.slices</span>, 
-                    txpWeights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span>,
-                    txpTransFuncs <span class="op">=</span> <span class="va">final.trans</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co">## Goal - Create ToxPi model.</span></span>
+<span><span class="co"># Slice 1, weight = 2</span></span>
+<span><span class="co"># Slice 2, weight = 1, apply log transform to final value. </span></span>
+<span></span>
+<span><span class="co"># Object storing list of transformation functions.</span></span>
+<span><span class="va">final.trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TxpTransFuncList-class.html">TxpTransFuncList</a></span><span class="op">(</span>f1 <span class="op">=</span> <span class="cn">NULL</span>, f2 <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">f.model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TxpModel-class.html">TxpModel</a></span><span class="op">(</span>txpSlices <span class="op">=</span> <span class="va">f.slices</span>, </span>
+<span>                    txpWeights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span>,</span>
+<span>                    txpTransFuncs <span class="op">=</span> <span class="va">final.trans</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="calculate-toxpi-scores">Calculate ToxPi scores<a class="anchor" aria-label="anchor" href="#calculate-toxpi-scores"></a>
 </h3>
-<p>Calculate ToxPi Scores for the given ToxPi model and input data</p>
+<p>Calculate ToxPi Scores for the given ToxPi model and input data. This input data is what we read in previously from either a standard .csv file or a GUI compatible one. This step uses the model we have created to specify how the ToxPi scores should be calculated. The results object that is created also stores the model used, allowing for easy reference when you are dealing with many models and results.</p>
 <div class="section level4">
 <h4 id="txpcalculatescores">txpCalculateScores()<a class="anchor" aria-label="anchor" href="#txpcalculatescores"></a>
 </h4>
@@ -281,65 +283,68 @@ code.r{ /* Code block */
 <blockquote>
 <p><em>rank.ties.method</em> : character string specifying how ties are treated. Available options “average”, “first”, “last”, “random”, “max” and “min”. Pased to base::rank function.</p>
 </blockquote>
+<blockquote>
+<p><em>negative.value.handling</em> : character string specifying how negative values are treated. Available options are “keep” and “missing”. Defaults to keep.</p>
+</blockquote>
 <p><strong>Usage</strong></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f.results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/txpCalculateScores.html">txpCalculateScores</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">f.model</span>, 
-                                input <span class="op">=</span> <span class="va">txp_example_input</span>,
-                                id.var <span class="op">=</span> <span class="st">'name'</span> <span class="op">)</span> 
-
-<span class="fu"><a href="../reference/txpGenerics.html">txpSliceScores</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co">#ToxPi scores</span>
-<span class="co">#&gt;          Slice1    Slice2</span>
-<span class="co">#&gt;  [1,] 0.6666667 0.3200390</span>
-<span class="co">#&gt;  [2,] 0.1720430 0.1307208</span>
-<span class="co">#&gt;  [3,] 0.5268817 0.0000000</span>
-<span class="co">#&gt;  [4,] 0.0000000 0.2228243</span>
-<span class="co">#&gt;  [5,] 0.1827957 0.2650928</span>
-<span class="co">#&gt;  [6,] 0.0000000 0.2359788</span>
-<span class="co">#&gt;  [7,] 0.1827957 0.0000000</span>
-<span class="co">#&gt;  [8,] 0.4946237 0.2978895</span>
-<span class="co">#&gt;  [9,] 0.4193548 0.3333333</span>
-<span class="co">#&gt; [10,] 0.5161290 0.2233755</span>
-<span class="fu"><a href="../reference/txpGenerics.html">txpWeights</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co">#Print weights</span>
-<span class="co">#&gt; [1] 2 1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">f.results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/txpCalculateScores.html">txpCalculateScores</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">f.model</span>, </span>
+<span>                                input <span class="op">=</span> <span class="va">txp_example_input</span>,</span>
+<span>                                id.var <span class="op">=</span> <span class="st">'name'</span> <span class="op">)</span> </span>
+<span></span>
+<span><span class="fu"><a href="../reference/txpGenerics.html">txpSliceScores</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co">#ToxPi scores</span></span>
+<span><span class="co">#&gt;          Slice1    Slice2</span></span>
+<span><span class="co">#&gt;  [1,] 0.6666667 0.3200390</span></span>
+<span><span class="co">#&gt;  [2,] 0.1720430 0.1307208</span></span>
+<span><span class="co">#&gt;  [3,] 0.5268817 0.0000000</span></span>
+<span><span class="co">#&gt;  [4,] 0.0000000 0.2228243</span></span>
+<span><span class="co">#&gt;  [5,] 0.1827957 0.2650928</span></span>
+<span><span class="co">#&gt;  [6,] 0.0000000 0.2359788</span></span>
+<span><span class="co">#&gt;  [7,] 0.1827957 0.0000000</span></span>
+<span><span class="co">#&gt;  [8,] 0.4946237 0.2978895</span></span>
+<span><span class="co">#&gt;  [9,] 0.4193548 0.3333333</span></span>
+<span><span class="co">#&gt; [10,] 0.5161290 0.2233755</span></span>
+<span><span class="fu"><a href="../reference/txpGenerics.html">txpWeights</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co">#Print weights</span></span>
+<span><span class="co">#&gt; [1] 2 1</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
 </h3>
-<p>Basic ToxPi visuals and rank plots can be created using the plot() function. Ranks are calculated such that the highest ToxPi score has a rank of 1. Advanced grid graphics can be implemented using pieGrob objects that are compatible with the grid system.</p>
+<p>Basic ToxPi visuals and rank plots can be created using the plot() function. Ranks are calculated such that the highest ToxPi score has a rank of 1. Advanced grid graphics can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preffered.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span> <span class="co"># Load library</span>
-<span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co"># ToxPi visuals</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span> <span class="co"># Load library</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co"># ToxPi visuals</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># grid.ls() #List grid info</span>
-
-<span class="co"># Highlight one figure using its label</span>
-<span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-1"</span>, fills <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># grid.ls() #List grid info</span></span>
+<span></span>
+<span><span class="co"># Highlight one figure using its label</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-1"</span>, fills <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-7-2.png" width="672"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># Or just one slice in a figure</span>
-<span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-10::slice1"</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#7DBC3D"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Or just one slice in a figure</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-10::slice1"</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#7DBC3D"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-7-3.png" width="672"></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Rank plot</span>
-<span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, y <span class="op">=</span> <span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Rank plot</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, y <span class="op">=</span> <span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-8-1.png" width="480"></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># Hierarchical Clustering</span>
-
-<span class="va">f.hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpSliceScores</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.hc</span>, hang <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="../reference/txpGenerics.html">txpIDs</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">''</span>, sub <span class="op">=</span> <span class="st">''</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Hierarchical Clustering</span></span>
+<span></span>
+<span><span class="va">f.hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpSliceScores</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.hc</span>, hang <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="../reference/txpGenerics.html">txpIDs</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">''</span>, sub <span class="op">=</span> <span class="st">''</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-8-2.png" width="480"></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>To cite toxpiR in your work, please use:</p>
+<p>To cite <code>toxpiR</code> in your work, please use: <a href="https://cran.r-project.org/web/packages/toxpiR/index.html" class="external-link uri">https://cran.r-project.org/web/packages/toxpiR/index.html</a> (Manuscript currently in review)</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -354,7 +359,7 @@ code.r{ /* Code block */
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>
