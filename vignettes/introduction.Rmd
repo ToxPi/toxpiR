@@ -102,7 +102,7 @@ This flowchart details the basic steps necessary to analyze data using `toxpiR`.
 
 ## Example usage
 
-Data can either be entered as a regular csv file without the header lines specifying slice information, or in one of the GUI input formats. If you are using the GUI format, please refer to the [Import ToxPi GUI files](https://cran.r-project.org/web/packages/toxpiR/vignettes/importFromGui.html) vignette. 
+Data can either be entered as a regular csv file without the header lines specifying slice information, or in one of the GUI input formats. If you are using the GUI format, please refer to the [Import ToxPi GUI files](https://cran.r-project.org/package=toxpiR/vignettes/importFromGui.html) vignette. 
 
 The standard data input is a standard R dataframe with rows as your datapoints and columns as features that may be turned into ToxPi slices. A simple example data set called *txp_example_input* is available within the package. We will use this 10 x 8 toy data to walk through a simple analysis and explain the functions available in this package. These metrics that we have specified can be in completely different scales and data type, but first we will show a simple example of the package usage.
 
@@ -246,4 +246,4 @@ plot(f.hc, hang = -1, labels = txpIDs(f.results), xlab = '', sub = '')
 ## Citation
 
 To cite `toxpiR` in your work, please use: 
-https://cran.r-project.org/web/packages/toxpiR/index.html (Manuscript currently in review)
+https://cran.r-project.org/package=toxpiR (Manuscript currently in review)

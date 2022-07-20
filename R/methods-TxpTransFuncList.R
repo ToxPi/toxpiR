@@ -54,7 +54,7 @@ NULL
 ## constructor
 
 .TxpTransFuncList.toTransFunc <- function(x) {
-  if (!is.null(x) && class(x) != "TxpTransFunc") { 
+  if (!is.null(x) && !inherits(x, "TxpTransFunc")) { 
     x <- try(TxpTransFunc(x), silent = TRUE)
   }
   x
