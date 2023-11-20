@@ -58,6 +58,9 @@ Calculate ToxPi Scores for the given model and input data
 for \link{TxpModel} and \link{TxpModelList}.
 
 Ranks are calculated such that the highest ToxPi score has a rank of 1.
+
+Missingness is determined after applying input-level transformations but
+before applying slice-level transformations.
 }
 \examples{
 ## Load example dataset & model; see ?TxpModel for building model objects

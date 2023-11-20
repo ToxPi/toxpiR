@@ -6,7 +6,7 @@
 \alias{toxpiR-package}
 \title{toxpiR: Create ToxPi Prioritization Models}
 \description{
-Enables users to build 'ToxPi' prioritization models and provides functionality within the grid framework for plotting ToxPi graphs. 'toxpiR' allows for more customization than the 'ToxPi GUI' (<https://toxpi.org>) and integration into existing workflows for greater ease-of-use, reproducibility, and transparency. toxpiR package behaves nearly identically to the GUI; the package documentation includes notes about all differences. The vignettes download example files from <https://github.com/ToxPi/ToxPi-example-files>.
+Enables users to build 'ToxPi' prioritization models and provides functionality within the grid framework for plotting ToxPi graphs. 'toxpiR' allows for more customization than the 'ToxPi GUI' (\url{https://toxpi.org}) and integration into existing workflows for greater ease-of-use, reproducibility, and transparency. toxpiR package behaves nearly identically to the GUI; the package documentation includes notes about all differences. The vignettes download example files from \url{https://github.com/ToxPi/ToxPi-example-files}.
 }
 \seealso{
 Useful links:

@@ -25,13 +25,13 @@ objects.
 }
 \section{Functions}{
 \itemize{
-\item \code{duplicated,TxpModelList-method}: Returns logical vector of \code{length(x)}, where
+\item \code{duplicated(TxpModelList)}: Returns logical vector of \code{length(x)}, where
 \code{TRUE} indicates a duplicate model in the list; see \link[base:duplicated]{base::duplicated}
 
-\item \code{as.TxpModelList}: Coerce list or \link{TxpModel} objects to
+\item \code{as.TxpModelList()}: Coerce list or \link{TxpModel} objects to
 TxpModelList
-}}
 
+}}
 \examples{
 ## Create some TxpModel objects; see ?TxpModel for more details
 s1 <- list(S1 = TxpSlice("inpt1"), S2 = TxpSlice("inpt2"))

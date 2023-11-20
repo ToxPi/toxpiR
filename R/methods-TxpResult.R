@@ -6,11 +6,12 @@
 #' @aliases TxpResult
 #' @title ToxPi Result
 #' @description S4 class to store ToxPi results
-#' 
+#'
 #' @slot txpScores `vector(<numeric>)` of model scores
-#' @slot txpSliceScores `matrix(<numeric>)`, sample by slice `matrix` with 
+#' @slot txpSliceScores `matrix(<numeric>)`, sample by slice `matrix` with
 #' individual slice scores
 #' @slot txpRanks `vector(<numeric>)` with rank of scores
+#' @slot txpMissing `vector(<numeric>)` with data missingness
 #' @slot txpModel [TxpModel] object
 #' @slot txpIDs `vector(<character>)` of observation IDs
 #' @slot txpResultParam [TxpResultParam] object
@@ -19,58 +20,60 @@
 #' @param value Replacement value
 #' @param adjusted Logical scalar, when `TRUE` the weights are adjusted to sum
 #' to 1 or the slice scores are scaled to their respective weight
-#' @param level `c('model', 'slices')`; indicates whether to retrieve 
+#' @param level `c('model', 'slices')`; indicates whether to retrieve
 #' `txpTransFuncs` slot from the model or underlying slices
-#' @param simplify Logical scalar, flatten `txpValueNames` or `txpTransFunc` 
+#' @param simplify Logical scalar, flatten `txpValueNames` or `txpTransFunc`
 #' slots when retrieving slice-level information
 #' @param i Subsetting index
 #' @param j,drop,optional Not currently implemented
 #' @param decreasing,na.last Passed to [base::sort]
 #' @param row.names Passed to [base::data.frame]
-#' @param id.name,score.name,rank.name Character scalar; when coercing to 
-#' [base::data.frame], the name for the `txpIDs`, `txpScores`, and `txpRanks` 
+#' @param id.name,score.name,rank.name Character scalar; when coercing to
+#' [base::data.frame], the name for the `txpIDs`, `txpScores`, and `txpRanks`
 #' columns, respectively
 #' @param ... Passed to [base::data.frame] in `as.data.frame` or [base::sort]
 #' in `sort`
-#' 
+#'
 #' @seealso [txpCalculateScores], [plot], [TxpResultList]
-#' 
+#'
 #' @template roxgn-loadExamples
 #' @template roxgn-calcTxpModel
-#' 
-#' @examples 
+#'
+#' @examples
 #' ## Accessors
 #' txpScores(res)
-#' 
+#'
 #' txpSliceScores(res) ## adjusted for weight, by default
 #' apply(txpSliceScores(res), 2, max, na.rm = TRUE)
-#' 
+#'
 #' txpSliceScores(res, adjusted = FALSE) ## each score should have maximum of 1
 #' apply(txpSliceScores(res, adjusted = FALSE), 2, max, na.rm = TRUE)
-#' 
+#'
 #' txpRanks(res)
-#' 
+#'
+#' txpMissing(res)
+#'
 #' txpModel(res)
 #' identical(txpModel(res), txp_example_model)
-#' 
+#'
 #' txpIDs(res)
 #' names(res) ## identical to txpIDs(res)
 #' identical(txpIDs(res), names(res))
-#' 
+#'
 #' # Can access TxpModel slots directly
 #' txpWeights(res)
 #' txpWeights(res, adjusted = TRUE)
 #' txpSlices(res)
-#' # When retrieving transform functions, must specify level because both 
+#' # When retrieving transform functions, must specify level because both
 #' # models and slices have transform functions
 #' txpTransFuncs(res, level = "model")
-#' 
+#'
 #' # Can access TxpSliceList slots directly
 #' txpValueNames(res)
 #' txpValueNames(res, simplify = TRUE)
 #' txpTransFuncs(res, level = "slices")
 #' txpTransFuncs(res, level = "slices", simplify = TRUE)
-#' 
+#'
 #' ## Subsetting
 #' res[1]
 #' res[c("chem01", "chem09")]
@@ -78,19 +81,19 @@
 #' \dontrun{
 #' res[c(TRUE, FALSE)] ## gets recycled with warning
 #' }
-#' 
+#'
 #' ## length -- returns number of observations
 #' length(res)
 #' length(res[1:5])
-#' 
+#'
 #' ## sort
 #' names(res)
 #' names(sort(res))
-#' 
+#'
 #' txpScores(res)
 #' txpScores(sort(res))
 #' txpScores(sort(res, decreasing = FALSE))
-#' 
+#'
 #' ## as.data.frame
 #' as.data.frame(res)
 #' as.data.frame(res, id.name = "nm", score.name = "scr", rank.name = "rnk")
@@ -100,13 +103,14 @@ NULL
 ##----------------------------------------------------------------------------##
 ## constructor -- NOT exported
 
-TxpResult <- function(txpScores, txpSliceScores, txpRanks, 
+TxpResult <- function(txpScores, txpSliceScores, txpRanks, txpMissing,
                       txpModel, txpIDs = NULL, txpResultParam) {
-  new2("TxpResult", 
-       txpScores = txpScores, 
+  new2("TxpResult",
+       txpScores = txpScores,
        txpSliceScores = txpSliceScores,
        txpRanks = txpRanks,
-       txpModel = txpModel, 
+       txpMissing = txpMissing,
+       txpModel = txpModel,
        txpIDs = txpIDs,
        txpResultParam = txpResultParam)
 }
@@ -119,14 +123,14 @@ TxpResult <- function(txpScores, txpSliceScores, txpRanks,
 
 setMethod("txpScores", "TxpResult", function(x) { x@txpScores })
 
-#' @describeIn TxpResult-class Return `txpSliceScores` slot; default 
+#' @describeIn TxpResult-class Return `txpSliceScores` slot; default
 #' `adjusted = TRUE`, i.e. return slice scores adjusted for weight
 #' @importFrom rlang is_scalar_logical
 #' @export
 
 setMethod("txpSliceScores", "TxpResult", function(x, adjusted = TRUE) {
   stopifnot(is_scalar_logical(adjusted))
-  scr <- x@txpSliceScores 
+  scr <- x@txpSliceScores
   if (adjusted) {
     wts <- txpWeights(x, adjusted = TRUE)
     scr <- scr*rep(wts, each = NROW(scr))
@@ -138,6 +142,11 @@ setMethod("txpSliceScores", "TxpResult", function(x, adjusted = TRUE) {
 #' @export
 
 setMethod("txpRanks", "TxpResult", function(x) { x@txpRanks })
+
+#' @describeIn TxpResult-class Return `txpMissing` slot
+#' @export
+
+setMethod("txpMissing", "TxpResult", function(x) { x@txpMissing })
 
 #' @describeIn TxpResult-class Return `txpResultParam` slot
 #' @export
@@ -154,7 +163,7 @@ setMethod("txpModel", "TxpResult", function(x) { x@txpModel })
 
 setMethod("txpIDs", "TxpResult", function(x) { x@txpIDs })
 
-.TxpResult.replaceIDs <- function(x, value) { 
+.TxpResult.replaceIDs <- function(x, value) {
   x@txpIDs <- value
   validObject(x)
   x
@@ -166,12 +175,12 @@ setMethod("txpIDs", "TxpResult", function(x) { x@txpIDs })
 setReplaceMethod("txpIDs", "TxpResult", .TxpResult.replaceIDs)
 
 #' @describeIn TxpResult-class Return `txpWeights` slot from model -- shortcut
-#' for `txpWeights(txpModel(x))`; default `adjusted = FALSE`, i.e. return 
+#' for `txpWeights(txpModel(x))`; default `adjusted = FALSE`, i.e. return
 #' unadjusted weights
 #' @importFrom rlang is_scalar_logical
 #' @export
 
-setMethod("txpWeights", "TxpResult", function(x, adjusted = FALSE) { 
+setMethod("txpWeights", "TxpResult", function(x, adjusted = FALSE) {
   stopifnot(is_scalar_logical(adjusted))
   txpWeights(txpModel(x), adjusted = adjusted)
 })
@@ -192,36 +201,37 @@ setMethod("txpSlices", "TxpResult", function(x) { txpSlices(txpModel(x)) })
   }
 }
 
-#' @describeIn TxpResult-class Return `txpTransFuncs` slot from model -- 
+#' @describeIn TxpResult-class Return `txpTransFuncs` slot from model --
 #' shortcut for `txpTransFuncs(txpModel(x))`
 #' @importFrom rlang is_scalar_logical
 #' @export
 
 setMethod("txpTransFuncs", "TxpResult", .TxpResult.txpTransFuncs)
 
-#' @describeIn TxpResult-class Return `txpValueNames` slot from slices -- 
+#' @describeIn TxpResult-class Return `txpValueNames` slot from slices --
 #' shortcut for `txpValueNames(txpSlices(txpModel(x)))`
 #' @export
 
-setMethod("txpValueNames", "TxpResult", function(x, simplify = FALSE) { 
+setMethod("txpValueNames", "TxpResult", function(x, simplify = FALSE) {
   txpValueNames(txpSlices(txpModel(x)), simplify = simplify)
 })
 
-.TxpResult.squareBracket <- function(x, i, j, ..., drop = FALSE) { 
+.TxpResult.squareBracket <- function(x, i, j, ..., drop = FALSE) {
   ss <- txpSliceScores(x, adjusted = FALSE)[i, , drop = FALSE]
-  TxpResult(txpScores = txpScores(x)[i], 
+  TxpResult(txpScores = txpScores(x)[i],
             txpSliceScores = ss,
             txpRanks = txpRanks(x)[i],
+            txpMissing = txpMissing(x),
             txpModel = txpModel(x),
             txpIDs = txpIDs(x)[i],
-            txpResultParam = txpResultParam(x)) 
+            txpResultParam = txpResultParam(x))
 }
 
 #' @rdname TxpResult-class
 #' @export
 
 setMethod("[",
-          c("TxpResult", "logical", "missing"), 
+          c("TxpResult", "logical", "missing"),
           function(x, i, j, ..., drop = FALSE) {
   if (length(i) < length(x)) {
     warning("Length of logical vector less than length of object; ",
@@ -243,12 +253,12 @@ setMethod("[", c("TxpResult", "numeric", "missing"), .TxpResult.squareBracket)
 #' @rdname TxpResult-class
 #' @export
 
-setMethod("[", 
-          c("TxpResult", "character", "missing"), 
+setMethod("[",
+          c("TxpResult", "character", "missing"),
           function(x, i, j, ..., drop = FALSE) {
   ids <- txpIDs(x)
   if (is.null(ids)) {
-    stop("TxpResult object must have assigned names, e.g. txpIDs(), to ", 
+    stop("TxpResult object must have assigned names, e.g. txpIDs(), to ",
          "susbet using a character vector.")
   }
   ind <- match(i, ids)
@@ -266,7 +276,7 @@ setMethod("length", "TxpResult", function(x) { length(txpScores(x)) })
 #' @describeIn TxpResult-class Sort the ``TxpResult` object by their ranks
 #' @export
 
-setMethod("sort", "TxpResult", function(x, decreasing = TRUE, 
+setMethod("sort", "TxpResult", function(x, decreasing = TRUE,
                                         na.last = TRUE, ...) {
   ind <- order(txpScores(x), decreasing = decreasing, na.last = na.last, ...)
   x[ind]
@@ -311,11 +321,11 @@ setValidity2("TxpResult", .TxpResult.validity)
 
 #' @importFrom rlang is_scalar_character is_scalar_logical
 
-.TxpResult.as.data.frame <- function(x, 
+.TxpResult.as.data.frame <- function(x,
                                      row.names = NULL,
                                      optional = FALSE,
                                      ...,
-                                     id.name = "id", 
+                                     id.name = "id",
                                      score.name = "score",
                                      rank.name = "rank",
                                      adjusted = FALSE) {
