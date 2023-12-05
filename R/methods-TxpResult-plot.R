@@ -29,6 +29,8 @@
 #' for no color
 #' @param showMissing Boolean for coloring data missingness in [ggplot2]
 #' ToxPi profiles
+#' @param showCenter Boolean for showing inner circle in [ggplot2] ToxPi 
+#' profiles. When set to False overrides showMissing
 #'
 #' @details
 #' It is strongly recommended to use a specific device (e.g., [grDevices::png],
@@ -90,12 +92,14 @@ NULL
     sliceBorderColor = "white",
     sliceValueColor = NULL,
     sliceLineColor = NULL,
-    showMissing = TRUE) {
+    showMissing = TRUE,
+    showCenter = TRUE) {
 
   if (tolower(substr(package[1], 0, 2)) == "gg") {
     .TxpResult.toxpiGGPlot(
       x, fills, showScore, ncol, bgColor, borderColor,
-      sliceBorderColor, sliceValueColor, sliceLineColor, showMissing
+      sliceBorderColor, sliceValueColor, sliceLineColor, showMissing, 
+      showCenter
     )
   } else {
     .TxpResult.toxpiGridPlot(
@@ -205,7 +209,8 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     sliceBorderColor = "white",
     sliceValueColor = NULL,
     sliceLineColor = NULL,
-    showMissing = TRUE
+    showMissing = TRUE,
+    showCenter = TRUE
     ) {
 
   # Set to NULL to prevent note from devtools::check()
@@ -221,7 +226,11 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
   profileDF <- .getPlotList(txpWeights(x), names(txpModel), toxResultDF)
 
   #make plot
-  innerRad <- 0.1 # percent
+  if(showCenter){
+    innerRad <- 0.1 # percent
+  } else {
+    innerRad <- 0
+  }
   yText <- 1.22
 
   plot <- ggplot2::ggplot(profileDF) +
@@ -253,16 +262,17 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       colour = sliceLineColor
     )
   }
-
-  if (showMissing) {
-    missingData <- txpMissing(x)
-  } else {
-    missingData <- rep(0, length(txpSlices(x)))
+  if(showCenter){
+    if (showMissing) {
+      missingData <- txpMissing(x)
+    } else {
+      missingData <- rep(0, length(txpSlices(x)))
+    }
+    plot <- plot + ggplot2::geom_rect(
+      ggplot2::aes(xmin = left, xmax = right, ymin = 0, ymax = innerRad),
+      fill = rep(grDevices::gray(1 - missingData), length(x))
+    )
   }
-  plot <- plot + ggplot2::geom_rect(
-    ggplot2::aes(xmin = left, xmax = right, ymin = 0, ymax = innerRad),
-    fill = rep(grDevices::gray(1 - missingData), length(x))
-  )
 
   if (!is.null(sliceBorderColor)) {
     plot <- plot + ggplot2::geom_rect(
