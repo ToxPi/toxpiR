@@ -220,7 +220,24 @@ txpMissing(f.results) #Proportion of missing data within each slice
 
 ### Plotting 
 
-Basic ToxPi visuals and rank plots can be created using the plot() function. Ranks are calculated such that the highest ToxPi score has a rank of 1. Two methods exist for plotting the visuals, a ggplot method and a grid method. The ggplot method uses the ggplot2 package and allows for highly customizable profiles allowing for several visualization experiences. The grid method uses advanced grid graphics and can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preffered. 
+Basic ToxPi visuals and rank plots can be created using the plot() function. Ranks are calculated such that the highest ToxPi score has a rank of 1. Two methods exist for plotting the visuals, a ggplot method and a grid method. The ggplot method uses the ggplot2 package and allows for highly customizable profiles allowing for several visualization experiences. The grid method uses advanced grid graphics and can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preferred. 
+
+**Summary**: The ggPlot graphics path will be the best option for users wanting to create ToxPi profiles, with many options for customization. The grid graphics path is for users wanting to modify very specific, basic elements of ToxPi profiles and/or recombine profiles with other graphics. The *ggplot2* package (high-level) is built atop *grid* graphics (low-level), so the two systems interact well.
+
+<div >
+<h3>ggPlot</h3>
+* Examples shown in this vignette produce a "look-and-feel" that is closer to the graphics output of the familiar ToxPi GUI (www.toxpi.org)
+* Aesthetics are easy to customize 
+* Includes missing data visuals (center circle à la ToxPi GUI output)
+</div>
+
+<div >
+<h3>grid</h3>
+* Formal, S4-based customization options for visuals using the R *grid* package and the "grob" (grid graphical object) framework
+* ToxPi profile graphics created as grobs can be directly inserted into more complex figures as points on a scatterplot, leaves on a cluster dengrogram, overlaid on a map, etc.
+* Vignette examples show how to highlight individual profiles and highlight individual slices 
+</div>
+::::
 
 #### ggplot Method
 
@@ -392,20 +409,6 @@ grid.edit("pie-10::slice1", gp = gpar(fill = "#FC0FC0"))
 #### ggplot vs grid Comparison
 :::: {style="display: flex; justify-content:space-around;"}
 
-<div >
-<h3>ggPlot</h3>
-* Highly customizable aesthetics
-* Includes missing data visuals
-* Cannot edit individual profiles
-</div>
-
-<div >
-<h3>grid</h3>
-* Individual profile highlighting
-* Individual slice highlighting
-* Few customization options for visuals
-</div>
-::::
 
 ```{r, fig.show="hold"}
 #Single sample
