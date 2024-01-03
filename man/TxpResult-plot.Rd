@@ -23,7 +23,8 @@
   sliceBorderColor = "white",
   sliceValueColor = NULL,
   sliceLineColor = NULL,
-  showMissing = TRUE
+  showMissing = TRUE,
+  showCenter = TRUE
 )
 
 \S4method{plot}{TxpResult,numeric}(
@@ -65,6 +66,9 @@ for no color}
 
 \item{showMissing}{Boolean for coloring data missingness in \link{ggplot2}
 ToxPi profiles}
+
+\item{showCenter}{Boolean for showing inner circle in \link{ggplot2} ToxPi
+profiles. When set to False overrides showMissing}
 
 \item{y}{Rank vector, i.e. \code{txpRanks(x)}}
 
