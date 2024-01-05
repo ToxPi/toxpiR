@@ -45,10 +45,10 @@ This document introduces ToxPi and describes how to use the `toxpiR` package to 
 
 ## What is ToxPi?
 
-Toxicological Priority Index (ToxPi) is a decision support tool that allows transparent integration and visualization of data across disparate information domains to aid in prioritization. ToxPi takes input data of disparate sources,from a biological assay or a computer predicted model,to genetic features or proteomic data, and combines all of these data types into one overall model. This model then calculates an overall score for each datapoint of interest. It does this by the user specifying one or more features to go into each "slice" of a unit circle, and the weights that these slices have. These slices can contain one or more features of any type in the same slice. The slice weights are user defined, and decided based on prior information that one may have about the analysis. When a slice has a higher weight, it takes up more room on the unit square. When a slice has a higher calculated score, it goes further out from the center of the circle. As shown below, a feature with a low score will have overall smaller slices than one with an overall higher score. This means that we can understand at a glance the top level differences between what we are interested in. The component slices also add up to the overall ToxPi score with the weights add importance to that specific slice. The metrics that make up each component slice are simulated in data in this case, but can be many different kinds of data that fits your own analysis. More information on the methodological details can be found at [toxpi.org](https://toxpi.org).   
+The Toxicological Prioritization Index (ToxPi) is a statistical modeling framework that allows transparent integration and visualization of data across disparate sources (i.e. multimodal or multiscale information). This framework aggregates related features into scored ‘slices’, rescales individual slice scores to range 0–1, and then develops an overall score for each sample using a weighted model. The slice weights can be interpreted as the "importance" of categorized features when predicting sample scores and associated ranks. The resulting scores for each sample are visualized as ToxPi profiles (see image below). Slice weights are represented as the arc-width, slice scores are represented as the radius, and the overall sample scores are represented by the combination of slice weights and radii. These visualizations allow for quick comparison of overall feature importance, feature impacts driving a specific sample, relative impact ranking of common features between samples, and overall ranking between samples. As a flexible method capable of integrating data from any source, it has been [applied](https://scholar.google.com/scholar?start=5&hl=en&as_sdt=0,34&sciodt=0,34&cites=14315759707117183281,8409987751811922970,6830405381891567320,6660731247750930378,6264826653350493071,6008919238370157052,5228323847718230279,14470107422640831138) to problems in several different fields. Additional information is linked from [toxpi.org](https://toxpi.org).   
 
 <center>
-![](embeddedFigures/txp_explain.png){width=700px}
+![](embeddedFigures/txp_explain1.png){width=700px}
 
 </center>
 
@@ -220,10 +220,10 @@ txpMissing(f.results) #Proportion of missing data within each slice
 
 ### Visualization
 
-Two paths exist for visualization, ggplot methods and grid methods. The ggplot method uses the *ggplot2* package and allows for highly customizable profiles allowing for several visualization experiences. The grid method uses advanced *grid* graphics and can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preferred. 
+Two paths exist for visualization, **ggplot** methods and **grid** methods. The ggplot method uses the `ggplot2` package and allows for highly customizable profiles allowing for several visualization experiences. The grid method uses advanced `grid` graphics and can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preferred. 
 
 <br>
-**Summary**: The ggPlot graphics path will be the best option for users wanting to create ToxPi profiles, with many options for customization. The grid graphics path is for users wanting to modify very specific, basic elements of ToxPi profiles and/or recombine profiles with other graphics. The *ggplot2* package (high-level) is built atop *grid* graphics (low-level), so the two systems interact well.
+**Summary**: The ggPlot graphics path will be the best option for users wanting to create ToxPi profiles, with many options for customization. The grid graphics path is for users wanting to modify very specific, basic elements of ToxPi profiles and/or recombine profiles with other graphics. The `ggplot2` package (high-level) is built atop `grid` graphics (low-level), so the two systems interact well.
 
 :::: {style="display: flex; justify-content:space-around;"}
 
@@ -236,7 +236,7 @@ Two paths exist for visualization, ggplot methods and grid methods. The ggplot m
 
 <div >
 <h3>grid</h3>
-* Formal, S4-based customization options for visuals using the R *grid* package and the "grob" (grid graphical object) framework
+* Formal, S4-based customization options for visuals using the R `grid` package and the "grob" (grid graphical object) framework
 * ToxPi profile graphics created as grobs can be directly inserted into more complex figures as points on a scatterplot, leaves on a cluster dengrogram, overlaid on a map, etc.
 * Vignette examples show how to highlight individual profiles and highlight individual slices 
 </div>
@@ -245,7 +245,7 @@ Two paths exist for visualization, ggplot methods and grid methods. The ggplot m
 
 #### ggplot Method
 
-This method uses the ggplot2 package to draw highly customizable ToxPi profiles with multiple different aesthetics and information options. The most notable aesthetic addition is the inclusion of information regarding the amount of missing data each slice has, which is represented by the a small circle of interior slices as is shown in profiles generated by the ToxPi GUI. Each interior slice is colored on a grey scale, with black representing all missing data and white representing no missing data. Each new customization option, along with some other notable differences, are described below. 
+This method uses the `ggplot2` package to draw highly customizable ToxPi profiles with multiple different aesthetics and information options. The most notable aesthetic addition is the inclusion of information regarding the amount of missing data each slice has, which is represented by the a small circle of interior slices as is shown in profiles generated by the ToxPi GUI. Each interior slice is colored on a grey scale, with black representing all missing data and white representing no missing data. Each new customization option, along with some other notable differences, are described below. 
 
 <br>
 **Customization Options (Arguments)**
