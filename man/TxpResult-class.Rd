@@ -7,6 +7,7 @@
 \alias{txpScores,TxpResult-method}
 \alias{txpSliceScores,TxpResult-method}
 \alias{txpRanks,TxpResult-method}
+\alias{txpMissing,TxpResult-method}
 \alias{txpResultParam,TxpResult-method}
 \alias{txpModel,TxpResult-method}
 \alias{txpIDs,TxpResult-method}
@@ -31,6 +32,8 @@
 \S4method{txpSliceScores}{TxpResult}(x, adjusted = TRUE)
 
 \S4method{txpRanks}{TxpResult}(x)
+
+\S4method{txpMissing}{TxpResult}(x)
 
 \S4method{txpResultParam}{TxpResult}(x)
 
@@ -109,43 +112,45 @@ S4 class to store ToxPi results
 }
 \section{Functions}{
 \itemize{
-\item \code{txpScores,TxpResult-method}: Return \code{txpScores} slot
+\item \code{txpScores(TxpResult)}: Return \code{txpScores} slot
 
-\item \code{txpSliceScores,TxpResult-method}: Return \code{txpSliceScores} slot; default
+\item \code{txpSliceScores(TxpResult)}: Return \code{txpSliceScores} slot; default
 \code{adjusted = TRUE}, i.e. return slice scores adjusted for weight
 
-\item \code{txpRanks,TxpResult-method}: Return \code{txpRanks} slot
+\item \code{txpRanks(TxpResult)}: Return \code{txpRanks} slot
 
-\item \code{txpResultParam,TxpResult-method}: Return \code{txpResultParam} slot
+\item \code{txpMissing(TxpResult)}: Return \code{txpMissing} slot
 
-\item \code{txpModel,TxpResult-method}: Return \code{txpModel} slot
+\item \code{txpResultParam(TxpResult)}: Return \code{txpResultParam} slot
 
-\item \code{txpIDs,TxpResult-method}: Return \code{txpIDs} slot
+\item \code{txpModel(TxpResult)}: Return \code{txpModel} slot
 
-\item \code{txpWeights,TxpResult-method}: Return \code{txpWeights} slot from model -- shortcut
+\item \code{txpIDs(TxpResult)}: Return \code{txpIDs} slot
+
+\item \code{txpWeights(TxpResult)}: Return \code{txpWeights} slot from model -- shortcut
 for \code{txpWeights(txpModel(x))}; default \code{adjusted = FALSE}, i.e. return
 unadjusted weights
 
-\item \code{txpSlices,TxpResult-method}: Return \code{txpSlices} slot from model -- shortcut
+\item \code{txpSlices(TxpResult)}: Return \code{txpSlices} slot from model -- shortcut
 for \code{txpSlices(txpModel(x))}
 
-\item \code{txpTransFuncs,TxpResult-method}: Return \code{txpTransFuncs} slot from model --
+\item \code{txpTransFuncs(TxpResult)}: Return \code{txpTransFuncs} slot from model --
 shortcut for \code{txpTransFuncs(txpModel(x))}
 
-\item \code{txpValueNames,TxpResult-method}: Return \code{txpValueNames} slot from slices --
+\item \code{txpValueNames(TxpResult)}: Return \code{txpValueNames} slot from slices --
 shortcut for \code{txpValueNames(txpSlices(txpModel(x)))}
 
-\item \code{length,TxpResult-method}: Return the number of observations; shortcut for
+\item \code{length(TxpResult)}: Return the number of observations; shortcut for
 \code{length(txpScores(x))}
 
-\item \code{sort,TxpResult-method}: Sort the ``TxpResult` object by their ranks
+\item \code{sort(TxpResult)}: Sort the ``TxpResult` object by their ranks
 
-\item \code{names,TxpResult-method}: Returns IDs; equal to \code{txpIDs(x)}
+\item \code{names(TxpResult)}: Returns IDs; equal to \code{txpIDs(x)}
 
-\item \code{as.data.frame,TxpResult-method}: Coerce TxpResult to \link[base:data.frame]{base::data.frame} object
+\item \code{as.data.frame(TxpResult)}: Coerce TxpResult to \link[base:data.frame]{base::data.frame} object
 with IDs, scores, ranks, and slice scores
-}}
 
+}}
 \section{Slots}{
 
 \describe{
@@ -155,6 +160,8 @@ with IDs, scores, ranks, and slice scores
 individual slice scores}
 
 \item{\code{txpRanks}}{\verb{vector(<numeric>)} with rank of scores}
+
+\item{\code{txpMissing}}{\verb{vector(<numeric>)} with data missingness}
 
 \item{\code{txpModel}}{\link{TxpModel} object}
 
@@ -184,6 +191,8 @@ apply(txpSliceScores(res, adjusted = FALSE), 2, max, na.rm = TRUE)
 
 txpRanks(res)
 
+txpMissing(res)
+
 txpModel(res)
 identical(txpModel(res), txp_example_model)
 
@@ -195,7 +204,7 @@ identical(txpIDs(res), names(res))
 txpWeights(res)
 txpWeights(res, adjusted = TRUE)
 txpSlices(res)
-# When retrieving transform functions, must specify level because both 
+# When retrieving transform functions, must specify level because both
 # models and slices have transform functions
 txpTransFuncs(res, level = "model")
 

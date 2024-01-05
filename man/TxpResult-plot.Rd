@@ -9,13 +9,22 @@
 \usage{
 \S4method{plot}{TxpResult,missing}(
   x,
+  package = c("grid", "ggplot2"),
   fills = NULL,
   showScore = TRUE,
   gp = NULL,
   vp = NULL,
   name = NULL,
   newpage = TRUE,
-  ...
+  ...,
+  ncol = NULL,
+  bgColor = "grey80",
+  borderColor = "white",
+  sliceBorderColor = "white",
+  sliceValueColor = NULL,
+  sliceLineColor = NULL,
+  showMissing = TRUE,
+  showCenter = TRUE
 )
 
 \S4method{plot}{TxpResult,numeric}(
@@ -33,7 +42,10 @@
 \arguments{
 \item{x}{\link{TxpResult} object}
 
-\item{fills}{Vector of colors to fill slices}
+\item{package}{Character scalar, choice of "grid" or "ggplot2" for plotting
+ToxPi profiles}
+
+\item{fills}{Vector of colors to fill slices. Set to NULL to use default}
 
 \item{showScore}{Logical scalar, overall score printed below the name when
 \code{TRUE}}
@@ -47,6 +59,17 @@ when \code{TRUE}}
 \item{...}{Passed to \link{pieGridGrob} when plotting ToxPi and to pointsGrob
 when plotting ranks}
 
+\item{ncol}{Number of columns for \link{ggplot2} ToxPi profiles}
+
+\item{bgColor, borderColor, sliceBorderColor, sliceValueColor, sliceLineColor}{Various color options when creating \link{ggplot2} ToxPi profiles. Set to NULL
+for no color}
+
+\item{showMissing}{Boolean for coloring data missingness in \link{ggplot2}
+ToxPi profiles}
+
+\item{showCenter}{Boolean for showing inner circle in \link{ggplot2} ToxPi
+profiles. When set to False overrides showMissing}
+
 \item{y}{Rank vector, i.e. \code{txpRanks(x)}}
 
 \item{labels}{Integer vector, indices of \code{x} to label in the rank plot}
@@ -55,8 +78,8 @@ when plotting ranks}
 region margins}
 }
 \value{
-No return value; called for side effect (i.e. drawing in current
-graphics device.)
+No return value when using grid; called for side effect (i.e.
+drawing in current graphics device). Will return ggplot2 object otherwise.
 }
 \description{
 Plot \link{TxpResult} objects
@@ -72,14 +95,16 @@ edited as such.
 
 If the labels are running of the device, the top or bottom margins can be
 increased with the \code{margins} parameter.
+
+ToxPi profiles can also be plotted using the \link{ggplot2} package.
 }
 \section{Functions}{
 \itemize{
-\item \code{plot,TxpResult,missing-method}: Plot ToxPi diagrams
+\item \code{plot(x = TxpResult, y = missing)}: Plot ToxPi diagrams
 
-\item \code{plot,TxpResult,numeric-method}: Plot ToxPi ranks
+\item \code{plot(x = TxpResult, y = numeric)}: Plot ToxPi ranks
+
 }}
-
 \examples{
 ## Load example dataset & model; see ?TxpModel for building model objects
 data(txp_example_input, package = "toxpiR")
@@ -92,6 +117,12 @@ res <- txpCalculateScores(model = txp_example_model,
 
 library(grid)
 plot(res)
+plot(res[order(txpRanks(res))[1:4]])
+
+library(ggplot2)
+plot(res, package = "gg")
+plot(res[order(txpRanks(res))], package = "gg", ncol = 5) +
+  theme(legend.position = "bottom")
 
 plot(res, txpRanks(res))
 plot(res, txpRanks(res), pch = 16, size = unit(0.75, "char"))

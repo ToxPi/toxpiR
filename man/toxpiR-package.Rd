@@ -6,7 +6,7 @@
 \alias{toxpiR-package}
 \title{toxpiR: Create ToxPi Prioritization Models}
 \description{
-Enables users to build 'ToxPi' prioritization models and provides functionality within the grid framework for plotting ToxPi graphs. 'toxpiR' allows for more customization than the 'ToxPi GUI' (<https://toxpi.org>) and integration into existing workflows for greater ease-of-use, reproducibility, and transparency. toxpiR package behaves nearly identically to the GUI; the package documentation includes notes about all differences. The vignettes download example files from <https://github.com/ToxPi/ToxPi-example-files>.
+Enables users to build 'ToxPi' prioritization models and provides functionality within the grid framework for plotting ToxPi graphs. 'toxpiR' allows for more customization than the 'ToxPi GUI' (\url{https://toxpi.org}) and integration into existing workflows for greater ease-of-use, reproducibility, and transparency. toxpiR package behaves nearly identically to the GUI; the package documentation includes notes about all differences. The vignettes download example files from \url{https://github.com/ToxPi/ToxPi-example-files}.
 }
 \seealso{
 Useful links:
@@ -25,6 +25,7 @@ Authors:
   \item Dillon T Lloyd
   \item Preethi Thunga (\href{https://orcid.org/0000-0001-5447-0129}{ORCID})
   \item Skylar W Marvel
+  \item Jonathon Fleming
   \item David M Reif \email{reif.david@gmail.com} (\href{https://orcid.org/0000-0001-7815-6767}{ORCID}) [funder]
 }
 

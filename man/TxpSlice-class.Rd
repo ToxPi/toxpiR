@@ -44,17 +44,17 @@ the given function will be recycled for each input with a warning.
 }
 \section{Functions}{
 \itemize{
-\item \code{txpValueNames,TxpSlice-method}: Return \code{txpValueNames} slot
+\item \code{txpValueNames(TxpSlice)}: Return \code{txpValueNames} slot
 
-\item \code{txpTransFuncs,TxpSlice-method}: Return \code{txpTransFuncs} slot
+\item \code{txpTransFuncs(TxpSlice)}: Return \code{txpTransFuncs} slot
 
-\item \code{length,TxpSlice-method}: Return number of inputs in slice; shortcut for
+\item \code{length(TxpSlice)}: Return number of inputs in slice; shortcut for
 \code{length(txpValueNames(x))}
 
-\item \code{merge,TxpSlice,TxpSlice-method}: Merge two \code{TxpSlice} objects into a single
+\item \code{merge(x = TxpSlice, y = TxpSlice)}: Merge two \code{TxpSlice} objects into a single
 slice
-}}
 
+}}
 \section{Slots}{
 
 \describe{
