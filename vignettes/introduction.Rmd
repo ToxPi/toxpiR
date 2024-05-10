@@ -314,8 +314,15 @@ plot(f.results["chem01"], package = "gg")
 coord_munch_orig <- ggplot2:::coord_munch
 
 # Make a wrapper function that has a different default for segment_length
-coord_munch_new <- function(coord, data, range, segment_length = 1/1000, is_closed = FALSE) {
-  coord_munch_orig(coord, data, range, segment_length, is_closed)
+if (length(formals(coord_munch_orig)) == 5) {
+  coord_munch_new <- function(coord, data, range, segment_length = 1/1000,
+                              is_closed = FALSE) {
+    coord_munch_orig(coord, data, range, segment_length, is_closed)
+  }
+} else {
+  coord_munch_new <- function(coord, data, range, segment_length = 1/1000) {
+    coord_munch_orig(coord, data, range, segment_length)
+  }
 }
 
 # The environment may need to be set
