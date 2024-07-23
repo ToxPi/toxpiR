@@ -62,6 +62,8 @@ test_that("TxpResult accessors return expected slots", {
   expect_equal(txpValueNames(res), txpValueNames(txpSlices(txpModel(res))))
   expect_equal(txpValueNames(res, simplify = TRUE), 
                txpValueNames(txpSlices(txpModel(res)), simplify = TRUE))
+  expect_is(txpMissing(res), "numeric")
+  expect_equal(length(txpMissing(res)), length(txpSlices(res)))
 })
 
 ##----------------------------------------------------------------------------##
@@ -164,6 +166,15 @@ test_that("We can make ToxPi diagrams", {
                               id.var = "name")
   })
   expect_silent(plot(res))
+  expect_silent(plot(res, package = "gg"))
+  expect_silent(plot(res, package = "gg",fills = c("red","blue","green","magenta")))
+  expect_silent(plot(res, package = "gg",showScore = FALSE))
+  expect_silent(plot(res, package = "gg",ncol = 2))
+  expect_silent(plot(res, package = "gg",bgcolor = "white"))
+  expect_silent(plot(res, package = "gg",sliceBorderColor = "#FF00FF"))
+  expect_silent(plot(res, package = "gg",sliceValueColor = "#FF00FF",))
+  expect_silent(plot(res, package = "gg",sliceLineColor = "#FF00FF"))
+  expect_silent(plot(res, package = "gg",showMissing = FALSE))
 })
 
 ##----------------------------------------------------------------------------##
