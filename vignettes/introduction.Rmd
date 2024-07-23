@@ -207,7 +207,7 @@ Calculate ToxPi Scores for the given ToxPi model and input data. This input data
 
 
 ```{r}
-f.model <- txp_example_model
+f.model <- txp_example_model #Load a more complex 4 slice model
 f.results <- txpCalculateScores(model = f.model,
                                 input = txp_example_input,
                                 id.var = 'name' ) 

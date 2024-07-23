@@ -64,6 +64,8 @@ test_that("TxpResult accessors return expected slots", {
                txpValueNames(txpSlices(txpModel(res)), simplify = TRUE))
   expect_is(txpMissing(res), "numeric")
   expect_equal(length(txpMissing(res)), length(txpSlices(res)))
+  expect_true(all(txpMissing(res) >=0 & txpMissing(res) <=1))
+  expect_equal(txpMissing(res), c(s1 = 0.1,s2 =0.1,s3 =0.125,s4 =0.1))
 })
 
 ##----------------------------------------------------------------------------##
