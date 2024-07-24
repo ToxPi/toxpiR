@@ -35,7 +35,8 @@ code.r{ /* Code block */
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  dev = 'svg'
 )
 ```
 
@@ -93,10 +94,10 @@ library(toxpiR)
 
 ## Flowchart 
 <center>
-![](embeddedFigures/toxpiR-flowchart.svg){width=700px}
+![](embeddedFigures/toxpiR-flowchart.svg){height=100% width=100%}
 </center>
 
-This flowchart details the basic steps necessary to analyze data using `toxpiR`. A separate vignette describes how load and work with the GUI data file using txpImportGui() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:  
+This flowchart details the basic steps necessary to analyze data using `toxpiR`. A separate vignette describes how to load and work with the GUI data file using txpImportGui() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:  
   
 > lsf.str("package:toxpiR")   
 
@@ -273,34 +274,35 @@ This method uses the `ggplot2` package to draw highly customizable ToxPi profile
 <br>
 **Usage**
 
-Depending on output method and operating system, plot resolution may end up poor. PDF images tend to produce the best results, shown in a comparison below. Optional code is provided to create smoother lines and improve plot clarity, notably in the center of the profile. The rest of the plots in this vignette are rendered through html.
-
+Depending on output method and operating system, plot resolution may end up poor. SVG and PDF images tend to produce better results than PNG. Optional code is provided to create smoother lines and improve plot clarity, notably in the center of the profile. The plots in this vignette are SVG. Usage and example plot output are shown below.
 ```{r, eval=FALSE}
 library("ggplot2")
 
 # Default plot
 plot(f.results, package = "gg") # Using ggplot package
-
-# Save plot as pdf (shown embedded below on the right)
-pdf(file = "example.pdf")
-plot(f.results, package = "gg")
-dev.off()
 ```
-
-:::: {style="display: flex; justify-content:space-around;"}
-
-<div>
-```{r, echo = FALSE}
+<center>
+```{r, fig.show='hold', echo=FALSE}
 library("ggplot2")
-plot(f.results, package = "gg")
+
+# Default plot
+plot(f.results, package = "gg") # Using ggplot package
 ```
-</div>
+</center>
+<!-- :::: {style="display: flex; justify-content:space-around;"} -->
 
-<div>
-![](embeddedFigures/txp_PDF.pdf){height="357px"}
-</div>
+<!-- <div> -->
+<!-- ```{r, echo = FALSE} -->
+<!-- library("ggplot2") -->
+<!-- plot(f.results, package = "gg") -->
+<!-- ``` -->
+<!-- </div> -->
 
-::::
+<!-- <div> -->
+<!-- ![](embeddedFigures/txp_PDF.pdf){height="357px"} -->
+<!-- </div> -->
+
+<!-- :::: -->
 
 Sometimes the inner circle of the ToxPi figure can show plotting artifacts. A possible workaround for this is to create a wrapper function around `ggplot2:::coord_munch` as shown below.
 
@@ -334,8 +336,8 @@ assignInNamespace("coord_munch", coord_munch_new, ns = "ggplot2")
 # Plot after updating coord_munch
 plot(f.results["chem01"], package = "gg") 
 
-# Revert to original coord_munch
-assignInNamespace("coord_munch", coord_munch_orig, ns = "ggplot2")
+# Revert to original coord_munch ater plotting if desired 
+#assignInNamespace("coord_munch", coord_munch_orig, ns = "ggplot2")
 ```
 
 <center>
