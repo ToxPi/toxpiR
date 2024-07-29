@@ -12,26 +12,35 @@ R package for the Toxicological Priority Index (ToxPi) prioritization algorithm.
 
 ### Installation
 
-Current stable release:
+Current stable release (CRAN):
 
 ```r
 install.packages("toxpiR")
 ```
 
-Build from GitHub (current stable release):
+Current stable release (Build from GitHub):
 
 ```r
-if (!require(remotes)) install.packages("remotes")
 remotes::install_github("ToxPi/toxpiR", 
-                        dependencies = TRUE, 
-                        build_vignettes = TRUE)
+                        dependencies = TRUE)
+                        
+Note: Users may need to ensure "remotes" package and packages requiring "BiocManager" are installed before building package.
+
+if (!require(remotes)) install.packages("remotes")
+
+if (!require(BiocManager, quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+BiocManager::install(c("S4Vectors","BiocGenerics"))
+
 ```
 
-Build from GitHub (current dev version):
+Current stable release (Build from GitHub with vignettes):
 
 ```r
-if (!require(remotes)) install.packages("remotes")
 remotes::install_github("ToxPi/toxpiR@dev",
                         dependencies = TRUE, 
                         build_vignettes = TRUE)
+
+Note: Building packages with vignettes requires the package "pandoc"" to be installed. Mac users may have to install XQuartz from []: https://www.xquartz.org/ for knitting vignettes that use an SVG graphics device.
 ```
