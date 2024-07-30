@@ -42,5 +42,5 @@ remotes::install_github("ToxPi/toxpiR@dev",
                         dependencies = TRUE, 
                         build_vignettes = TRUE)
 
-Note: Building packages with vignettes requires the package "pandoc"" to be installed. Mac users may have to install XQuartz from []: https://www.xquartz.org/ for knitting vignettes that use an SVG graphics device.
+Note: Building packages with vignettes requires the package "pandoc" to be installed.
 ```

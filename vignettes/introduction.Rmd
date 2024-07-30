@@ -36,7 +36,7 @@ code.r{ /* Code block */
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  dev = 'svg'
+  fig.retina = 6
 )
 ```
 
@@ -274,7 +274,7 @@ This method uses the `ggplot2` package to draw highly customizable ToxPi profile
 <br>
 **Usage**
 
-Depending on output method and operating system, plot resolution may end up poor. SVG and PDF images tend to produce better results than PNG. Optional code is provided to create smoother lines and improve plot clarity, notably in the center of the profile. The plots in this vignette are SVG. Usage and example plot output are shown below.
+Depending on export method, plot resolution may end up poor. SVG and PDF images tend to produce better results than PNG. Usage and example plot output are shown below.
 ```{r, eval=FALSE}
 library("ggplot2")
 
@@ -282,27 +282,13 @@ library("ggplot2")
 plot(f.results, package = "gg") # Using ggplot package
 ```
 <center>
-```{r, fig.show='hold', echo=FALSE}
+```{r, fig.show='hold', fig.width=4, fig.height=4, echo=FALSE}
 library("ggplot2")
 
 # Default plot
 plot(f.results, package = "gg") # Using ggplot package
 ```
 </center>
-<!-- :::: {style="display: flex; justify-content:space-around;"} -->
-
-<!-- <div> -->
-<!-- ```{r, echo = FALSE} -->
-<!-- library("ggplot2") -->
-<!-- plot(f.results, package = "gg") -->
-<!-- ``` -->
-<!-- </div> -->
-
-<!-- <div> -->
-<!-- ![](embeddedFigures/txp_PDF.pdf){height="357px"} -->
-<!-- </div> -->
-
-<!-- :::: -->
 
 Sometimes the inner circle of the ToxPi figure can show plotting artifacts. A possible workaround for this is to create a wrapper function around `ggplot2:::coord_munch` as shown below.
 
@@ -344,11 +330,6 @@ plot(f.results["chem01"], package = "gg")
 ![](embeddedFigures/coord_munch_orig.png)
 ![](embeddedFigures/coord_munch_new.png)
 </center>
-
-<!-- ```{r, echo = FALSE, fig.show = "hold", fig.align = "center"} -->
-<!-- knitr::include_graphics("embeddedFigures/coord_munch_orig.png") -->
-<!-- knitr::include_graphics("embeddedFigures/coord_munch_new.png") -->
-<!-- ``` -->
 
 <br>
 **Customization examples**
