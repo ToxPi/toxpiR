@@ -40,7 +40,7 @@ BiocManager::install(c("S4Vectors","BiocGenerics"))
 Current stable release (Build from GitHub with vignettes):
 
 ```r
-remotes::install_github("ToxPi/toxpiR@dev",
+remotes::install_github("ToxPi/toxpiR",
                         dependencies = TRUE, 
                         build_vignettes = TRUE)
 
