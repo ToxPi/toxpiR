@@ -8,7 +8,8 @@
   [![codecov](https://codecov.io/gh/ToxPi/toxpiR/branch/main/graph/badge.svg?token=7yocvT0KzZ)](https://codecov.io/gh/ToxPi/toxpiR)
 <!-- badges: end -->
 
-R package for the Toxicological Priority Index (ToxPi) prioritization algorithm. Package developed and maintained by the [Reif Lab](http://reif-lab.org). 
+R package for the Toxicological Priority Index (ToxPi) prioritization algorithm. 
+Package developed and maintained by the [Reif Lab](http://reif-lab.org). 
 
 ### Installation
 
@@ -24,7 +25,8 @@ Current stable release (Build from GitHub):
 remotes::install_github("ToxPi/toxpiR", 
                         dependencies = TRUE)
                         
-Note: Users may need to ensure "remotes" package and packages requiring "BiocManager" are installed before building package.
+Note: Users may need to ensure "remotes" package and packages
+requiring "BiocManager" are installed before building package.
 
 if (!require(remotes)) install.packages("remotes")
 
@@ -42,5 +44,6 @@ remotes::install_github("ToxPi/toxpiR@dev",
                         dependencies = TRUE, 
                         build_vignettes = TRUE)
 
-Note: Building packages with vignettes requires the package "pandoc" to be installed.
+Note: Building packages with vignettes requires the package
+"pandoc" to be installed.
 ```
