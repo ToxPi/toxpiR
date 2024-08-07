@@ -39,16 +39,16 @@ names are required.
 }
 \section{Functions}{
 \itemize{
-\item \code{txpValueNames,TxpSliceList-method}: Return \code{list} of \code{txpValueNames} slots for the
+\item \code{txpValueNames(TxpSliceList)}: Return \code{list} of \code{txpValueNames} slots for the
 contained \link{TxpSlice} objects, or \code{vector} when \code{simplify = TRUE}
 
-\item \code{txpTransFuncs,TxpSliceList-method}: Return \code{list} of \code{txpTransFuncs} slots for the
+\item \code{txpTransFuncs(TxpSliceList)}: Return \code{list} of \code{txpTransFuncs} slots for the
 contained \link{TxpSlice} objects, or \link{TxpTransFuncList} when \code{simplify = TRUE}
 
-\item \code{duplicated,TxpSliceList-method}: Returns logical vector of \code{length(x)}, where
+\item \code{duplicated(TxpSliceList)}: Returns logical vector of \code{length(x)}, where
 \code{TRUE} indicates a duplicate slice in the list; see \link[base:duplicated]{base::duplicated}
-}}
 
+}}
 \examples{
 ## Create TxpSlice objects
 s1 <- TxpSlice("input1", list(linear = function(x) x))

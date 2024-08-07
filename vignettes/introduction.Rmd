@@ -35,7 +35,8 @@ code.r{ /* Code block */
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.retina = 6
 )
 ```
 
@@ -45,10 +46,10 @@ This document introduces ToxPi and describes how to use the `toxpiR` package to 
 
 ## What is ToxPi?
 
-Toxicological Priority Index (ToxPi) is a decision support tool that allows transparent integration and visualization of data across disparate information domains to aid in prioritization. ToxPi takes input data of disparate sources,from a biological assay or a computer predicted model,to genetic features or proteomic data, and combines all of these data types into one overall model. This model then calculates an overall score for each datapoint of interest. It does this by the user specifying one or more features to go into each "slice" of a unit circle, and the weights that these slices have. These slices can contain one or more features of any type in the same slice. The slice weights are user defined, and decided based on prior information that one may have about the analysis. When a slice has a higher weight, it takes up more room on the unit square. When a slice has a higher calculated score, it goes further out from the center of the circle. As shown below, a feature with a low score will have overall smaller slices than one with an overall higher score. This means that we can understand at a glance the top level differences between what we are interested in. The component slices also add up to the overall ToxPi score with the weights add importance to that specific slice. The metrics that make up each component slice are simulated in data in this case, but can be many different kinds of data that fits your own analysis. More information on the methodological details can be found at [toxpi.org](https://toxpi.org).   
+The Toxicological Prioritization Index (ToxPi) is a statistical modeling framework that allows transparent integration and visualization of data across disparate sources (i.e. multimodal or multiscale information). This framework aggregates related features into scored ‘slices’, rescales individual slice scores to range 0–1, and then develops an overall score for each sample using a weighted model. The slice weights can be interpreted as the "importance" of categorized features when predicting sample scores and associated ranks. The resulting scores for each sample are visualized as ToxPi profiles (see image below). Slice weights are represented as the arc-width, slice scores are represented as the radius, and the overall sample scores are represented by the combination of slice weights and radii. These visualizations allow for quick comparison of overall feature importance, feature impacts driving a specific sample, relative impact ranking of common features between samples, and overall ranking between samples. As a flexible method capable of integrating data from any source, it has been [applied](https://scholar.google.com/scholar?start=5&hl=en&as_sdt=0,34&sciodt=0,34&cites=14315759707117183281,8409987751811922970,6830405381891567320,6660731247750930378,6264826653350493071,6008919238370157052,5228323847718230279,14470107422640831138) to problems in several different fields. Additional information is linked from [toxpi.org](https://toxpi.org).   
 
 <center>
-![](embeddedFigures/txp_explain.png){width=700px}
+![](embeddedFigures/txp_explain1.png){width=700px}
 
 </center>
 
@@ -93,10 +94,10 @@ library(toxpiR)
 
 ## Flowchart 
 <center>
-![](embeddedFigures/toxpiR-flowchart.svg){width=700px}
+![](embeddedFigures/toxpiR-flowchart.svg){height=100% width=100%}
 </center>
 
-This flowchart details the basic steps necessary to analyze data using `toxpiR`. A separate vignette describes how load and work with the GUI data file using txpImportGui() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:  
+This flowchart details the basic steps necessary to analyze data using `toxpiR`. A separate vignette describes how to load and work with the GUI data file using txpImportGui() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:  
   
 > lsf.str("package:toxpiR")   
 
@@ -109,7 +110,7 @@ The standard data input is a standard R dataframe with rows as your datapoints a
 
 ### Load the dataset
 
-```{r }
+```{r}
 data(txp_example_input, package = "toxpiR")
 head(txp_example_input)
 ```
@@ -137,7 +138,7 @@ The first step is to specify information about each slice before creating a Toxp
 
 
 
-```{r }
+```{r}
 
 ## Goal - Create two slices with transformation functions 
 # Slice 1: Metric 1, No transformation 
@@ -170,7 +171,7 @@ The ToxPi model object is core for specifying how the created slices should beha
 
 **Usage**
 
-```{r }
+```{r}
 
 ## Goal - Create ToxPi model.
 # Slice 1, weight = 2
@@ -205,38 +206,439 @@ Calculate ToxPi Scores for the given ToxPi model and input data. This input data
 
 **Usage**
 
-```{r }
-f.results <- txpCalculateScores(model = f.model, 
+
+```{r}
+f.model <- txp_example_model #Load a more complex 4 slice model
+f.results <- txpCalculateScores(model = f.model,
                                 input = txp_example_input,
                                 id.var = 'name' ) 
 
 txpSliceScores(f.results) #ToxPi scores
 txpWeights(f.results) #Print weights
+txpMissing(f.results) #Proportion of missing data within each slice
 ```
 
 
-### Plotting 
+### Visualization
 
-Basic ToxPi visuals and rank plots can be created using the plot() function. Ranks are calculated such that the highest ToxPi score has a rank of 1. Advanced grid graphics can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preffered. 
+Two paths exist for visualization, **ggplot** methods and **grid** methods. The ggplot method uses the `ggplot2` package and allows for highly customizable profiles allowing for several visualization experiences. The grid method uses advanced `grid` graphics and can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preferred. 
 
+<br>
+**Summary**: The ggPlot graphics path will be the best option for users wanting to create ToxPi profiles, with many options for customization. The grid graphics path is for users wanting to modify very specific, basic elements of ToxPi profiles and/or recombine profiles with other graphics. The `ggplot2` package (high-level) is built atop `grid` graphics (low-level), so the two systems interact well.
+
+:::: {style="display: flex; justify-content:space-around;"}
+
+<div >
+<h3>ggPlot</h3>
+* Examples shown in this vignette produce a "look-and-feel" that is closer to the graphics output of the familiar [ToxPi GUI](www.toxpi.org)
+* Aesthetics are easy to customize 
+* Includes missing data visuals (center circle à la ToxPi GUI output)
+</div>
+
+<div >
+<h3>grid</h3>
+* Formal, S4-based customization options for visuals using the R `grid` package and the "grob" (grid graphical object) framework
+* ToxPi profile graphics created as grobs can be directly inserted into more complex figures as points on a scatterplot, leaves on a cluster dengrogram, overlaid on a map, etc.
+* Vignette examples show how to highlight individual profiles and highlight individual slices 
+</div>
+
+::::
+
+#### ggplot Method
+
+This method uses the `ggplot2` package to draw highly customizable ToxPi profiles with multiple different aesthetics and information options. The most notable aesthetic addition is the inclusion of information regarding the amount of missing data each slice has, which is represented by the a small circle of interior slices as is shown in profiles generated by the ToxPi GUI. Each interior slice is colored on a grey scale, with black representing all missing data and white representing no missing data. Each new customization option, along with some other notable differences, are described below. 
+
+<br>
+**Customization Options (Arguments)**
+
+> *fills* : Vector containing slice colors. Defaults to a color scheme matching the ToxPi GUI.
+
+> *showMissing* : Boolean to show missing data information. Defaults to TRUE. 
+
+> *showCenter* : Boolean to show inner circle. Defaults to TRUE. FALSE overrides showMissing.
+
+> *showScore* : Boolean to show overall profile scores. Defaults to TRUE.
+
+> *ncol* : Integer specifying number of columns in plot. Default is an automatic calculation by ggplot. 
+
+> *bgColor* : Text specifying background color for profiles as either hex codes or R recognized colors. Defaults to "gray80".
+
+> *borderColor* : Text specifying color of max radius ring as either hex codes or R recognized colors. Defaults to "white".  
+
+> *sliceBorderColor* : Text specifying color of slice borders as either hex codes or R recognized colors. Defaults to "white".  
+
+> *sliceValueColor* : Text specifying color of slice scores as either hex codes or R recognized colors. Defaults to NULL.  
+
+> *sliceLineColor* : Text specifying color of slice guidelines as either hex codes or R recognized colors. Defaults to NULL.  
+
+<br>
+**Usage**
+
+Depending on export method, plot resolution may end up poor. SVG and PDF images tend to produce better results than PNG. Usage and example plot output are shown below.
+```{r, eval=FALSE}
+library("ggplot2")
+
+# Default plot
+plot(f.results, package = "gg") # Using ggplot package
+```
+<center>
+```{r, fig.show='hold', fig.width=4, fig.height=4, echo=FALSE}
+library("ggplot2")
+
+# Default plot
+plot(f.results, package = "gg") # Using ggplot package
+```
+</center>
+
+Sometimes the inner circle of the ToxPi figure can show plotting artifacts. A possible workaround for this is to create a wrapper function around `ggplot2:::coord_munch` as shown below.
+
+```{r, fig.show = "hide"}
+## Optional code to make smoother lines
+
+# Plot before updating coord_munch
+plot(f.results["chem01"], package = "gg") 
+
+# Save the original version of coord_munch
+coord_munch_orig <- ggplot2:::coord_munch
+
+# Make a wrapper function that has a different default for segment_length
+if (length(formals(coord_munch_orig)) == 5) {
+  coord_munch_new <- function(coord, data, range, segment_length = 1/1000,
+                              is_closed = FALSE) {
+    coord_munch_orig(coord, data, range, segment_length, is_closed)
+  }
+} else {
+  coord_munch_new <- function(coord, data, range, segment_length = 1/1000) {
+    coord_munch_orig(coord, data, range, segment_length)
+  }
+}
+
+# The environment may need to be set
+#environment(coord_munch_new) <- environment(coord_munch_orig)
+
+# Replace ggplot2:::coord_munch with coord_munch_new
+assignInNamespace("coord_munch", coord_munch_new, ns = "ggplot2")
+
+# Plot after updating coord_munch
+plot(f.results["chem01"], package = "gg") 
+
+# Revert to original coord_munch ater plotting if desired 
+#assignInNamespace("coord_munch", coord_munch_orig, ns = "ggplot2")
+```
+
+<center>
+![](embeddedFigures/coord_munch_orig.png)
+![](embeddedFigures/coord_munch_new.png)
+</center>
+
+<br>
+**Customization examples**
+
+#### Coloration Options
+
+```{r, eval=FALSE}
+# Changing the slice colors
+colors <- c("orange", "green", "magenta", "lightblue")
+plot(f.results["chem02"], package = "gg", fills = colors)
+plot(f.results["chem02"], package = "gg", fills = NULL)
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Changing the slice colors
+colors <- c("orange", "green", "magenta", "lightblue")
+plot(f.results["chem02"], package = "gg", fills = colors)
+plot(f.results["chem02"], package = "gg", fills = NULL)
+```
+</center>
+
+```{r, eval=FALSE}
+# Changing the background color
+plot(f.results["chem02"], package = "gg", bgColor = "lightskyblue")
+plot(f.results["chem02"], package = "gg", bgColor = NULL)
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Changing the background color
+plot(f.results["chem02"], package = "gg", bgColor = "lightskyblue")
+plot(f.results["chem02"], package = "gg", bgColor = NULL)
+```
+</center>
+
+```{r, eval=FALSE}
+# Changing the max radius ring color
+plot(f.results["chem02"], package = "gg", borderColor = "black")
+plot(f.results["chem02"], package = "gg", borderColor = NULL)
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Changing the max radius ring color
+plot(f.results["chem02"], package = "gg", borderColor = "black")
+plot(f.results["chem02"], package = "gg", borderColor = NULL)
+```
+</center>
+
+```{r, eval=FALSE}
+# Changing the slice border color
+plot(f.results["chem02"], package = "gg", sliceBorderColor = "magenta")
+plot(f.results["chem02"], package = "gg", sliceBorderColor = NULL)
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Changing the slice border color
+plot(f.results["chem02"], package = "gg", sliceBorderColor = "magenta")
+plot(f.results["chem02"], package = "gg", sliceBorderColor = NULL)
+```
+</center>
+
+```{r, eval=FALSE}
+# Adding slice guidelines 
+plot(f.results["chem02"], package = "gg", sliceLineColor = "red")
+plot(f.results["chem02"], package = "gg", sliceLineColor = NULL) 
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Adding slice guidelines 
+plot(f.results["chem02"], package = "gg", sliceLineColor = "red")
+plot(f.results["chem02"], package = "gg", sliceLineColor = NULL) 
+```
+</center>
+
+```{r, eval=FALSE}
+# Adding visible slice scores
+plot(f.results["chem02"], package = "gg", sliceValueColor = "brown")
+plot(f.results["chem02"], package = "gg", sliceValueColor = NULL)
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Adding visible slice scores
+plot(f.results["chem02"], package = "gg", sliceValueColor = "brown")
+plot(f.results["chem02"], package = "gg", sliceValueColor = NULL)
+```
+</center>
+
+#### Binary Options
+```{r, eval=FALSE}
+# Hiding inner circle
+plot(f.results["chem02"], package = "gg", showCenter = TRUE)
+plot(f.results["chem02"], package = "gg", showCenter = FALSE)
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Hiding inner circle
+plot(f.results["chem02"], package = "gg", showCenter = TRUE)
+plot(f.results["chem02"], package = "gg", showCenter = FALSE)
+```
+</center>
+
+```{r, eval=FALSE}
+# Hiding missing data information (pure white inner circle)
+plot(f.results["chem02"], package = "gg", showMissing = TRUE)
+plot(f.results["chem02"], package = "gg", showMissing = FALSE)
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Hiding missing data information (pure white inner circle)
+plot(f.results["chem02"], package = "gg", showMissing = TRUE)
+plot(f.results["chem02"], package = "gg", showMissing = FALSE)
+```
+</center>
+
+```{r, eval=FALSE}
+# Hiding the overall profile scores
+plot(f.results["chem02"], package = "gg", showScore = TRUE)
+plot(f.results["chem02"], package = "gg", showScore = FALSE) 
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Hiding the overall profile scores
+plot(f.results["chem02"], package = "gg", showScore = TRUE)
+plot(f.results["chem02"], package = "gg", showScore = FALSE) 
+```
+</center>
+
+#### Format/Theme Options
+
+```{r, fig.width = 7, fig.align='center'}
+# Specifying the number of columns in the plot
+plot(f.results, package = "gg", ncol = 5) 
+```
+
+```{r, eval=FALSE}
+# Moving the legend using ggplot built in theme functions
+plot(f.results, package = "gg", ncol = 5) + theme(legend.position = "bottom") 
+plot(f.results, package = "gg", ncol = 2) + theme(legend.position = "left")
+```
+<center>
+```{r, fig.show="hold", fig.height=5, echo=FALSE}
+# Moving the legend using ggplot built in theme functions
+plot(f.results, package = "gg", ncol = 5) + theme(legend.position = "bottom") 
+plot(f.results, package = "gg", ncol = 2) + theme(legend.position = "left")
+```
+</center>
+
+```{r, fig.align='center'}
+# Removing plot margins
+plot(f.results, package = "gg") + theme(plot.margin = margin(0, 0, 0, 0, "cm"))
+# Removing spacing between panels
+plot(f.results, package = "gg") + theme(panel.spacing = unit(0, "lines"))
+# Removing text labels
+plot(f.results, package = "gg") + theme(strip.text.x = element_blank())
+# A combination of the above for a rank ordered plot
+plot(f.results[order(txpRanks(f.results)[1:9])], package = "gg") +
+  theme(
+    plot.margin = margin(0, 0, 0, 0, "cm"),
+    panel.spacing = unit(0, "lines"),
+    strip.text.x = element_blank(),
+    legend.position = "none"
+  )
+```
+
+**Missing Data Examples**
+```{r, fig.align='center'}
+## Creating an example with more variable missing data amounts
+f.input <- txp_example_input
+
+# Add more missing data to slice 2 via metric3 in the raw data
+f.input[3:10, "metric3"] <- NA
+
+# Modify transformation function for slice 4
+txpSlices(f.model)[[4]] <- TxpSlice("metric8", c(fn = \(x) sqrt(x - 30)))
+
+# Calculate new ToxPi results
+f.results_missing <- txpCalculateScores(f.model, f.input, id.var = "name")
+
+# View missing data proportions
+txpMissing(f.results_missing)
+
+# View new result profile
+plot(f.results_missing["chem02"], package = "gg")
+```
+
+
+#### pieGrob Method
+This method is the default and uses the grid package with grob objects to draw ToxPi profiles that can be individually customized after plotting. This method does not allow for the wide array of aesthetics as ggplot does, but instead it allows the user to highlight specific profiles or slices that have significant importance in their results. Methods for highlighting information after plotting is shown below.
 ```{r fig.width=7, fig.height=3}
 library(grid) # Load library
 plot(f.results) # ToxPi visuals
 # grid.ls() #List grid info
 
 # Highlight one figure using its label
-grid.edit("pie-1", fills = c("red", "black"))
+grid.edit("pie-1", fills = c("red", "blue", "black", "brown"))
 
 # Or just one slice in a figure
-grid.edit("pie-10::slice1", gp = gpar(fill = "#7DBC3D"))
+grid.edit("pie-10::slice1", gp = gpar(fill = "#FC0FC0"))
 ```
 
-```{r fig.width=5, fig.height=4}
+#### ggplot vs grid Comparison
+
+```{r, eval=FALSE}
+#Single sample
+plot(f.results["chem02"])
+plot(f.results["chem02"], package = "gg") 
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+#Single sample
+plot(f.results["chem02"])
+plot(f.results["chem02"], package = "gg") 
+```
+</center>
+
+```{r, eval=FALSE}
+# Subset plots
+plot(f.results[order(txpRanks(f.results))[1:4]]) #Profiles ranked 1-4
+plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") #Profiles ranked 1-4
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Subset plots
+plot(f.results[order(txpRanks(f.results))[1:4]]) #Profiles ranked 1-4
+plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") #Profiles ranked 1-4
+```
+</center>
+
+```{r, eval=FALSE}
+## Long sample names for cramped plots
+
+#change the first sample name in f.results
+txpIDs(f.results)[1] <- "I am a long sample name"
+
+plot(f.results) #grid plot for all samples
+plot(f.results, package = "gg") #ggplot for all samples
+
+txpIDs(f.results)[1] <- "chem01" # Change the sample name back
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+## Long sample names for cramped plots
+
+#change the first sample name in f.results
+txpIDs(f.results)[1] <- "I am a long sample name"
+
+plot(f.results) #grid plot for all samples
+plot(f.results, package = "gg") #ggplot for all samples
+
+txpIDs(f.results)[1] <- "chem01" # Change the sample name back
+```
+</center>
+
+```{r, eval=FALSE}
+## Long slice names for cramped plots
+
+#change first slice name in model slot
+names(f.results@txpModel)[1] <- "long slice name"
+#change first slice name in scores slot
+colnames(f.results@txpSliceScores)[1] <- "long slice name"
+#change first slice name in missing data slot
+names(f.results@txpMissing)[1] <- "long slice name"
+
+#plot results using grid
+plot(f.results)
+#plot results using ggplot
+plot(f.results, package = "gg") + theme(
+  legend.position = "bottom",
+  legend.title = element_text(size = 10),
+  legend.text = element_text(size = 6)
+)
+
+#change slice name back
+names(f.results@txpModel)[1] <- "s1"
+colnames(f.results@txpSliceScores)[1] <- "s1"
+names(f.results@txpMissing)[1] <- "s1"
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+## Long slice names for cramped plots
+
+#change first slice name in model slot
+names(f.results@txpModel)[1] <- "long slice name"
+#change first slice name in scores slot
+colnames(f.results@txpSliceScores)[1] <- "long slice name"
+#change first slice name in missing data slot
+names(f.results@txpMissing)[1] <- "long slice name"
+
+#plot results using grid
+plot(f.results)
+#plot results using ggplot
+plot(f.results, package = "gg") + theme(
+  legend.position = "bottom",
+  legend.title = element_text(size = 10),
+  legend.text = element_text(size = 6)
+)
+
+#change slice name back
+names(f.results@txpModel)[1] <- "s1"
+colnames(f.results@txpSliceScores)[1] <- "s1"
+names(f.results@txpMissing)[1] <- "s1"
+```
+</center>
+
+#### Statistic Plots
+```{r fig.width=5, fig.height=4, fig.align='center'}
 # Rank plot
 plot(f.results, y = txpRanks(f.results), labels = 1:10)
 
 # Hierarchical Clustering
-
 f.hc <- hclust(dist(txpSliceScores(f.results)))
 
 plot(f.hc, hang = -1, labels = txpIDs(f.results), xlab = '', sub = '')

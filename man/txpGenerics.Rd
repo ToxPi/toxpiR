@@ -16,6 +16,7 @@
 \alias{txpIDs}
 \alias{txpIDs<-}
 \alias{txpRanks}
+\alias{txpMissing}
 \alias{txpResultParam}
 \title{toxpiR package generics}
 \usage{
@@ -46,6 +47,8 @@ txpIDs(x, ...)
 txpIDs(x, ...) <- value
 
 txpRanks(x, ...)
+
+txpMissing(x, ...)
 
 txpResultParam(x, ...)
 }

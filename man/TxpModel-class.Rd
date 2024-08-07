@@ -63,25 +63,25 @@ S4 class to store ToxPi models
 }
 \section{Functions}{
 \itemize{
-\item \code{txpSlices,TxpModel-method}: Return \code{txpSlices} slot
+\item \code{txpSlices(TxpModel)}: Return \code{txpSlices} slot
 
-\item \code{txpWeights,TxpModel-method}: Return \code{txpWeights} slot
+\item \code{txpWeights(TxpModel)}: Return \code{txpWeights} slot
 
-\item \code{txpTransFuncs,TxpModel-method}: Return \code{txpTransFuncs} slot
+\item \code{txpTransFuncs(TxpModel)}: Return \code{txpTransFuncs} slot
 
-\item \code{txpValueNames,TxpModel-method}: Return \code{list} of \code{txpValueNames} slots for the
+\item \code{txpValueNames(TxpModel)}: Return \code{list} of \code{txpValueNames} slots for the
 contained \link{TxpSliceList} object, or \code{vector} when \code{simplify = TRUE}
 
-\item \code{names,TxpModel-method}: Return slice names; shortcut for
+\item \code{names(TxpModel)}: Return slice names; shortcut for
 \code{names(txpSlices(x))}
 
-\item \code{length,TxpModel-method}: Return number of slices in model; shortcut for
+\item \code{length(TxpModel)}: Return number of slices in model; shortcut for
 \code{length(txpSlices(x))}
 
-\item \code{merge,TxpModel,TxpModel-method}: Merge two \code{TxpModel} objects into a single
+\item \code{merge(x = TxpModel, y = TxpModel)}: Merge two \code{TxpModel} objects into a single
 model
-}}
 
+}}
 \section{Slots}{
 
 \describe{

@@ -33,8 +33,8 @@ setClassUnion("TxpTransFunc_OR_NULL", members = c("TxpTransFunc", "NULL"))
 #' @rdname TxpTransFuncList-class
 #' @exportClass TxpTransFuncList
 
-setClass("TxpTransFuncList", 
-         contains = "SimpleList", 
+setClass("TxpTransFuncList",
+         contains = "SimpleList",
          prototype = prototype(elementType = "TxpTransFunc_OR_NULL"))
 
 ##----------------------------------------------------------------------------##
@@ -43,7 +43,7 @@ setClass("TxpTransFuncList",
 #' @rdname TxpSlice-class
 #' @exportClass TxpSlice
 
-setClass("TxpSlice", 
+setClass("TxpSlice",
          slots = c(txpValueNames = "character",
                    txpTransFuncs = "TxpTransFuncList"))
 
@@ -66,8 +66,8 @@ setClass("TxpSliceList",
 #' @rdname TxpModel-class
 #' @exportClass TxpModel
 
-setClass("TxpModel", 
-         slots = c(txpSlices = "TxpSliceList", 
+setClass("TxpModel",
+         slots = c(txpSlices = "TxpSliceList",
                    txpWeights = "numeric",
                    txpTransFuncs = "TxpTransFuncList"))
 
@@ -90,8 +90,8 @@ setClass("TxpModelList",
 #' @name TxpResultParam-class
 #' @exportClass TxpResultParam
 
-setClass("TxpResultParam", 
-         slots = c(rank.ties.method = "character", 
+setClass("TxpResultParam",
+         slots = c(rank.ties.method = "character",
                    negative.value.handling = "character"))
 
 ##----------------------------------------------------------------------------##
@@ -100,10 +100,11 @@ setClass("TxpResultParam",
 #' @name TxpResult-class
 #' @exportClass TxpResult
 
-setClass("TxpResult", 
-         slots = c(txpScores = "numeric", 
+setClass("TxpResult",
+         slots = c(txpScores = "numeric",
                    txpSliceScores = "matrix",
                    txpRanks = "numeric",
+                   txpMissing = "numeric",
                    txpModel = "TxpModel",
                    txpIDs = "character_OR_NULL",
                    txpResultParam = "TxpResultParam"))

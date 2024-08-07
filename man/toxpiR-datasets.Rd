@@ -45,7 +45,7 @@ txp_example_model
 tf1 <- TxpTransFuncList(linear = function(x) x)
 sl <- TxpSliceList(s1 = TxpSlice(sprintf("metric\%d", 1:2)),
                    s2 = TxpSlice("metric3"),
-                   s3 = TxpSlice(sprintf("metric\%d", 4:7), 
+                   s3 = TxpSlice(sprintf("metric\%d", 4:7),
                                  tf1[rep("linear", 4)]),
                    s4 = TxpSlice("metric8", tf1))
 tf2 <- TxpTransFuncList(NULL, linear = function(x) x, NULL, NULL)
