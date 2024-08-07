@@ -5,7 +5,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="toxpiR">
 <title>toxpiR Introduction • toxpiR</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -14,74 +13,61 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="toxpiR Introduction">
-<meta property="og:description" content="toxpiR">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="toxpiR Introduction">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">toxpiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/exportToGui.html">Export ToxPi GUI Files</a>
-    <a class="dropdown-item" href="../articles/importFromGui.html">Import ToxPi GUI Files</a>
-    <a class="dropdown-item" href="../articles/introduction.html">toxpiR Introduction</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/exportToGui.html">Export ToxPi GUI Files</a></li>
+    <li><a class="dropdown-item" href="../articles/importFromGui.html">Import ToxPi GUI Files</a></li>
+    <li><a class="dropdown-item" href="../articles/introduction.html">toxpiR Introduction</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/ToxPi/toxpiR/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ToxPi/toxpiR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
 
 
-<script src="introduction_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>toxpiR Introduction</h1>
+
+      <h1>toxpiR Introduction</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ToxPi/toxpiR/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ToxPi/toxpiR/blob/main/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="d-none name"><code>introduction.Rmd</code></div>
     </div>
 
@@ -112,14 +98,41 @@ code.r{ /* Code block */
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This document introduces ToxPi and describes how to use the <code>toxpiR</code> package to easily import, recombine, analyze, and visualize high dimensional data. The <code>toxpiR</code> package is an R implementation of ToxPi that offers new features over what was previously available for data handling, recombination, and customization; provides formally packaged, open-source code for ToxPi; extends the application domain by supporting rapid analysis of massive datasets; and bridges with the stand-alone, <a href="https://toxpi.org" class="external-link">Graphical User Interface (GUI)</a> Java application and <a href="https://github.com/Jonathon-Fleming/ToxPi-GIS" class="external-link">ArcGIS Toolkit</a>.</p>
+<p>This document introduces ToxPi and describes how to use the
+<code>toxpiR</code> package to easily import, recombine, analyze, and
+visualize high dimensional data. The <code>toxpiR</code> package is an R
+implementation of ToxPi that offers new features over what was
+previously available for data handling, recombination, and
+customization; provides formally packaged, open-source code for ToxPi;
+extends the application domain by supporting rapid analysis of massive
+datasets; and bridges with the stand-alone, <a href="https://toxpi.org" class="external-link">Graphical User Interface (GUI)</a> Java
+application and <a href="https://github.com/Jonathon-Fleming/ToxPi-GIS" class="external-link">ArcGIS
+Toolkit</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="what-is-toxpi">What is ToxPi?<a class="anchor" aria-label="anchor" href="#what-is-toxpi"></a>
 </h2>
-<p>Toxicological Priority Index (ToxPi) is a decision support tool that allows transparent integration and visualization of data across disparate information domains to aid in prioritization. ToxPi takes input data of disparate sources,from a biological assay or a computer predicted model,to genetic features or proteomic data, and combines all of these data types into one overall model. This model then calculates an overall score for each datapoint of interest. It does this by the user specifying one or more features to go into each “slice” of a unit circle, and the weights that these slices have. These slices can contain one or more features of any type in the same slice. The slice weights are user defined, and decided based on prior information that one may have about the analysis. When a slice has a higher weight, it takes up more room on the unit square. When a slice has a higher calculated score, it goes further out from the center of the circle. As shown below, a feature with a low score will have overall smaller slices than one with an overall higher score. This means that we can understand at a glance the top level differences between what we are interested in. The component slices also add up to the overall ToxPi score with the weights add importance to that specific slice. The metrics that make up each component slice are simulated in data in this case, but can be many different kinds of data that fits your own analysis. More information on the methodological details can be found at <a href="https://toxpi.org" class="external-link">toxpi.org</a>.</p>
+<p>The Toxicological Prioritization Index (ToxPi) is a statistical
+modeling framework that allows transparent integration and visualization
+of data across disparate sources (i.e. multimodal or multiscale
+information). This framework aggregates related features into scored
+‘slices’, rescales individual slice scores to range 0–1, and then
+develops an overall score for each sample using a weighted model. The
+slice weights can be interpreted as the “importance” of categorized
+features when predicting sample scores and associated ranks. The
+resulting scores for each sample are visualized as ToxPi profiles (see
+image below). Slice weights are represented as the arc-width, slice
+scores are represented as the radius, and the overall sample scores are
+represented by the combination of slice weights and radii. These
+visualizations allow for quick comparison of overall feature importance,
+feature impacts driving a specific sample, relative impact ranking of
+common features between samples, and overall ranking between samples. As
+a flexible method capable of integrating data from any source, it has
+been <a href="https://scholar.google.com/scholar?start=5&amp;hl=en&amp;as_sdt=0,34&amp;sciodt=0,34&amp;cites=14315759707117183281,8409987751811922970,6830405381891567320,6660731247750930378,6264826653350493071,6008919238370157052,5228323847718230279,14470107422640831138" class="external-link">applied</a>
+to problems in several different fields. Additional information is
+linked from <a href="https://toxpi.org" class="external-link">toxpi.org</a>.</p>
 <center>
-<p><img src="embeddedFigures/txp_explain.png" width="700"></p>
+<p><img src="embeddedFigures/txp_explain1.png" width="700"></p>
 </center>
 </div>
 <div class="section level2">
@@ -127,11 +140,28 @@ code.r{ /* Code block */
 </h2>
 <p>There are three main steps in using this package:</p>
 <ul>
-<li><p><strong>Loading data</strong>: Users can load comma-separated value (csv) formatted data where data features that will make up the slices are stored as columns and attributes are rows. If you are more famililar with the GUI data format, the package also has a function to load data that is formatted in any one of the GUI layouts where slice information is presented in rows beginning with a hash tag(#). However, new users should use a simple .csv file with the row and column layout.</p></li>
-<li><p><strong>Creating ToxPi Model</strong>: ToxPi model can be created by specifying information about each slice and its corresponding weights. Each slice can be made up of one or more features from the input data. You should also name the slices and provide their weights in this step.</p></li>
-<li><p><strong>Computing ToxPi Scores</strong>: Scores can be computed per attribute as well as for each slice. The S4 object resulting from this step will combine and store the ToxPi model and scores all in one place. This final object will contain all the information needed for plotting.</p></li>
+<li><p><strong>Loading data</strong>: Users can load comma-separated
+value (csv) formatted data where data features that will make up the
+slices are stored as columns and attributes are rows. If you are more
+famililar with the GUI data format, the package also has a function to
+load data that is formatted in any one of the GUI layouts where slice
+information is presented in rows beginning with a hash tag(#). However,
+new users should use a simple .csv file with the row and column
+layout.</p></li>
+<li><p><strong>Creating ToxPi Model</strong>: ToxPi model can be created
+by specifying information about each slice and its corresponding
+weights. Each slice can be made up of one or more features from the
+input data. You should also name the slices and provide their weights in
+this step.</p></li>
+<li><p><strong>Computing ToxPi Scores</strong>: Scores can be computed
+per attribute as well as for each slice. The S4 object resulting from
+this step will combine and store the ToxPi model and scores all in one
+place. This final object will contain all the information needed for
+plotting.</p></li>
 </ul>
-<p>Data contained within different slots of the S4 objects created using this package can be obtained using <em>accessor functions</em>. More details on how this can be done is present later in the document.</p>
+<p>Data contained within different slots of the S4 objects created using
+this package can be obtained using <em>accessor functions</em>. More
+details on how this can be done is present later in the document.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -140,7 +170,8 @@ code.r{ /* Code block */
 <h3 id="standard-installation">
 <strong>Standard installation</strong><a class="anchor" aria-label="anchor" href="#standard-installation"></a>
 </h3>
-<p>You can install <code>toxpiR</code> from <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html" class="external-link">CRAN</a> with:</p>
+<p>You can install <code>toxpiR</code> from <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html" class="external-link">CRAN</a>
+with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"toxpiR"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -148,7 +179,11 @@ code.r{ /* Code block */
 <h3 id="installation-from-github">
 <strong>Installation from GitHub</strong><a class="anchor" aria-label="anchor" href="#installation-from-github"></a>
 </h3>
-<p>Any new features will be first added to the GitHub version of the package. However, it may be less stable than the release on CRAN. Before attempting a direct installation from GitHub, please make sure you have <code>devtools</code> package on your system. Note, Windows users will need Rtools to install directly from GitHub.</p>
+<p>Any new features will be first added to the GitHub version of the
+package. However, it may be less stable than the release on CRAN. Before
+attempting a direct installation from GitHub, please make sure you have
+<code>devtools</code> package on your system. Note, Windows users will
+need Rtools to install directly from GitHub.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ToxPi/toxpiR"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -164,9 +199,13 @@ code.r{ /* Code block */
 <h2 id="flowchart">Flowchart<a class="anchor" aria-label="anchor" href="#flowchart"></a>
 </h2>
 <center>
-<img src="embeddedFigures/toxpiR-flowchart.svg" width="700">
+<img src="embeddedFigures/toxpiR-flowchart.svg" style="width:100.0%;height:100.0%">
 </center>
-<p>This flowchart details the basic steps necessary to analyze data using <code>toxpiR</code>. A separate vignette describes how load and work with the GUI data file using txpImportGui() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:</p>
+<p>This flowchart details the basic steps necessary to analyze data
+using <code>toxpiR</code>. A separate vignette describes how to load and
+work with the GUI data file using txpImportGui() function. Usage for all
+other functions is described below using an example data set. To view a
+list of all functions available in this package, please run:</p>
 <blockquote>
 <p>lsf.str(“package:toxpiR”)</p>
 </blockquote>
@@ -174,8 +213,18 @@ code.r{ /* Code block */
 <div class="section level2">
 <h2 id="example-usage">Example usage<a class="anchor" aria-label="anchor" href="#example-usage"></a>
 </h2>
-<p>Data can either be entered as a regular csv file without the header lines specifying slice information, or in one of the GUI input formats. If you are using the GUI format, please refer to the <a href="https://cran.r-project.org/package=toxpiR/vignettes/importFromGui.html" class="external-link">Import ToxPi GUI files</a> vignette.</p>
-<p>The standard data input is a standard R dataframe with rows as your datapoints and columns as features that may be turned into ToxPi slices. A simple example data set called <em>txp_example_input</em> is available within the package. We will use this 10 x 8 toy data to walk through a simple analysis and explain the functions available in this package. These metrics that we have specified can be in completely different scales and data type, but first we will show a simple example of the package usage.</p>
+<p>Data can either be entered as a regular csv file without the header
+lines specifying slice information, or in one of the GUI input formats.
+If you are using the GUI format, please refer to the <a href="https://cran.r-project.org/package=toxpiR/vignettes/importFromGui.html" class="external-link">Import
+ToxPi GUI files</a> vignette.</p>
+<p>The standard data input is a standard R dataframe with rows as your
+datapoints and columns as features that may be turned into ToxPi slices.
+A simple example data set called <em>txp_example_input</em> is available
+within the package. We will use this 10 x 8 toy data to walk through a
+simple analysis and explain the functions available in this package.
+These metrics that we have specified can be in completely different
+scales and data type, but first we will show a simple example of the
+package usage.</p>
 <div class="section level3">
 <h3 id="load-the-dataset">Load the dataset<a class="anchor" aria-label="anchor" href="#load-the-dataset"></a>
 </h3>
@@ -193,7 +242,16 @@ code.r{ /* Code block */
 <div class="section level3">
 <h3 id="specify-slice-information">Specify slice information<a class="anchor" aria-label="anchor" href="#specify-slice-information"></a>
 </h3>
-<p>The first step is to specify information about each slice before creating a Toxpi model. This can be done using the <strong>TxpSliceList()</strong> and <strong>TxpSlice()</strong> functions. These slices can be made up of one or more features from the input dataset and are specified by listing the features that go into each slice in the <strong>TxpSlice()</strong> function. We can also specify how we want to transform the slices with the <strong>TxpTransFuncList()</strong> function. This means we can do a different transformation per slice instead of having to transform the entire input dataset.</p>
+<p>The first step is to specify information about each slice before
+creating a Toxpi model. This can be done using the
+<strong>TxpSliceList()</strong> and <strong>TxpSlice()</strong>
+functions. These slices can be made up of one or more features from the
+input dataset and are specified by listing the features that go into
+each slice in the <strong>TxpSlice()</strong> function. We can also
+specify how we want to transform the slices with the
+<strong>TxpTransFuncList()</strong> function. This means we can do a
+different transformation per slice instead of having to transform the
+entire input dataset.</p>
 <div class="section level4">
 <h4 id="txpslicetxpvaluenames-txptransfuncs">TxpSlice(txpValueNames, txpTransFuncs)<a class="anchor" aria-label="anchor" href="#txpslicetxpvaluenames-txptransfuncs"></a>
 </h4>
@@ -202,17 +260,22 @@ code.r{ /* Code block */
 </blockquote>
 <p><strong>Arguments</strong></p>
 <blockquote>
-<p><em>txpValueNames</em> : character vector indicating which data to include in the slice. Can just be the name of a single column if that is all the slice contains.</p>
+<p><em>txpValueNames</em> : character vector indicating which data to
+include in the slice. Can just be the name of a single column if that is
+all the slice contains.</p>
 </blockquote>
 <blockquote>
-<p><em>txpTransFuncs</em> : List of transformation functions to use with one function per entry in txpValueNames. Can be created using TxpTransFuncList() method. Defaults to NULL.</p>
+<p><em>txpTransFuncs</em> : List of transformation functions to use with
+one function per entry in txpValueNames. Can be created using
+TxpTransFuncList() method. Defaults to NULL.</p>
 </blockquote>
 </div>
 <div class="section level4">
 <h4 id="txpslicelist">TxpSliceList()<a class="anchor" aria-label="anchor" href="#txpslicelist"></a>
 </h4>
 <blockquote>
-<p>Method to merge all individuals slices together and assign slice names.</p>
+<p>Method to merge all individuals slices together and assign slice
+names.</p>
 </blockquote>
 <p><strong>Basic Usage</strong></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -231,7 +294,13 @@ code.r{ /* Code block */
 <div class="section level3">
 <h3 id="create-toxpi-model">Create ToxPi model<a class="anchor" aria-label="anchor" href="#create-toxpi-model"></a>
 </h3>
-<p>The ToxPi model object is core for specifying how the created slices should behave when the scores are calculated. In this step, we need to specify what the slices we created above are and assign those slices weights. We can also assign transformation functions at this step. However, it is not necessary if you have already done so when creating the slices. The model is a core component of the analysis because it is going to specify how our calculations are performed.</p>
+<p>The ToxPi model object is core for specifying how the created slices
+should behave when the scores are calculated. In this step, we need to
+specify what the slices we created above are and assign those slices
+weights. We can also assign transformation functions at this step.
+However, it is not necessary if you have already done so when creating
+the slices. The model is a core component of the analysis because it is
+going to specify how our calculations are performed.</p>
 <div class="section level4">
 <h4 id="txpmodel">TxpModel()<a class="anchor" aria-label="anchor" href="#txpmodel"></a>
 </h4>
@@ -240,13 +309,17 @@ code.r{ /* Code block */
 <p><em>txpSlices</em> : TxpSliceList() object.</p>
 </blockquote>
 <blockquote>
-<p><em>txpWeights</em> : numeric vector specifying weight of each slice. By default, all slices are weighted equally (1).</p>
+<p><em>txpWeights</em> : numeric vector specifying weight of each slice.
+By default, all slices are weighted equally (1).</p>
 </blockquote>
 <blockquote>
-<p><em>txpTransFuncs</em> : TxpTransFuncList object. Defaults to NULL, if a list is provided, its length must be equal to the number of slices present.</p>
+<p><em>txpTransFuncs</em> : TxpTransFuncList object. Defaults to NULL,
+if a list is provided, its length must be equal to the number of slices
+present.</p>
 </blockquote>
 <blockquote>
-<p>adjusted : Scalar logical to adjust returned weights such that they sum to 1.</p>
+<p>adjusted : Scalar logical to adjust returned weights such that they
+sum to 1.</p>
 </blockquote>
 <p><strong>Usage</strong></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -266,108 +339,474 @@ code.r{ /* Code block */
 <div class="section level3">
 <h3 id="calculate-toxpi-scores">Calculate ToxPi scores<a class="anchor" aria-label="anchor" href="#calculate-toxpi-scores"></a>
 </h3>
-<p>Calculate ToxPi Scores for the given ToxPi model and input data. This input data is what we read in previously from either a standard .csv file or a GUI compatible one. This step uses the model we have created to specify how the ToxPi scores should be calculated. The results object that is created also stores the model used, allowing for easy reference when you are dealing with many models and results.</p>
+<p>Calculate ToxPi Scores for the given ToxPi model and input data. This
+input data is what we read in previously from either a standard .csv
+file or a GUI compatible one. This step uses the model we have created
+to specify how the ToxPi scores should be calculated. The results object
+that is created also stores the model used, allowing for easy reference
+when you are dealing with many models and results.</p>
 <div class="section level4">
 <h4 id="txpcalculatescores">txpCalculateScores()<a class="anchor" aria-label="anchor" href="#txpcalculatescores"></a>
 </h4>
 <p><strong>Arguments</strong></p>
 <blockquote>
-<p><em>model</em> : ToxPi model object created using TxpModel() function.</p>
+<p><em>model</em> : ToxPi model object created using TxpModel()
+function.</p>
 </blockquote>
 <blockquote>
 <p><em>input</em> : dataframe containing input data for ToxPi model.</p>
 </blockquote>
 <blockquote>
-<p><em>id.var</em> : Character scalar, column in ‘input’ to store in. Deafults to NULL.</p>
+<p><em>id.var</em> : Character scalar, column in ‘input’ to store in.
+Deafults to NULL.</p>
 </blockquote>
 <blockquote>
-<p><em>rank.ties.method</em> : character string specifying how ties are treated. Available options “average”, “first”, “last”, “random”, “max” and “min”. Pased to base::rank function.</p>
+<p><em>rank.ties.method</em> : character string specifying how ties are
+treated. Available options “average”, “first”, “last”, “random”, “max”
+and “min”. Pased to base::rank function.</p>
 </blockquote>
 <blockquote>
-<p><em>negative.value.handling</em> : character string specifying how negative values are treated. Available options are “keep” and “missing”. Defaults to keep.</p>
+<p><em>negative.value.handling</em> : character string specifying how
+negative values are treated. Available options are “keep” and “missing”.
+Defaults to keep.</p>
 </blockquote>
 <p><strong>Usage</strong></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">f.results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/txpCalculateScores.html">txpCalculateScores</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">f.model</span>, </span>
+<code class="sourceCode R"><span><span class="va">f.model</span> <span class="op">&lt;-</span> <span class="va">txp_example_model</span> <span class="co">#Load a more complex 4 slice model</span></span>
+<span><span class="va">f.results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/txpCalculateScores.html">txpCalculateScores</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">f.model</span>,</span>
 <span>                                input <span class="op">=</span> <span class="va">txp_example_input</span>,</span>
 <span>                                id.var <span class="op">=</span> <span class="st">'name'</span> <span class="op">)</span> </span>
 <span></span>
 <span><span class="fu"><a href="../reference/txpGenerics.html">txpSliceScores</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co">#ToxPi scores</span></span>
-<span><span class="co">#&gt;          Slice1    Slice2</span></span>
-<span><span class="co">#&gt;  [1,] 0.6666667 0.3200390</span></span>
-<span><span class="co">#&gt;  [2,] 0.1720430 0.1307208</span></span>
-<span><span class="co">#&gt;  [3,] 0.5268817 0.0000000</span></span>
-<span><span class="co">#&gt;  [4,] 0.0000000 0.2228243</span></span>
-<span><span class="co">#&gt;  [5,] 0.1827957 0.2650928</span></span>
-<span><span class="co">#&gt;  [6,] 0.0000000 0.2359788</span></span>
-<span><span class="co">#&gt;  [7,] 0.1827957 0.0000000</span></span>
-<span><span class="co">#&gt;  [8,] 0.4946237 0.2978895</span></span>
-<span><span class="co">#&gt;  [9,] 0.4193548 0.3333333</span></span>
-<span><span class="co">#&gt; [10,] 0.5161290 0.2233755</span></span>
+<span><span class="co">#&gt;               s1          s2         s3         s4</span></span>
+<span><span class="co">#&gt;  [1,] 0.25000000 0.009920635 0.37500000 0.22839506</span></span>
+<span><span class="co">#&gt;  [2,] 0.03893443 0.103174603 0.22026699 0.05246914</span></span>
+<span><span class="co">#&gt;  [3,] 0.07172131 0.105158730 0.17111650 0.00000000</span></span>
+<span><span class="co">#&gt;  [4,] 0.02254098 0.000000000 0.02730583 0.11419753</span></span>
+<span><span class="co">#&gt;  [5,] 0.10860656 0.047619048 0.11468447 0.15432099</span></span>
+<span><span class="co">#&gt;  [6,] 0.05327869 0.125000000 0.28398058 0.12345679</span></span>
+<span><span class="co">#&gt;  [7,] 0.00000000 0.000000000 0.00000000 0.00000000</span></span>
+<span><span class="co">#&gt;  [8,] 0.19467213 0.099206349 0.23118932 0.19444444</span></span>
+<span><span class="co">#&gt;  [9,] 0.21721311 0.075396825 0.22936893 0.25000000</span></span>
+<span><span class="co">#&gt; [10,] 0.14549180 0.023809524 0.18750000 0.11419753</span></span>
 <span><span class="fu"><a href="../reference/txpGenerics.html">txpWeights</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co">#Print weights</span></span>
-<span><span class="co">#&gt; [1] 2 1</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 2 1 3 2</span></span>
+<span><span class="fu"><a href="../reference/txpGenerics.html">txpMissing</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co">#Proportion of missing data within each slice</span></span>
+<span><span class="co">#&gt;    s1    s2    s3    s4 </span></span>
+<span><span class="co">#&gt; 0.100 0.100 0.125 0.100</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
+<h3 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
 </h3>
-<p>Basic ToxPi visuals and rank plots can be created using the plot() function. Ranks are calculated such that the highest ToxPi score has a rank of 1. Advanced grid graphics can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preffered.</p>
+<p>Two paths exist for visualization, <strong>ggplot</strong> methods
+and <strong>grid</strong> methods. The ggplot method uses the
+<code>ggplot2</code> package and allows for highly customizable profiles
+allowing for several visualization experiences. The grid method uses
+advanced <code>grid</code> graphics and can be implemented using pieGrob
+objects that are compatible with the grid system. Additional plots can
+be made such as a rank plot by using the data stored in the results
+object. The results object also allows for the flexibility to use other
+R plotting packages if preferred.</p>
+<p><br><strong>Summary</strong>: The ggPlot graphics path will be the
+best option for users wanting to create ToxPi profiles, with many
+options for customization. The grid graphics path is for users wanting
+to modify very specific, basic elements of ToxPi profiles and/or
+recombine profiles with other graphics. The <code>ggplot2</code> package
+(high-level) is built atop <code>grid</code> graphics (low-level), so
+the two systems interact well.</p>
+<div style="display: flex; justify-content:space-around;">
+<div>
+<h3>
+ggPlot
+</h3>
+<ul>
+<li>Examples shown in this vignette produce a “look-and-feel” that is
+closer to the graphics output of the familiar <a href="www.toxpi.org">ToxPi GUI</a>
+</li>
+<li>Aesthetics are easy to customize</li>
+<li>Includes missing data visuals (center circle à la ToxPi GUI
+output)</li>
+</ul>
+</div>
+<div>
+<h3>
+grid
+</h3>
+<ul>
+<li>Formal, S4-based customization options for visuals using the R
+<code>grid</code> package and the “grob” (grid graphical object)
+framework</li>
+<li>ToxPi profile graphics created as grobs can be directly inserted
+into more complex figures as points on a scatterplot, leaves on a
+cluster dengrogram, overlaid on a map, etc.</li>
+<li>Vignette examples show how to highlight individual profiles and
+highlight individual slices</li>
+</ul>
+</div>
+</div>
+<div class="section level4">
+<h4 id="ggplot-method">ggplot Method<a class="anchor" aria-label="anchor" href="#ggplot-method"></a>
+</h4>
+<p>This method uses the <code>ggplot2</code> package to draw highly
+customizable ToxPi profiles with multiple different aesthetics and
+information options. The most notable aesthetic addition is the
+inclusion of information regarding the amount of missing data each slice
+has, which is represented by the a small circle of interior slices as is
+shown in profiles generated by the ToxPi GUI. Each interior slice is
+colored on a grey scale, with black representing all missing data and
+white representing no missing data. Each new customization option, along
+with some other notable differences, are described below.</p>
+<p><br><strong>Customization Options (Arguments)</strong></p>
+<blockquote>
+<p><em>fills</em> : Vector containing slice colors. Defaults to a color
+scheme matching the ToxPi GUI.</p>
+</blockquote>
+<blockquote>
+<p><em>showMissing</em> : Boolean to show missing data information.
+Defaults to TRUE.</p>
+</blockquote>
+<blockquote>
+<p><em>showCenter</em> : Boolean to show inner circle. Defaults to TRUE.
+FALSE overrides showMissing.</p>
+</blockquote>
+<blockquote>
+<p><em>showScore</em> : Boolean to show overall profile scores. Defaults
+to TRUE.</p>
+</blockquote>
+<blockquote>
+<p><em>ncol</em> : Integer specifying number of columns in plot. Default
+is an automatic calculation by ggplot.</p>
+</blockquote>
+<blockquote>
+<p><em>bgColor</em> : Text specifying background color for profiles as
+either hex codes or R recognized colors. Defaults to “gray80”.</p>
+</blockquote>
+<blockquote>
+<p><em>borderColor</em> : Text specifying color of max radius ring as
+either hex codes or R recognized colors. Defaults to “white”.</p>
+</blockquote>
+<blockquote>
+<p><em>sliceBorderColor</em> : Text specifying color of slice borders as
+either hex codes or R recognized colors. Defaults to “white”.</p>
+</blockquote>
+<blockquote>
+<p><em>sliceValueColor</em> : Text specifying color of slice scores as
+either hex codes or R recognized colors. Defaults to NULL.</p>
+</blockquote>
+<blockquote>
+<p><em>sliceLineColor</em> : Text specifying color of slice guidelines
+as either hex codes or R recognized colors. Defaults to NULL.</p>
+</blockquote>
+<p><br><strong>Usage</strong></p>
+<p>Depending on export method, plot resolution may end up poor. SVG and
+PDF images tend to produce better results than PNG. Usage and example
+plot output are shown below.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default plot</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="co"># Using ggplot package</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-8-1.png" width="384">
+</center>
+<p>Sometimes the inner circle of the ToxPi figure can show plotting
+artifacts. A possible workaround for this is to create a wrapper
+function around <code>ggplot2:::coord_munch</code> as shown below.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Optional code to make smoother lines</span></span>
+<span></span>
+<span><span class="co"># Plot before updating coord_munch</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem01"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Save the original version of coord_munch</span></span>
+<span><span class="va">coord_munch_orig</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">:::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/coord_munch.html" class="external-link">coord_munch</a></span></span>
+<span></span>
+<span><span class="co"># Make a wrapper function that has a different default for segment_length</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/formals.html" class="external-link">formals</a></span><span class="op">(</span><span class="va">coord_munch_orig</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">coord_munch_new</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">coord</span>, <span class="va">data</span>, <span class="va">range</span>, <span class="va">segment_length</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1000</span>,</span>
+<span>                              <span class="va">is_closed</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">coord_munch_orig</span><span class="op">(</span><span class="va">coord</span>, <span class="va">data</span>, <span class="va">range</span>, <span class="va">segment_length</span>, <span class="va">is_closed</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="va">coord_munch_new</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">coord</span>, <span class="va">data</span>, <span class="va">range</span>, <span class="va">segment_length</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">coord_munch_orig</span><span class="op">(</span><span class="va">coord</span>, <span class="va">data</span>, <span class="va">range</span>, <span class="va">segment_length</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># The environment may need to be set</span></span>
+<span><span class="co">#environment(coord_munch_new) &lt;- environment(coord_munch_orig)</span></span>
+<span></span>
+<span><span class="co"># Replace ggplot2:::coord_munch with coord_munch_new</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html" class="external-link">assignInNamespace</a></span><span class="op">(</span><span class="st">"coord_munch"</span>, <span class="va">coord_munch_new</span>, ns <span class="op">=</span> <span class="st">"ggplot2"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot after updating coord_munch</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem01"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Revert to original coord_munch ater plotting if desired </span></span>
+<span><span class="co">#assignInNamespace("coord_munch", coord_munch_orig, ns = "ggplot2")</span></span></code></pre></div>
+<center>
+<img src="embeddedFigures/coord_munch_orig.png"><img src="embeddedFigures/coord_munch_new.png">
+</center>
+<p><br><strong>Customization examples</strong></p>
+</div>
+<div class="section level4">
+<h4 id="coloration-options">Coloration Options<a class="anchor" aria-label="anchor" href="#coloration-options"></a>
+</h4>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Changing the slice colors</span></span>
+<span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"orange"</span>, <span class="st">"green"</span>, <span class="st">"magenta"</span>, <span class="st">"lightblue"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, fills <span class="op">=</span> <span class="va">colors</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, fills <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-11-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-11-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Changing the background color</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, bgColor <span class="op">=</span> <span class="st">"lightskyblue"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, bgColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-13-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-13-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Changing the max radius ring color</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, borderColor <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, borderColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-15-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-15-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Changing the slice border color</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceBorderColor <span class="op">=</span> <span class="st">"magenta"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceBorderColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-17-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-17-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Adding slice guidelines </span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceLineColor <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceLineColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> </span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-19-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-19-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Adding visible slice scores</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceValueColor <span class="op">=</span> <span class="st">"brown"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceValueColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-21-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-21-2.png" width="700">
+</center>
+</div>
+<div class="section level4">
+<h4 id="binary-options">Binary Options<a class="anchor" aria-label="anchor" href="#binary-options"></a>
+</h4>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Hiding inner circle</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showCenter <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showCenter <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-23-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-23-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Hiding missing data information (pure white inner circle)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showMissing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showMissing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-25-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-25-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Hiding the overall profile scores</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showScore <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showScore <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-27-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-27-2.png" width="700">
+</center>
+</div>
+<div class="section level4">
+<h4 id="formattheme-options">Format/Theme Options<a class="anchor" aria-label="anchor" href="#formattheme-options"></a>
+</h4>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Specifying the number of columns in the plot</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> </span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Moving the legend using ggplot built in theme functions</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-30-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-30-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Removing plot margins</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">margin</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-31-1.png" width="700" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Removing spacing between panels</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>panel.spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"lines"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-31-2.png" width="700" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Removing text labels</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>strip.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-31-3.png" width="700" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># A combination of the above for a rank ordered plot</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span><span class="op">)</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    plot.margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">margin</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="st">"cm"</span><span class="op">)</span>,</span>
+<span>    panel.spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"lines"</span><span class="op">)</span>,</span>
+<span>    strip.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    legend.position <span class="op">=</span> <span class="st">"none"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-31-4.png" width="700" style="display: block; margin: auto;"></p>
+<p><strong>Missing Data Examples</strong></p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Creating an example with more variable missing data amounts</span></span>
+<span><span class="va">f.input</span> <span class="op">&lt;-</span> <span class="va">txp_example_input</span></span>
+<span></span>
+<span><span class="co"># Add more missing data to slice 2 via metric3 in the raw data</span></span>
+<span><span class="va">f.input</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">10</span>, <span class="st">"metric3"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span></span>
+<span><span class="co"># Modify transformation function for slice 4</span></span>
+<span><span class="fu"><a href="../reference/txpGenerics.html">txpSlices</a></span><span class="op">(</span><span class="va">f.model</span><span class="op">)</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TxpSlice-class.html">TxpSlice</a></span><span class="op">(</span><span class="st">"metric8"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>fn <span class="op">=</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate new ToxPi results</span></span>
+<span><span class="va">f.results_missing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/txpCalculateScores.html">txpCalculateScores</a></span><span class="op">(</span><span class="va">f.model</span>, <span class="va">f.input</span>, id.var <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in sqrt(x - 30): NaNs produced</span></span>
+<span></span>
+<span><span class="co"># View missing data proportions</span></span>
+<span><span class="fu"><a href="../reference/txpGenerics.html">txpMissing</a></span><span class="op">(</span><span class="va">f.results_missing</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    s1    s2    s3    s4 </span></span>
+<span><span class="co">#&gt; 0.100 0.800 0.125 0.300</span></span>
+<span></span>
+<span><span class="co"># View new result profile</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results_missing</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-32-1.png" width="700" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level4">
+<h4 id="piegrob-method">pieGrob Method<a class="anchor" aria-label="anchor" href="#piegrob-method"></a>
+</h4>
+<p>This method is the default and uses the grid package with grob
+objects to draw ToxPi profiles that can be individually customized after
+plotting. This method does not allow for the wide array of aesthetics as
+ggplot does, but instead it allows the user to highlight specific
+profiles or slices that have significant importance in their results.
+Methods for highlighting information after plotting is shown below.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span> <span class="co"># Load library</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co"># ToxPi visuals</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p><img src="introduction_files/figure-html/unnamed-chunk-33-1.png" width="672"></p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># grid.ls() #List grid info</span></span>
 <span></span>
 <span><span class="co"># Highlight one figure using its label</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-1"</span>, fills <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-7-2.png" width="672"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<span><span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-1"</span>, fills <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>, <span class="st">"brown"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-33-2.png" width="672"></p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Or just one slice in a figure</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-10::slice1"</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#7DBC3D"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-7-3.png" width="672"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<span><span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-10::slice1"</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#FC0FC0"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-33-3.png" width="672"></p>
+</div>
+<div class="section level4">
+<h4 id="ggplot-vs-grid-comparison">ggplot vs grid Comparison<a class="anchor" aria-label="anchor" href="#ggplot-vs-grid-comparison"></a>
+</h4>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Single sample</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> </span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-35-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-35-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Subset plots</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="co">#Profiles ranked 1-4</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="co">#Profiles ranked 1-4</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-37-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-37-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Long sample names for cramped plots</span></span>
+<span></span>
+<span><span class="co">#change the first sample name in f.results</span></span>
+<span><span class="fu"><a href="../reference/txpGenerics.html">txpIDs</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"I am a long sample name"</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co">#grid plot for all samples</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="co">#ggplot for all samples</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/txpGenerics.html">txpIDs</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"chem01"</span> <span class="co"># Change the sample name back</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-39-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-39-2.png" width="700">
+</center>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Long slice names for cramped plots</span></span>
+<span></span>
+<span><span class="co">#change first slice name in model slot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">@</span><span class="va">txpModel</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"long slice name"</span></span>
+<span><span class="co">#change first slice name in scores slot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">@</span><span class="va">txpSliceScores</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"long slice name"</span></span>
+<span><span class="co">#change first slice name in missing data slot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">@</span><span class="va">txpMissing</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"long slice name"</span></span>
+<span></span>
+<span><span class="co">#plot results using grid</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span></span>
+<span><span class="co">#plot results using ggplot</span></span>
+<span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>  legend.position <span class="op">=</span> <span class="st">"bottom"</span>,</span>
+<span>  legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>  legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#change slice name back</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">@</span><span class="va">txpModel</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"s1"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">@</span><span class="va">txpSliceScores</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"s1"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">@</span><span class="va">txpMissing</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"s1"</span></span></code></pre></div>
+<center>
+<img src="introduction_files/figure-html/unnamed-chunk-41-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-41-2.png" width="700">
+</center>
+</div>
+<div class="section level4">
+<h4 id="statistic-plots">Statistic Plots<a class="anchor" aria-label="anchor" href="#statistic-plots"></a>
+</h4>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Rank plot</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, y <span class="op">=</span> <span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-8-1.png" width="480"></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p><img src="introduction_files/figure-html/unnamed-chunk-42-1.png" width="480" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Hierarchical Clustering</span></span>
-<span></span>
 <span><span class="va">f.hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpSliceScores</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.hc</span>, hang <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="../reference/txpGenerics.html">txpIDs</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">''</span>, sub <span class="op">=</span> <span class="st">''</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-8-2.png" width="480"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-42-2.png" width="480" style="display: block; margin: auto;"></p>
+</div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>To cite <code>toxpiR</code> in your work, please use: <a href="https://cran.r-project.org/package=toxpiR" class="external-link uri">https://cran.r-project.org/package=toxpiR</a> (Manuscript currently in review)</p>
+<p>To cite <code>toxpiR</code> in your work, please use: <a href="https://cran.r-project.org/package=toxpiR" class="external-link uri">https://cran.r-project.org/package=toxpiR</a> (Manuscript
+currently in review)</p>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Dayne L Filer, Dillon T Lloyd, Preethi Thunga, Skylar W Marvel, Alison A Motsinger-Reif, David M Reif.</p>
+  <p>Developed by Dayne L Filer, Dillon T Lloyd, Preethi Thunga, Skylar W Marvel, Jonathon Fleming, Alison A Motsinger-Reif, David M Reif.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

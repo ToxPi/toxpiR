@@ -1,93 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/404.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/articles/exportToGui.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/articles/importFromGui.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/articles/introduction.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/index.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpModel-class.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpModelList-class.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpResult-class.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpResult-plot.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpResultList-class.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpResultParam-class.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpSlice-class.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpSliceList-class.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpTransFunc-class.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/TxpTransFuncList-class.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/boxLegendGrob.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/pieGridGrob.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/pieGrob.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/toxpiR-datasets.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/toxpiR-package.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/txpCalculateScores.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/txpExportGui.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/txpGenerics.html</loc>
-  </url>
-  <url>
-    <loc>https://toxpi.github.io/toxpiR/reference/txpImportGui.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://toxpi.github.io/toxpiR/404.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/CONTRIBUTING.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/LICENSE.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/articles/exportToGui.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/articles/importFromGui.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/articles/index.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/articles/introduction.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/authors.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/index.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/news/index.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpModel-class.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpModelList-class.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpResult-class.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpResult-plot.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpResultList-class.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpResultParam-class.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpSlice-class.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpSliceList-class.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpTransFunc-class.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/TxpTransFuncList-class.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/boxLegendGrob.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/index.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/pieGridGrob.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/pieGrob.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/toxpiR-datasets.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/toxpiR-package.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/txpCalculateScores.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/txpExportGui.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/txpGenerics.html</loc></url>
+<url><loc>https://toxpi.github.io/toxpiR/reference/txpImportGui.html</loc></url>
 </urlset>
+
