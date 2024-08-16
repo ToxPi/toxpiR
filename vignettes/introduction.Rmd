@@ -42,7 +42,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-This document introduces ToxPi and describes how to use the `toxpiR` package to easily import, recombine, analyze, and visualize high dimensional data. The `toxpiR` package is an R implementation of ToxPi that offers new features over what was previously available for data handling, recombination, and customization; provides formally packaged, open-source code for ToxPi; extends the application domain by supporting rapid analysis of massive datasets; and bridges with the stand-alone, [Graphical User Interface (GUI)](https://toxpi.org) Java application and [ArcGIS Toolkit](https://github.com/Jonathon-Fleming/ToxPi-GIS). 
+This document introduces ToxPi and describes how to use the `toxpiR` package to easily import, recombine, analyze, and visualize high dimensional data. The `toxpiR` package is an R implementation of ToxPi that offers new features over what was previously available for data handling, recombination, and customization; provides formally packaged, open-source code for ToxPi; extends the application domain by supporting rapid analysis of massive datasets; and bridges with the stand-alone, [Graphical User Interface (GUI)](https://toxpi.org) Java application and [ArcGIS Toolkit](https://github.com/ToxPi/ToxPi-GIS). 
 
 ## What is ToxPi?
 

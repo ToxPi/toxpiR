@@ -62,7 +62,7 @@ test_that("TxpResult accessors return expected slots", {
   expect_equal(txpValueNames(res), txpValueNames(txpSlices(txpModel(res))))
   expect_equal(txpValueNames(res, simplify = TRUE), 
                txpValueNames(txpSlices(txpModel(res)), simplify = TRUE))
-  expect_is(txpMissing(res), "numeric")
+  expect_type(txpMissing(res), "double")
   expect_equal(length(txpMissing(res)), length(txpSlices(res)))
   expect_true(all(txpMissing(res) >=0 & txpMissing(res) <=1))
   expect_equal(txpMissing(res), c(s1 = 0.1,s2 =0.1,s3 =0.125,s4 =0.1))
@@ -159,7 +159,7 @@ test_that("TxpResult show method displays correct information", {
 ##----------------------------------------------------------------------------##
 ## Plot -- TxpResult, missing
 
-test_that("We can make ToxPi diagrams", {
+test_that("We can make and edit ToxPi diagrams", {
   expect_silent({
     data(txp_example_input, package = "toxpiR")
     data(txp_example_model, package = "toxpiR")
@@ -168,15 +168,18 @@ test_that("We can make ToxPi diagrams", {
                               id.var = "name")
   })
   expect_silent(plot(res))
+  expect_silent(grid.edit("pie-1", fills = NULL))
+  grid.edit("pie-10::slice1", gp = gpar(fill = "#7DBC3D"))
   expect_silent(plot(res, package = "gg"))
   expect_silent(plot(res, package = "gg",fills = c("red","blue","green","magenta")))
   expect_silent(plot(res, package = "gg",showScore = FALSE))
   expect_silent(plot(res, package = "gg",ncol = 2))
   expect_silent(plot(res, package = "gg",bgcolor = "white"))
-  expect_silent(plot(res, package = "gg",sliceBorderColor = "#FF00FF"))
+  expect_silent(plot(res, package = "gg",sliceBorderColor = NULL))
   expect_silent(plot(res, package = "gg",sliceValueColor = "#FF00FF",))
   expect_silent(plot(res, package = "gg",sliceLineColor = "#FF00FF"))
   expect_silent(plot(res, package = "gg",showMissing = FALSE))
+  expect_silent(plot(res, package = "gg",showCenter = FALSE))
 })
 
 ##----------------------------------------------------------------------------##
