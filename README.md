@@ -2,11 +2,11 @@
 
 <!-- badges: start -->
   [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-  [![R-CMD-check](https://github.com/ToxPi/toxpiR/workflows/R-CMD-check/badge.svg)](https://github.com/ToxPi/toxpiR/actions)
+  [![R-CMD-check](https://github.com/ToxPi/toxpiR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ToxPi/toxpiR/actions/workflows/R-CMD-check.yaml)
   [![cran-version](https://www.r-pkg.org/badges/version-last-release/toxpiR?color=blue)](https://cran.r-project.org/web/packages/toxpiR/index.html)
   [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/toxpiR)](https://cranlogs.r-pkg.org/badges/grand-total/toxpiR)
   [![codecov](https://codecov.io/gh/ToxPi/toxpiR/branch/main/graph/badge.svg?token=7yocvT0KzZ)](https://codecov.io/gh/ToxPi/toxpiR)
-[![R-CMD-check](https://github.com/ToxPi/toxpiR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ToxPi/toxpiR/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
 R package for the Toxicological Priority Index (ToxPi) prioritization algorithm. 
