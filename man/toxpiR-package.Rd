@@ -18,14 +18,14 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Dayne L Filer \email{dayne.filer@gmail.com} (\href{https://orcid.org/0000-0002-3443-5315}{ORCID}) [funder]
+\strong{Maintainer}: Jonathon F Fleming \email{jffleming0129@gmail.com} (\href{https://orcid.org/0000-0003-2447-3139}{ORCID})
 
 Authors:
 \itemize{
+  \item Dayne L Filer \email{dayne.filer@gmail.com} (\href{https://orcid.org/0000-0002-3443-5315}{ORCID}) [funder]
   \item Dillon T Lloyd
   \item Preethi Thunga (\href{https://orcid.org/0000-0001-5447-0129}{ORCID})
   \item Skylar W Marvel
-  \item Jonathon Fleming
   \item David M Reif \email{reif.david@gmail.com} (\href{https://orcid.org/0000-0001-7815-6767}{ORCID}) [funder]
 }
 

@@ -1,3 +1,12 @@
+# toxpiR 1.3.0
+
+* Added 'txpMissing' slot to TxpResult; this stores information regarding the 
+  amount of missing data in the dataset per slice
+* Added ggplot capabilities for plotting with several new aesthetics
+* Updated vignettes
+* Transferred maintainer to Jonathon F Fleming
+
+
 # toxpiR 1.2.0
 
 * Now require R>=4.0 due to reports of installation issues
