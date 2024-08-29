@@ -23,13 +23,13 @@
 #' when `TRUE`
 #' @param ... Passed to [pieGridGrob] when plotting ToxPi and to pointsGrob
 #' when plotting ranks
-#' @param ncol Number of columns for [ggplot2] ToxPi profiles
+#' @param ncol Number of columns for ggplot2 ToxPi profiles
 #' @param bgColor,borderColor,sliceBorderColor,sliceValueColor,sliceLineColor
-#' Various color options when creating [ggplot2] ToxPi profiles. Set to NULL
+#' Various color options when creating ggplot2 ToxPi profiles. Set to NULL
 #' for no color
-#' @param showMissing Boolean for coloring data missingness in [ggplot2]
+#' @param showMissing Boolean for coloring data missingness in ggplot2
 #' ToxPi profiles
-#' @param showCenter Boolean for showing inner circle in [ggplot2] ToxPi 
+#' @param showCenter Boolean for showing inner circle in ggplot2 ToxPi 
 #' profiles. When set to False overrides showMissing
 #'
 #' @details
@@ -44,7 +44,7 @@
 #' If the labels are running of the device, the top or bottom margins can be
 #' increased with the `margins` parameter.
 #'
-#' ToxPi profiles can also be plotted using the [ggplot2] package.
+#' ToxPi profiles can also be plotted using the ggplot2 package.
 #'
 #' @template roxgn-loadExamples
 #' @template roxgn-calcTxpModel

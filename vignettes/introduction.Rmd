@@ -46,7 +46,7 @@ This document introduces ToxPi and describes how to use the `toxpiR` package to 
 
 ## What is ToxPi?
 
-The Toxicological Prioritization Index (ToxPi) is a statistical modeling framework that allows transparent integration and visualization of data across disparate sources (i.e. multimodal or multiscale information). This framework aggregates related features into scored ‘slices’, rescales individual slice scores to range 0–1, and then develops an overall score for each sample using a weighted model. The slice weights can be interpreted as the "importance" of categorized features when predicting sample scores and associated ranks. The resulting scores for each sample are visualized as ToxPi profiles (see image below). Slice weights are represented as the arc-width, slice scores are represented as the radius, and the overall sample scores are represented by the combination of slice weights and radii. These visualizations allow for quick comparison of overall feature importance, feature impacts driving a specific sample, relative impact ranking of common features between samples, and overall ranking between samples. As a flexible method capable of integrating data from any source, it has been [applied](https://scholar.google.com/scholar?start=5&hl=en&as_sdt=0,34&sciodt=0,34&cites=14315759707117183281,8409987751811922970,6830405381891567320,6660731247750930378,6264826653350493071,6008919238370157052,5228323847718230279,14470107422640831138) to problems in several different fields. Additional information is linked from [toxpi.org](https://toxpi.org).   
+The Toxicological Prioritization Index (ToxPi) is a statistical modeling framework that allows transparent integration and visualization of data across disparate sources (i.e. multimodal or multiscale information). This framework aggregates related features into scored ‘slices’, rescales individual slice scores to range 0–1, and then develops an overall score for each sample using a weighted model. The slice weights can be interpreted as the "importance" of categorized features when predicting sample scores and associated ranks. The resulting scores for each sample are visualized as ToxPi profiles (see image below). Slice weights are represented as the arc-width, slice scores are represented as the radius, and the overall sample scores are represented by the combination of slice weights and radii. These visualizations allow for quick comparison of overall feature importance, feature impacts driving a specific sample, relative impact ranking of common features between samples, and overall ranking between samples. As a flexible method capable of integrating data from any source, it has been applied to problems in several different fields. Additional information is linked from [toxpi.org](https://toxpi.org).   
 
 <center>
 ![](embeddedFigures/txp_explain1.png){width=700px}
@@ -230,7 +230,7 @@ Two paths exist for visualization, **ggplot** methods and **grid** methods. The 
 
 <div >
 <h3>ggPlot</h3>
-* Examples shown in this vignette produce a "look-and-feel" that is closer to the graphics output of the familiar [ToxPi GUI](www.toxpi.org)
+* Examples shown in this vignette produce a "look-and-feel" that is closer to the graphics output of the familiar [ToxPi GUI](https://toxpi.org)
 * Aesthetics are easy to customize 
 * Includes missing data visuals (center circle à la ToxPi GUI output)
 </div>

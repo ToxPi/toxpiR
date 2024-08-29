@@ -59,15 +59,15 @@ when \code{TRUE}}
 \item{...}{Passed to \link{pieGridGrob} when plotting ToxPi and to pointsGrob
 when plotting ranks}
 
-\item{ncol}{Number of columns for \link{ggplot2} ToxPi profiles}
+\item{ncol}{Number of columns for ggplot2 ToxPi profiles}
 
-\item{bgColor, borderColor, sliceBorderColor, sliceValueColor, sliceLineColor}{Various color options when creating \link{ggplot2} ToxPi profiles. Set to NULL
+\item{bgColor, borderColor, sliceBorderColor, sliceValueColor, sliceLineColor}{Various color options when creating ggplot2 ToxPi profiles. Set to NULL
 for no color}
 
-\item{showMissing}{Boolean for coloring data missingness in \link{ggplot2}
+\item{showMissing}{Boolean for coloring data missingness in ggplot2
 ToxPi profiles}
 
-\item{showCenter}{Boolean for showing inner circle in \link{ggplot2} ToxPi
+\item{showCenter}{Boolean for showing inner circle in ggplot2 ToxPi
 profiles. When set to False overrides showMissing}
 
 \item{y}{Rank vector, i.e. \code{txpRanks(x)}}
@@ -96,7 +96,7 @@ edited as such.
 If the labels are running of the device, the top or bottom margins can be
 increased with the \code{margins} parameter.
 
-ToxPi profiles can also be plotted using the \link{ggplot2} package.
+ToxPi profiles can also be plotted using the ggplot2 package.
 }
 \section{Functions}{
 \itemize{
