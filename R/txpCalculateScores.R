@@ -59,6 +59,39 @@ NULL
   list(sum = x, mis = y)
 }
 
+.prepSlices <- function(model, input, param) {
+  
+  ## Clean up infinite in input
+  input <- .rmInfinite(model = model, input = input)
+  
+  ## Calculate raw slice scores and missingness
+  x <- lapply(
+    txpSlices(model), .sumSlice, input = input,
+    negative.value.handling = slot(param, "negative.value.handling"))
+  slc <- sapply(x, "[[", "sum")
+  mis <- sapply(x, "[[", "mis")
+  
+  ## Look for and apply slice-level transformation functions
+  tfs <- txpTransFuncs(model)
+  if (any(!sapply(tfs, is.null))) {
+    for (i in 1:ncol(slc)) {
+      if (is.null(tfs[[i]])) next
+      slc[ , i] <- tfs[[i]](slc[ , i])
+    }
+  }
+  
+  ## Make infinite NaN
+  slc[is.infinite(slc)] <- NaN
+  
+  ## Scale slice scores from 0 to 1
+  slc <- apply(slc, 2, .z2o)
+  
+  ## Make NA 0
+  slc[is.na(slc)] <- 0
+  
+  list(slc = slc, mis = mis)
+}
+
 .calculateScores <- function(model, input,
                              id.var = NULL,
                              rank.ties.method = c("average", "first", "last",
@@ -70,33 +103,10 @@ NULL
   param <- TxpResultParam(rank.ties.method = rank.ties.method,
                           negative.value.handling = negative.value.handling)
 
-  ## Clean up infinite in input
-  input <- .rmInfinite(model = model, input = input)
-
-  ## Calculate raw slice scores and missingness
-  x <- lapply(
-    txpSlices(model), .sumSlice, input = input,
-    negative.value.handling = slot(param, "negative.value.handling"))
-  slc <- sapply(x, "[[", "sum")
-  mis <- sapply(x, "[[", "mis")
-
-  ## Look for and apply slice-level transformation functions
-  tfs <- txpTransFuncs(model)
-  if (any(!sapply(tfs, is.null))) {
-    for (i in 1:ncol(slc)) {
-      if (is.null(tfs[[i]])) next
-      slc[ , i] <- tfs[[i]](slc[ , i])
-    }
-  }
-
-  ## Make infinite NaN
-  slc[is.infinite(slc)] <- NaN
-
-  ## Scale slice scores from 0 to 1
-  slc <- apply(slc, 2, .z2o)
-
-  ## Make NA 0
-  slc[is.na(slc)] <- 0
+  ## Preprocess data, aggregate into slices, and determine missing data
+  slcMis <- .prepSlices(model = model, input = input, param = param)
+  slc <- slcMis$slc
+  mis <- slcMis$mis
 
   ## Calculate ToxPi score
   wts <- txpWeights(model, adjusted = TRUE)
