@@ -62,8 +62,10 @@ txpImportGui <- function(guiDataFile) {
                    f)
     return(simpleCondition(msg))
   }
-  sliceInfo$ind <- apply(gui[sliceInfoInd, ], 1, function(x) which(x == "x"))
-  
+  sliceInfo$ind <- lapply(seq_len(nrow(gui[sliceInfoInd, ])), function(i) {
+    which(gui[sliceInfoInd, ][i, ] == "x")
+  })
+
   inputStart <- which(grepl('^row$', gui[ , 1], ignore.case = TRUE))
   if (length(inputStart) != 1) {
     inputStart <- which(gui[ , 1] == '') # Format D
