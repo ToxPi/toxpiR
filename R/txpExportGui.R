@@ -51,7 +51,9 @@ txpExportGui <- function(fileName = "txpModel.csv",
   if (any(slcWts%%1 != 0)) {
     stop("ToxPi GUI only allows integer weights in the model.")
   }
-  
+  if (slot(model, "negativeHandling") != "missing") {
+    stop("ToxPi GUI only compatible with negativeHandling of 'missing'.")
+  }
   ## Check for slice-level transformations 
   tfs <- txpTransFuncs(model)
   if (any(!sapply(tfs, is.null))) {

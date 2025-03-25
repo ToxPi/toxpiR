@@ -91,7 +91,7 @@ txpImportGui <- function(guiDataFile) {
   names(sliceLst) <- sliceInfo$name
   sliceLst <- as.TxpSliceList(sliceLst) 
   
-  model <- TxpModel(txpSlices = sliceLst, txpWeights = sliceInfo[ , "wt"])
+  model <- TxpModel(txpSlices = sliceLst, txpWeights = sliceInfo[ , "wt"], negativeHandling = "missing")
   
   vnms <- unique(txpValueNames(txpSlices(model), simplify = TRUE))
   numCols <- sapply(input[vnms], is.numeric)

@@ -9,7 +9,6 @@
 #' @param model [TxpModel] object or [TxpModelList] object
 #' @param input data.frame object containing the model input data
 #' @param id.var Character scalar, column in 'input' to store in
-#' @inheritParams TxpResultParam-class
 #' @inheritParams txpGenerics
 #'
 #' @details
@@ -21,7 +20,7 @@
 #' Missingness is determined after applying input-level transformations but
 #' before applying slice-level transformations.
 #'
-#' @seealso [TxpModel], [TxpResult], [TxpResultParam]
+#' @seealso [TxpModel], [TxpResult]
 #'
 #' @template roxgn-loadExamples
 #' @template roxgn-calcTxpModel
@@ -59,7 +58,7 @@ NULL
   list(sum = x, mis = y)
 }
 
-.prepSlices <- function(model, input, param) {
+.prepSlices <- function(model, input) {
   
   ## Clean up infinite in input
   input <- .rmInfinite(model = model, input = input)
@@ -67,7 +66,7 @@ NULL
   ## Calculate raw slice scores and missingness
   x <- lapply(
     txpSlices(model), .sumSlice, input = input,
-    negative.value.handling = slot(param, "negative.value.handling"))
+    negative.value.handling = slot(model, "negativeHandling"))
   slc <- sapply(x, "[[", "sum")
   mis <- sapply(x, "[[", "mis")
   
@@ -93,18 +92,13 @@ NULL
 }
 
 .calculateScores <- function(model, input,
-                             id.var = NULL,
-                             rank.ties.method = c("average", "first", "last",
-                                                  "random", "max", "min"),
-                             negative.value.handling = c("keep", "missing")) {
+                             id.var = NULL) {
 
   ## Test inputs
   .chkModelInput(model = model, input = input)
-  param <- TxpResultParam(rank.ties.method = rank.ties.method,
-                          negative.value.handling = negative.value.handling)
 
   ## Preprocess data, aggregate into slices, and determine missing data
-  slcMis <- .prepSlices(model = model, input = input, param = param)
+  slcMis <- .prepSlices(model = model, input = input)
   slc <- slcMis$slc
   mis <- slcMis$mis
 
@@ -113,7 +107,7 @@ NULL
   score <- rowSums(slc*rep(wts, each = NROW(slc)), na.rm = TRUE)
 
   ## Calculate ToxPi ranks
-  rnks <- rank(-score, ties.method = rank.ties.method)
+  rnks <- rank(-score, ties.method = slot(model, "rankTies"))
 
   ## Assign IDs
   ids <- if (!is.null(id.var)) as.character(input[[id.var]]) else NULL
@@ -123,8 +117,7 @@ NULL
             txpRanks = rnks,
             txpMissing = mis,
             txpModel = model,
-            txpIDs = ids,
-            txpResultParam = param)
+            txpIDs = ids)
 
 }
 

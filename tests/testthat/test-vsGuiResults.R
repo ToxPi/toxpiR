@@ -116,13 +116,14 @@ test_that("We reproduce GUI results", {
   expect_warning({
     model <- TxpModel(
       txpSlices = slices,
-      txpWeights = rep(c(2,1,2,1), nFn)
+      txpWeights = rep(c(2,1,2,1), nFn),
+      negativeHandling = "missing"
     )
   })
   
   # Compute scores
   expect_silent({
-    res3 <- txpCalculateScores(model, input, negative.value.handling = 'missing')
+    res3 <- txpCalculateScores(model, input)
   })
   
   # Compare ToxPi Scores

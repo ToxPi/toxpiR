@@ -11,10 +11,16 @@
 #' when NULL, defaults to 1 (equal weighting) for each slice 
 #' @slot txpTransFuncs [TxpTransFuncList] object (or list of functions 
 #' coercible to TxpTransFuncList)
+#' @slot negativeHandling scalar character specifying how to handle negative values;
+#' options are 'keep' and missing'; when NULL, defaults to 'keep'
+#' @slot rankTies scalar character specifying how to handle ties in ToxPi rankings;
+#' options are 'average', 'first', 'last', 'random', 'max', 'min'; when NULL, defaults to 'average'
 #' 
 #' @param txpSlices Passed to `txpSlices` slot
 #' @param txpWeights Passed to `txpWeights` slot
 #' @param txpTransFuncs Passed to `txpTransFuncs` slot
+#' @param negativeHandling Passed to `negativeHandling` slot
+#' @param rankTies Passed to `rankTies` slot
 #' @param x,y TxpModel object
 #' @param value Replacement value
 #' @param adjusted Scalar logical, when `TRUE` weights are adjusted to sum to 1
@@ -26,7 +32,7 @@
 #' tf <- list(NULL, sqrt = function(x) sqrt(x))
 #' 
 #' ## Create TxpModel object
-#' m1 <- TxpModel(txpSlices = s1, txpWeights = 2:1, txpTransFuncs = tf)
+#' m1 <- TxpModel(txpSlices = s1, txpWeights = 2:1, txpTransFuncs = tf, negativeHandling = 'keep', rankTies = 'average')
 #' m1
 #' 
 #' ## Access TxpModel slots
@@ -34,6 +40,8 @@
 #' txpWeights(m1)
 #' txpWeights(m1, adjusted = TRUE)
 #' txpTransFuncs(m1)
+#' negativeHandling(m1)
+#' rankTies(m1)
 #' 
 #' ## length
 #' length(m1) ## equal to length(txpSlices(m1))
@@ -67,7 +75,7 @@ NULL
 #' @rdname TxpModel-class
 #' @export 
 
-TxpModel <- function(txpSlices, txpWeights = NULL, txpTransFuncs = NULL) {
+TxpModel <- function(txpSlices, txpWeights = NULL, txpTransFuncs = NULL, negativeHandling = "keep", rankTies = "average") {
   if (!is(txpSlices, "TxpSliceList")) txpSlices <- as.TxpSliceList(txpSlices)
   n <- length(txpSlices)
   if (is.null(txpWeights)) txpWeights <- rep(1, n)
@@ -80,7 +88,9 @@ TxpModel <- function(txpSlices, txpWeights = NULL, txpTransFuncs = NULL) {
   new2("TxpModel", 
        txpSlices = txpSlices, 
        txpWeights = txpWeights, 
-       txpTransFuncs = txpTransFuncs) 
+       txpTransFuncs = txpTransFuncs,
+       negativeHandling = negativeHandling,
+       rankTies = rankTies) 
 }
 
 ##----------------------------------------------------------------------------##
@@ -155,6 +165,38 @@ setMethod("txpValueNames", "TxpModel", function(x, simplify = FALSE) {
   nms
 })
 
+#' @describeIn TxpModel-class Return `negativeHandling` slot
+#' @export
+
+setMethod("negativeHandling", "TxpModel", function(x) {
+  x@negativeHandling
+})
+
+#' @rdname TxpModel-class
+#' @export
+
+setReplaceMethod("negativeHandling", "TxpModel", function(x, value) {
+  x@negativeHandling <- value
+  validObject(x)
+  x
+})
+
+#' @describeIn TxpModel-class Return `rankTies` slot
+#' @export
+
+setMethod("rankTies", "TxpModel", function(x) {
+  x@rankTies
+})
+
+#' @rdname TxpModel-class
+#' @export
+
+setReplaceMethod("rankTies", "TxpModel", function(x, value) {
+  x@rankTies <- value
+  validObject(x)
+  x
+})
+
 #' @describeIn TxpModel-class Return slice names; shortcut for 
 #' `names(txpSlices(x))`
 #' @export
@@ -173,15 +215,10 @@ setReplaceMethod("names", "TxpModel", function(x, value) {
 })
 
 .TxpModel.calc <- function(model, input, 
-                           id.var = NULL,
-                           rank.ties.method = c("average", "first", "last", 
-                                                "random", "max", "min"),
-                           negative.value.handling = c("keep", "missing")) {
+                           id.var = NULL) {
   .calculateScores(model = model, 
                    input = input, 
-                   id.var = id.var, 
-                   rank.ties.method = rank.ties.method,
-                   negative.value.handling = negative.value.handling)
+                   id.var = id.var)
 }
 
 #' @describeIn TxpModel-class Return number of slices in model; shortcut for
@@ -205,6 +242,10 @@ setMethod("txpCalculateScores", c("TxpModel", "data.frame"), .TxpModel.calc)
   sl <- txpSlices(object)
   wt <- txpWeights(object)
   tf <- txpTransFuncs(object)
+  nh <- negativeHandling(object)
+  rt <- rankTies(object)
+  validNegHand <- c("keep", "missing")
+  validRank <- c("average", "first", "last", "random", "max", "min")
   if (length(sl) != length(wt)) {
     tmp <- "length(txpSlices(<TxpModel>)) != length(txpWeights(<TxpModel>))"
     msg <- c(msg, tmp)
@@ -219,6 +260,14 @@ setMethod("txpCalculateScores", c("TxpModel", "data.frame"), .TxpModel.calc)
     dup <- valNms[valDup]
     wrn <- "The following 'input' columns are duplicated in the model:\n    %s"
     warning(sprintf(wrn, paste(dup, collapse = ", ")))
+  }
+  if(!(nh %in% validNegHand)){
+    tmp <- paste("Invalid negativeHandling. Options are", paste(validNegHand, collapse = ","))
+    msg <- c(msg, tmp)
+  }
+  if(!(rt %in% validRank)){
+    tmp <- paste("Invalid rankTies. Options are", paste(validRank, collapse = ","))
+    msg <- c(msg, tmp)
   }
   if (is.null(msg)) return(TRUE)
   msg
@@ -235,6 +284,8 @@ setValidity2("TxpModel", .TxpModel.validity)
   .coolcat("txpSlices(%d): %s\n", names(txpSlices(object)))
   .coolcat("txpWeights(%d): %s\n", txpWeights(object))
   .coolcat("txpTransFuncs(%d): %s\n", fnms)
+  cat(strwrap(sprintf("negativeHandling: %s", negativeHandling(object)), indent = 2), sep = "\n")
+  cat(strwrap(sprintf("rankTies: %s", rankTies(object)), indent = 2), sep = "\n")
 }
 
 setMethod("show", "TxpModel", .TxpModel.show)
@@ -243,10 +294,18 @@ setMethod("show", "TxpModel", .TxpModel.show)
 ## merge
 
 .TxpModel.merge <- function(x, y) {
+  if(negativeHandling(x) != negativeHandling(y)){
+    stop("Could not merge due to unequal negativeHandling")
+  }
+  if(rankTies(x) != rankTies(y)){
+    stop("Could not merge due to unequal rankTies")
+  }
   sls <- c(txpSlices(x), txpSlices(y))
   wts <- c(txpWeights(x), txpWeights(y))
   tfs <- c(txpTransFuncs(x), txpTransFuncs(y))
-  TxpModel(txpSlices = sls, txpWeights = wts, txpTransFuncs = tfs)
+  nh <- negativeHandling(x)
+  rt <- rankTies(x)
+  TxpModel(txpSlices = sls, txpWeights = wts, txpTransFuncs = tfs, negativeHandling = nh, rankTies = rt)
 }
 
 #' @describeIn TxpModel-class Merge two `TxpModel` objects into a single 

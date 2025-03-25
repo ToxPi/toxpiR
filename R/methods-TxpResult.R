@@ -14,7 +14,6 @@
 #' @slot txpMissing `vector(<numeric>)` with data missingness
 #' @slot txpModel [TxpModel] object
 #' @slot txpIDs `vector(<character>)` of observation IDs
-#' @slot txpResultParam [TxpResultParam] object
 #'
 #' @param x [TxpResult] object
 #' @param value Replacement value
@@ -104,15 +103,14 @@ NULL
 ## constructor -- NOT exported
 
 TxpResult <- function(txpScores, txpSliceScores, txpRanks, txpMissing,
-                      txpModel, txpIDs = NULL, txpResultParam) {
+                      txpModel, txpIDs = NULL) {
   new2("TxpResult",
        txpScores = txpScores,
        txpSliceScores = txpSliceScores,
        txpRanks = txpRanks,
        txpMissing = txpMissing,
        txpModel = txpModel,
-       txpIDs = txpIDs,
-       txpResultParam = txpResultParam)
+       txpIDs = txpIDs)
 }
 
 ##----------------------------------------------------------------------------##
@@ -223,8 +221,7 @@ setMethod("txpValueNames", "TxpResult", function(x, simplify = FALSE) {
             txpRanks = txpRanks(x)[i],
             txpMissing = txpMissing(x),
             txpModel = txpModel(x),
-            txpIDs = txpIDs(x)[i],
-            txpResultParam = txpResultParam(x))
+            txpIDs = txpIDs(x)[i])
 }
 
 #' @rdname TxpResult-class

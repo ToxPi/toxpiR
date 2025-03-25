@@ -81,4 +81,15 @@ test_that("We can export GUI-ready files", {
       fills = gui$fills
     )
   })))
+  # Invalid negativeHandling, expect an error since GUI only allows 'missing'
+  suppressWarnings(negativeHandling(gui$model) <- "keep")
+  expect_error(
+    txpExportGui(
+      fileName = data_exported,
+      input = test_input,
+      model = gui$model,
+      id.var = 'Name',
+      fills = gui$fills
+    )
+  )
 })

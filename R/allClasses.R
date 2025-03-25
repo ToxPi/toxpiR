@@ -69,7 +69,9 @@ setClass("TxpSliceList",
 setClass("TxpModel",
          slots = c(txpSlices = "TxpSliceList",
                    txpWeights = "numeric",
-                   txpTransFuncs = "TxpTransFuncList"))
+                   txpTransFuncs = "TxpTransFuncList",
+                   negativeHandling = "character",
+                   rankTies = "character"))
 
 setClassUnion("TxpModel_OR_NULL", members = c("TxpModel", "NULL"))
 
@@ -106,8 +108,7 @@ setClass("TxpResult",
                    txpRanks = "numeric",
                    txpMissing = "numeric",
                    txpModel = "TxpModel",
-                   txpIDs = "character_OR_NULL",
-                   txpResultParam = "TxpResultParam"))
+                   txpIDs = "character_OR_NULL"))
 
 setClassUnion("TxpResult_OR_NULL", members = c("TxpResult", "NULL"))
 

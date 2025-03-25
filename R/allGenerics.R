@@ -43,6 +43,20 @@ setGeneric("txpWeights", function(x, ...) standardGeneric("txpWeights"))
 setGeneric("txpWeights<-",
            function(x, ..., value) standardGeneric("txpWeights<-"))
 
+#' @rdname txpGenerics
+setGeneric("negativeHandling", function(x, ...) standardGeneric("negativeHandling"))
+
+#' @rdname txpGenerics
+setGeneric("negativeHandling<-",
+           function(x, ..., value) standardGeneric("negativeHandling<-"))
+
+#' @rdname txpGenerics
+setGeneric("rankTies", function(x, ...) standardGeneric("rankTies"))
+
+#' @rdname txpGenerics
+setGeneric("rankTies<-",
+           function(x, ..., value) standardGeneric("rankTies<-"))
+
 #' @rdname txpCalculateScores
 setGeneric("txpCalculateScores",
            function(model, input, ...) standardGeneric("txpCalculateScores"))

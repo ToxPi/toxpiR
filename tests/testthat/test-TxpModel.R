@@ -19,9 +19,13 @@ test_that("We can create TxpModel objects", {
                   "TxpModel")
   expect_s4_class(TxpModel(txpSlices = slcLst, txpTransFuncs = txpFxnLst), 
                   "TxpModel")
+  expect_s4_class(TxpModel(txpSlices = slcLst, txpTransFuncs = txpFxnLst, negativeHandling = "missing", rankTies = "first"), 
+                  "TxpModel")
   expect_error(TxpModel(txpSlices = txpSlcLst, txpWeights = 1))
   expect_error(TxpModel(txpSlices = txpSlcLst, txpWeights = "1"))
   expect_error(TxpModel(txpSlices = txpSlcLst, txpTransFuncs = txpFxnLst[1]))
+  expect_error(TxpModel(txpSlices = txpSlcLst, negativeHandling = "error"))
+  expect_error(TxpModel(txpSlices = txpSlcLst, rankTies = "error"))
   expect_warning(TxpModel(wrnLst))
 })
 
@@ -37,6 +41,8 @@ test_that("TxpModel accessors return expected slots", {
   expect_equal(txpWeights(md), rep(1, 2))
   expect_equal(txpWeights(md, adjust = TRUE), rep(0.5, 2))
   expect_s4_class(txpTransFuncs(md), "TxpTransFuncList")
+  expect_equal(negativeHandling(md), "keep")
+  expect_equal(rankTies(md), "average")
   expect_equal(txpValueNames(md), list(S1 = "input1", S2 = "input2"))
   expect_equal(txpValueNames(md, simplify = TRUE), 
                c(S1 = "input1", S2 = "input2"))
@@ -74,6 +80,10 @@ test_that("We can replace TxpModel slots", {
   expect_named(md, c("A", "hello", "C"))
   names(md)[2:3] <- c("B", "hello")
   expect_named(md, c("A", "B", "hello"))
+  expect_silent(negativeHandling(md) <- "missing")
+  expect_equal(negativeHandling(md), "missing")
+  expect_silent(rankTies(md) <- "first")
+  expect_equal(rankTies(md), "first")
 })
 
 
@@ -91,6 +101,10 @@ test_that("TxpModel show method displays correct information", {
   expect_output(print(mdl), "1 2")
   expect_output(print(mdl), "txpTransFuncs\\(2\\)")
   expect_output(print(mdl), "f1 NULL")
+  expect_output(print(mdl), "negativeHandling")
+  expect_output(print(mdl), "keep")
+  expect_output(print(mdl), "rankTies")
+  expect_output(print(mdl), "average")
 })
 
 ##----------------------------------------------------------------------------##
@@ -109,6 +123,12 @@ test_that("We can merge two TxpModel objects", {
                                         sqrt = function(x) sqrt(x)))
     m3 <- TxpModel(c(S1 = TxpSlice("inpt4")))
     m4 <- TxpModel(c(S4 = TxpSlice("inpt1")), txpWeights = 3)
+    m5 <- TxpModel(txpSlices = c(S3 = TxpSlice("inpt3"), 
+                                 S4 = TxpSlice("inpt4")),
+                   negativeHandling = "missing")
+    m6 <- TxpModel(txpSlices = c(S3 = TxpSlice("inpt3"), 
+                                 S4 = TxpSlice("inpt4")),
+                   rankTies = "first")
   })
   expect_s4_class(mrg1 <- merge(m1, m2), "TxpModel")
   expect_length(mrg1, 4)
@@ -118,6 +138,8 @@ test_that("We can merge two TxpModel objects", {
   expect_equal(txpTransFuncs(mrg1)[[2]](100), 100)
   expect_error(txpTransFuncs(mrg1)[[1]](100))
   expect_error(merge(m1, m3))
+  expect_error(merge(m1, m5))
+  expect_error(merge(m1, m6))
   expect_warning(merge(m1, m4))
 })
 
