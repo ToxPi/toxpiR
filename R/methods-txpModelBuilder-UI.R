@@ -56,24 +56,10 @@
           actionButton("addSlice", "Add Slice"),
         ),
         div(class = "center-button",
-             selectInput(
-               "sliceSelect",
-               label = "Slice ID:",
-               choices = "Slice1",
-               selected = "Slice1",
-               size = 8,
-               selectize = FALSE
-           )
+            uiOutput("sliceSelectPlaceholder"),
         ),
         div(class = "center-button",
-            selectInput(
-              "sliceNames",
-              label = "Slice Name:",
-              choices = "Slice1",
-              selected = "Slice1",
-              size = 8,
-              selectize = FALSE
-            )
+            uiOutput("sliceNamesPlaceholder")
         ),
         div(class = "center-button",
             selectInput(
@@ -98,18 +84,10 @@
             )
         ),
         div(class = "center-button",
-          selectInput(
-            "rankTiesMethod",
-            label = "Tie Handling",
-            choices = c("average", "first", "last", "random", "max", "min")
-          )
+          uiOutput("rankTiesPlaceholder")
         ),
         div(class = "center-button",
-          selectInput(
-            "negativeValueHandling",
-            label = "Negative Handling",
-            choices = c("keep", "missing")
-          )
+          uiOutput("negativeHandlingPlaceholder")
         )
       ),
       mainPanel(

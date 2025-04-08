@@ -203,8 +203,8 @@
 #' @param initialName A string or `NULL`. The initial name of the slice. 
 #' Default is `NULL`, in which case the name will be the id.
 #' @param initialColor A string. The default color for the slice, represented 
-#' as a hexadecimal color code without #(e.g., `"FFFFFF"`). Default is 
-#' `"FFFFFF"`.
+#' as a hexadecimal color code without #(e.g., `"f3622d"`). Default is 
+#' `"f3622d"`.
 #' @param initialWeight A numeric value. The initial weight assigned to the 
 #' slice. Default is `1`.
 #' @param initialMetricTransform A string. The default transformation formula 
@@ -237,12 +237,13 @@
 #'     )
 #'   }
 #' )
-.buildSliceServer <- function(id, metrics, data, negativeHandling, preSlice = NULL, initialSliceTransform = "x", initialName = NULL, initialColor = "FFFFFF", initialWeight = 1, initialMetricTransform = "x") {
+.buildSliceServer <- function(id, metrics, data, negativeHandling, preSlice = NULL, initialSliceTransform = "x", initialName = NULL, initialColor = NULL, initialWeight = 1, initialMetricTransform = "x") {
   moduleServer(
     id,
     function(input, output, session) {
       ns <- session$ns
-
+      if(is.null(initialColor)){initialColor <- "#f3622d"}
+      
       #REACTIVE VALUES
       selectedMetrics <- reactiveVal(NULL) #metrics included in slice
       metricTransformationList <- reactiveValues()   #tf strings metric level

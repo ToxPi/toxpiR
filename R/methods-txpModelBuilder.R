@@ -29,16 +29,27 @@
 #' @importFrom shiny shinyApp
 #' @export
 
-txpModelBuilder <- function(dataFile) {
+txpModelBuilder <- function(dataFile, id = NULL) {
+  # Read the dataFile parameter
+  dataList <- try(.readFileOrDF(dataFile), silent = TRUE)
+  if (is(dataList, "character")) stop(dataList)
+  if (is(dataList, "try-error")) stop(dataList)
+  if (is(dataList, "simpleCondition")) stop(conditionMessage(dataList))
+
+  # validate the datafile for proper toxpi format
+  msg <- .validateTxpData(dataList$input, id)
+  if(!is.null(msg)) {stop(msg)}
+  
+  # set id to Name as default in accordance with txpImport functions
+  # done here instead of above to allow Name column not to be present in non-predefined models
+  if(is.null(id)) {id <- "Name"}
   
   # Define the UI
   ui <- .buildModelUI()
   
   # Define the server logic
   server <- function(input, output, session) {
-    data <- .readRawFile(dataFile)  
-    
-    .buildModelServer(input, output, session, data)
+    .buildModelServer(input, output, session, dataList$input, dataList$model, dataList$fills, id)
   }
   
   # Launch the app

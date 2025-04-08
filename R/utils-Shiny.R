@@ -3,16 +3,54 @@
 ##---------------------------------------------------------------------------##
 
 #function for reading in data to the shiny app
-.readRawFile <- function(dataFile) {
-  if (is.character(dataFile) && file.exists(dataFile) && grepl("\\.csv$", dataFile)) {
-    data <- read.csv(dataFile)
-  }  else if (is.data.frame(dataFile)) {
-    data <- dataFile
+.readFileOrDF <- function(dataFile) {
+  if(!is_scalar_character(dataFile) && !is.data.frame(dataFile)) {return("dataFile must be either an R dataframe or a file path to a compatible CSV file.")}
+  
+  # if dataFile is file path to csv
+  if (is_scalar_character(dataFile)) { 
+    #check for csv file
+    if(!file.exists(dataFile)) {return("file not found")}
+    if(tolower(tools::file_ext(dataFile)) != "csv") {return("dataFile must be either an R dataframe or a file path to a compatible CSV file.")}
+    
+    #read csv file and potential model header
+    dataList <- .readTxpFormat(dataFile)
+  #if dataFile is data.frame object
   }  else {
-    stop("Input must be either a file path to a CSV file or an R dataframe.")
+    data <- dataFile
+    dataList <- list(model = NULL, input = data, fills = NULL)
   }
-  #Validate Data (Not Done)
-  data
+  dataList
+}
+
+#get data from any of three csv file formats (gui, webapp, no model header)
+.readTxpFormat <- function(dataFile){
+  indicator <- read.csv(file=dataFile, nrows=1, header = FALSE)[1]
+  letter1 <- substring(indicator[[1]],1,1)
+  if(!is.na(letter1) && letter1 == "#") {
+    if(indicator == "#Generated From WebApp"){dataList <- txpImportWebApp(dataFile)}
+    else{dataList <- txpImportGui(dataFile)}
+  } else {
+    data <- read.csv(dataFile)
+    dataList <- list(model = NULL, input = data, fills = NULL)
+  }
+  dataList
+}
+
+# Function for validating file, can be a dataframe, gui csv, or webapp csv
+.validateTxpData <- function(data, id){
+  #check if id is a column in the dataset
+  if(!is.null(id) && !(id %in% colnames(data))){
+    return(paste0("id parameter ", id, " is not a valid column name found within the provided dataset"))
+  }
+  
+  #see if any colnames can be converted to numeric
+  numericColNames <- any(sapply(colnames(data), function(col) !is.na(suppressWarnings(as.numeric(col)))))
+  #provide warning if more than one column name is empty or if any of the column names seem numeric
+  if(("X" %in% colnames(data) && "X.1" %in% colnames(data)) || numericColNames){
+    warning("Multiple columns in the dataFile had empty or numeric column names and thus might not contain the needed header. If this is not intentional, please make sure the csv file has a header row with column names or the r dataframe has column names properly assigned")
+  }
+  
+  return(NULL)
 }
 
 # Helper function for processing each slice
@@ -59,7 +97,7 @@
   NULL
 }
 
-.getTxpModel <- function(currentSlices, sliceObjects, preview = FALSE) {
+.getTxpModel <- function(currentSlices, sliceObjects, negativeHandling, rankTies, preview = FALSE) {
   #$trycatch
   nmsList <- lapply(currentSlices, 
                     function(sliceID, sliceObjects){sliceObjects[[sliceID]][["name"]]()},
@@ -73,18 +111,22 @@
   txpSliceList <- do.call(TxpSliceList, sliceList)
   weightList <- sapply(results, `[[`, "weight")
   model <- if (preview) {
-    TxpModel(txpSlices = txpSliceList, txpWeights = weightList)
+    TxpModel(txpSlices = txpSliceList, txpWeights = weightList, negativeHandling = negativeHandling)
   } else {
     transformList <- setNames(lapply(results, `[[`, "transform"), sapply(results, `[[`, "name"))
     txpTransformList <- do.call(TxpTransFuncList, transformList)
-    TxpModel(txpSlices = txpSliceList, txpWeights = weightList, txpTransFuncs = txpTransformList)
+    TxpModel(txpSlices = txpSliceList, 
+             txpWeights = weightList, 
+             txpTransFuncs = txpTransformList,
+             negativeHandling = negativeHandling,
+             rankTies = rankTies)
   }
   model
 }
 
 #function for obtaining color list from current slices
 .getTxpColors<- function(currentSlices, sliceObjects){
-  sapply(currentSlices, function(i) sliceObjects[[i]][["color"]]())
+  lapply(currentSlices, function(i) sliceObjects[[i]][["color"]]())
 }
 
 #function to get body text from a function
