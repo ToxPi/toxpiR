@@ -30,6 +30,34 @@ setGeneric("txpTransFuncs<-",
            function(x, ..., value) standardGeneric("txpTransFuncs<-"))
 
 #' @rdname txpGenerics
+setGeneric("txpLowerNames", function(x, ...) standardGeneric("txpLowerNames"))
+
+#' @rdname txpGenerics
+setGeneric("txpLowerNames<-",
+           function(x, ..., value) standardGeneric("txpLowerNames<-"))
+
+#' @rdname txpGenerics
+setGeneric("txpLowerFuncs", function(x, ...) standardGeneric("txpLowerFuncs"))
+
+#' @rdname txpGenerics
+setGeneric("txpLowerFuncs<-",
+           function(x, ..., value) standardGeneric("txpLowerFuncs<-"))
+
+#' @rdname txpGenerics
+setGeneric("txpUpperNames", function(x, ...) standardGeneric("txpUpperNames"))
+
+#' @rdname txpGenerics
+setGeneric("txpUpperNames<-",
+           function(x, ..., value) standardGeneric("txpUpperNames<-"))
+
+#' @rdname txpGenerics
+setGeneric("txpUpperFuncs", function(x, ...) standardGeneric("txpUpperFuncs"))
+
+#' @rdname txpGenerics
+setGeneric("txpUpperFuncs<-",
+           function(x, ..., value) standardGeneric("txpUpperFuncs<-"))
+
+#' @rdname txpGenerics
 setGeneric("txpSlices", function(x, ...) standardGeneric("txpSlices"))
 
 #' @rdname txpGenerics
@@ -66,6 +94,12 @@ setGeneric("txpScores", function(x, ...) standardGeneric("txpScores"))
 
 #' @rdname txpGenerics
 setGeneric("txpSliceScores", function(x, ...) standardGeneric("txpSliceScores"))
+
+#' @rdname txpGenerics
+setGeneric("txpSliceLows", function(x, ...) standardGeneric("txpSliceLows"))
+
+#' @rdname txpGenerics
+setGeneric("txpSliceUps", function(x, ...) standardGeneric("txpSliceUps"))
 
 #' @rdname txpGenerics
 setGeneric("txpModel", function(x, ...) standardGeneric("txpModel"))

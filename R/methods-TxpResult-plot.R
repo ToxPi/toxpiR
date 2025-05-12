@@ -262,6 +262,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       colour = sliceLineColor
     )
   }
+  
   if(showCenter){
     if (showMissing) {
       missingData <- txpMissing(x)
@@ -302,7 +303,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     breaks = unique(profileDF$Slices),
     values = fills
   )
-
+  
   if (!is.null(borderColor)) {
     plot <- plot + ggplot2::geom_hline(
       yintercept = 1, color = borderColor, linewidth = 0.5
@@ -325,6 +326,50 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     yintercept = innerRad, color = "black", linewidth = 0.4
   )
 
+  if (!is.null(x@txpSliceLows) || !is.null(x@txpSliceUps)){
+    CI_df <- profileDF
+    lows <- x@txpSliceLows
+    if(is.null(lows)){
+      lows <- x@txpSliceScores
+      lows[,] <- NA
+      colnames(lows) <- paste0(colnames(lows), "_low")
+    } 
+    row.names(lows) <- txpIDs(x)
+    lookup_colnames <- paste0(CI_df$Slices, "_low")
+    lookup_rownames <- CI_df$Name
+    CI_df$radiiLow <- mapply(function(rn, cn) {
+      if (rn %in% rownames(lows) && cn %in% colnames(lows)) {
+        lows[rn, cn]
+      } else {
+        NA  
+      }
+    }, rn = lookup_rownames, cn = lookup_colnames)
+    
+    ups <- x@txpSliceUps
+    if(is.null(ups)){
+      ups <- x@txpSliceScores
+      ups[,] <- NA
+      colnames(ups) <- paste0(colnames(ups), "_up")
+    } 
+    row.names(ups) <- txpIDs(x)
+    lookup_colnames <- paste0(CI_df$Slices, "_up")
+    lookup_rownames <- CI_df$Name
+    CI_df$radiiUp <- mapply(function(rn, cn) {
+      if (rn %in% rownames(ups) && cn %in% colnames(ups)) {
+        ups[rn, cn]
+      } else {
+        NA  
+      }
+    }, rn = lookup_rownames, cn = lookup_colnames)
+    
+    CI_df <- CI_df[!is.na(CI_df$radiiLow) | !is.na(CI_df$radiiUp),]
+    CI_df$radiiLow[is.na(CI_df$radiiLow)] <- CI_df$radii[is.na(CI_df$radiiLow)]
+    CI_df$radiiUp[is.na(CI_df$radiiUp)]   <- CI_df$radii[is.na(CI_df$radiiUp)]
+    
+    plot <- plot + geom_errorbar(data = CI_df, aes(x = as.numeric(mid), ymin = innerRad + radiiLow * (1 - innerRad), ymax = innerRad + radiiUp * (1 - innerRad)), linetype = "solid", colour = "black")
+    #placeholder to parse bootstrap data and plot results
+  }
+  
   if (!is.null(bgColor)) {
     plot <- plot + ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = bgColor, color = bgColor)

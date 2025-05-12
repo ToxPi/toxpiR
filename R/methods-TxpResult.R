@@ -10,6 +10,10 @@
 #' @slot txpScores `vector(<numeric>)` of model scores
 #' @slot txpSliceScores `matrix(<numeric>)`, sample by slice `matrix` with
 #' individual slice scores
+#' @slot txpSliceLows `matrix(<numeric>)` or NULL, sample by slice `matrix` with
+#' individual slice lower confidence interval scores
+#' @slot txpSliceUps `matrix(<numeric>)` or NULL, sample by slice `matrix` with
+#' individual slice upper confidence interval scores
 #' @slot txpRanks `vector(<numeric>)` with rank of scores
 #' @slot txpMissing `vector(<numeric>)` with data missingness
 #' @slot txpModel [TxpModel] object
@@ -102,11 +106,13 @@ NULL
 ##----------------------------------------------------------------------------##
 ## constructor -- NOT exported
 
-TxpResult <- function(txpScores, txpSliceScores, txpRanks, txpMissing,
+TxpResult <- function(txpScores, txpSliceScores, txpSliceLows, txpSliceUps, txpRanks, txpMissing,
                       txpModel, txpIDs = NULL) {
   new2("TxpResult",
        txpScores = txpScores,
        txpSliceScores = txpSliceScores,
+       txpSliceLows = txpSliceLows,
+       txpSliceUps = txpSliceUps,
        txpRanks = txpRanks,
        txpMissing = txpMissing,
        txpModel = txpModel,
@@ -129,6 +135,36 @@ setMethod("txpScores", "TxpResult", function(x) { x@txpScores })
 setMethod("txpSliceScores", "TxpResult", function(x, adjusted = TRUE) {
   stopifnot(is_scalar_logical(adjusted))
   scr <- x@txpSliceScores
+  if (adjusted) {
+    wts <- txpWeights(x, adjusted = TRUE)
+    scr <- scr*rep(wts, each = NROW(scr))
+  }
+  scr
+})
+
+#' @describeIn TxpResult-class Return `txpSliceUps` slot; default
+#' `adjusted = TRUE`, i.e. return slice upper confidence scores adjusted for weight
+#' @importFrom rlang is_scalar_logical
+#' @export
+
+setMethod("txpSliceUps", "TxpResult", function(x, adjusted = TRUE) {
+  stopifnot(is_scalar_logical(adjusted))
+  scr <- x@txpSliceUps
+  if (adjusted) {
+    wts <- txpWeights(x, adjusted = TRUE)
+    scr <- scr*rep(wts, each = NROW(scr))
+  }
+  scr
+})
+
+#' @describeIn TxpResult-class Return `txpSliceLows` slot; default
+#' `adjusted = TRUE`, i.e. return slice lower confidence scores adjusted for weight
+#' @importFrom rlang is_scalar_logical
+#' @export
+
+setMethod("txpSliceLows", "TxpResult", function(x, adjusted = TRUE) {
+  stopifnot(is_scalar_logical(adjusted))
+  scr <- x@txpSliceLows
   if (adjusted) {
     wts <- txpWeights(x, adjusted = TRUE)
     scr <- scr*rep(wts, each = NROW(scr))
@@ -216,8 +252,13 @@ setMethod("txpValueNames", "TxpResult", function(x, simplify = FALSE) {
 
 .TxpResult.squareBracket <- function(x, i, j, ..., drop = FALSE) {
   ss <- txpSliceScores(x, adjusted = FALSE)[i, , drop = FALSE]
+  ls <- txpSliceLows(x, adjusted = FALSE)[i, , drop = FALSE]
+  us <- txpSliceUps(x, adjusted = FALSE)[i, , drop = FALSE]
+  
   TxpResult(txpScores = txpScores(x)[i],
             txpSliceScores = ss,
+            txpSliceLows = ls,
+            txpSliceUps = us,
             txpRanks = txpRanks(x)[i],
             txpMissing = txpMissing(x),
             txpModel = txpModel(x),

@@ -44,18 +44,45 @@ NULL
 .sumSlice <- function(slice, input, negative.value.handling) {
   # Applies input-level transformation functions and sums the values to give
   # a raw slice score
-  nms <- txpValueNames(slice)
-  dat <- input[nms]
-  if (negative.value.handling == "missing") dat[dat < 0]  <- NA
-  tfs <- txpTransFuncs(slice)
-  for (i in seq_along(nms)) {
-    if (is.null(tfs[[i]])) next
-    dat[[i]] <- tfs[[i]](dat[[i]])
+  .sumLevel <- function(nms, input, negative.value.handling){
+    dat <- input[nms]
+    if (negative.value.handling == "missing") dat[dat < 0]  <- NA
+    tfs <- txpTransFuncs(slice)
+    for (i in seq_along(nms)) {
+      if (is.null(tfs[[i]])) next
+      dat[[i]] <- tfs[[i]](dat[[i]])
+    }
+    x <- apply(dat, MARGIN = 1, .sumNA)
+    
+    dat <- unlist(dat)
+    y <- sum(!is.finite(dat)) / length(dat)
+    return(list(x = x,y = y))
   }
-  x <- apply(dat, MARGIN = 1, .sumNA)
-  dat <- unlist(dat)
-  y <- sum(!is.finite(dat)) / length(dat)
-  list(sum = x, mis = y)
+  
+  #main score
+  nms <- txpValueNames(slice)
+  #print(nms)
+  sum <- .sumLevel(nms, input, negative.value.handling)$x
+  #print(sum)
+  mis <- .sumLevel(nms, input, negative.value.handling)$y
+  
+  #lower confidence interval
+  nms <- txpLowerNames(slice)
+  if(!is.null(nms)){
+    low_sum <- .sumLevel(nms, input, negative.value.handling)$x
+  } else {
+    low_sum <- NULL
+  }
+  
+  #upper confidence interval
+  nms <- txpUpperNames(slice)
+  if(!is.null(nms)){
+    up_sum <- .sumLevel(nms, input, negative.value.handling)$x
+  } else {
+    up_sum <- NULL
+  }
+  
+  list(sum = sum, mis = mis, low_sum = low_sum, up_sum = up_sum)
 }
 
 .prepSlices <- function(model, input) {
@@ -67,28 +94,65 @@ NULL
   x <- lapply(
     txpSlices(model), .sumSlice, input = input,
     negative.value.handling = slot(model, "negativeHandling"))
-  slc <- sapply(x, "[[", "sum")
+  
   mis <- sapply(x, "[[", "mis")
   
+  ##########TEMP FOR TESTING
+  #x$s1$low_sum <- rep(10, length(x$s1$sum))
+  #print(x)
+  ##########
+  cols <- c("sum", "low_sum", "up_sum")
+  # Extract each component into a named list
+  slc <- lapply(names(x), function(name) {
+    val <- x[[name]]
+    val <- setNames(lapply(cols, function(col) val[[col]]), paste0(name, c("", "_low", "_up")))
+    val <- Filter(Negate(is.null), val)
+    val <- as.matrix(as.data.frame(do.call(cbind, val)))
+  })
+
   ## Look for and apply slice-level transformation functions
   tfs <- txpTransFuncs(model)
   if (any(!sapply(tfs, is.null))) {
-    for (i in 1:ncol(slc)) {
+    for (i in 1:length(slc)) {
       if (is.null(tfs[[i]])) next
-      slc[ , i] <- tfs[[i]](slc[ , i])
+      for (j in 1:length(slc[[i]])){
+        slc[[i]][[j]] <- tfs[[i]](slc[[i]][[j]])
+      }
     }
   }
   
   ## Make infinite NaN
-  slc[is.infinite(slc)] <- NaN
+  slc <- lapply(slc, function(x) {
+    x[is.infinite(x)] <- NaN
+    x
+  })
   
   ## Scale slice scores from 0 to 1
-  slc <- apply(slc, 2, .z2o)
+  slc <- lapply(slc, .z2o)
+  
+  # Initialize empty matrices for low and up columns
+  slc_main <- matrix(ncol = 0, nrow = nrow(slc[[1]]))
+  slc_low <- matrix(ncol = 0, nrow = nrow(slc[[1]]))
+  slc_up <- matrix(ncol = 0, nrow = nrow(slc[[1]]))
+  
+  # Loop through the list of matrices and extract the columns
+  for (mat in slc) {
+    mat_cols <- colnames(mat)
+    main_cols <- intersect(names(x), mat_cols)
+    low_cols  <- intersect(paste0(names(x), "_low"), mat_cols)
+    up_cols   <- intersect(paste0(names(x), "_up"), mat_cols)
+
+    if (length(main_cols)) slc_main <- cbind(slc_main, mat[, main_cols, drop = FALSE])
+    if (length(low_cols))  slc_low  <- cbind(slc_low,  mat[, low_cols,  drop = FALSE])
+    if (length(up_cols))   slc_up   <- cbind(slc_up,   mat[, up_cols,   drop = FALSE])
+  }
   
   ## Make NA 0
-  slc[is.na(slc)] <- 0
-  
-  list(slc = slc, mis = mis)
+  slc_main[is.na(slc_main)] <- 0
+  slc_low[is.na(slc_low)] <- 0
+  slc_up[is.na(slc_up)] <- 0
+
+  list(slc_main = slc_main, mis = mis, slc_low = slc_low, slc_up = slc_up)
 }
 
 .calculateScores <- function(model, input,
@@ -99,8 +163,10 @@ NULL
 
   ## Preprocess data, aggregate into slices, and determine missing data
   slcMis <- .prepSlices(model = model, input = input)
-  slc <- slcMis$slc
   mis <- slcMis$mis
+  slc <- slcMis$slc_main
+  if(ncol(slcMis$slc_low) == 0){slc_low <- NULL} else {slc_low <- slcMis$slc_low}
+  if(ncol(slcMis$slc_up) == 0){slc_up <- NULL} else {slc_up <- slcMis$slc_up}
 
   ## Calculate ToxPi score
   wts <- txpWeights(model, adjusted = TRUE)
@@ -114,6 +180,8 @@ NULL
 
   TxpResult(txpScores = score,
             txpSliceScores = slc,
+            txpSliceLows = slc_low,
+            txpSliceUps = slc_up,
             txpRanks = rnks,
             txpMissing = mis,
             txpModel = model,
