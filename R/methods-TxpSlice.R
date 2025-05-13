@@ -150,6 +150,9 @@ setReplaceMethod("txpTransFuncs", "TxpSlice", function(x, value) {
   x
 })
 
+#' @describeIn TxpSlice-class Return `txpLowerNames` slot
+#' @export
+
 setMethod("txpLowerNames", "TxpSlice", function(x) { x@txpLowerNames })
 
 #' @rdname TxpSlice-class
@@ -175,6 +178,10 @@ setReplaceMethod("txpLowerFuncs", "TxpSlice", function(x, value) {
   validObject(x)
   x
 })
+
+#' @describeIn TxpSlice-class Return `txpUpperNames` slot
+#' @export
+
 setMethod("txpUpperNames", "TxpSlice", function(x) { x@txpUpperNames })
 
 #' @rdname TxpSlice-class

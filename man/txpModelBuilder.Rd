@@ -4,7 +4,7 @@
 \alias{txpModelBuilder}
 \title{Shiny App for building ToxPi models}
 \usage{
-txpModelBuilder(dataFile)
+txpModelBuilder(dataFile, id = NULL)
 }
 \arguments{
 \item{dataFile}{A data frame or a file path to a \code{.csv} file. If the input is

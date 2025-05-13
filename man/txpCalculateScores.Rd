@@ -10,29 +10,11 @@
 \usage{
 txpCalculateScores(model, input, ...)
 
-\S4method{txpCalculateScores}{TxpModel,data.frame}(
-  model,
-  input,
-  id.var = NULL,
-  rank.ties.method = c("average", "first", "last", "random", "max", "min"),
-  negative.value.handling = c("keep", "missing")
-)
+\S4method{txpCalculateScores}{TxpModel,data.frame}(model, input, id.var = NULL)
 
-\S4method{txpCalculateScores}{TxpModelList,data.frame}(
-  model,
-  input,
-  id.var = NULL,
-  rank.ties.method = c("average", "first", "last", "random", "max", "min"),
-  negative.value.handling = c("keep", "missing")
-)
+\S4method{txpCalculateScores}{TxpModelList,data.frame}(model, input, id.var = NULL)
 
-\S4method{txpCalculateScores}{list,data.frame}(
-  model,
-  input,
-  id.var = NULL,
-  rank.ties.method = c("average", "first", "last", "random", "max", "min"),
-  negative.value.handling = c("keep", "missing")
-)
+\S4method{txpCalculateScores}{list,data.frame}(model, input, id.var = NULL)
 }
 \arguments{
 \item{model}{\link{TxpModel} object or \link{TxpModelList} object}
@@ -42,10 +24,6 @@ txpCalculateScores(model, input, ...)
 \item{...}{Included for extendability; not currently used}
 
 \item{id.var}{Character scalar, column in 'input' to store in}
-
-\item{rank.ties.method}{Passed to \code{rank.ties.method} slot}
-
-\item{negative.value.handling}{Passed to \code{negative.value.handling} slot}
 }
 \value{
 \link{TxpResult} or \link{TxpResultList} object
@@ -84,5 +62,5 @@ resLst <- txpCalculateScores(model = list(m1 = txp_example_model,
 
 }
 \seealso{
-\link{TxpModel}, \link{TxpResult}, \link{TxpResultParam}
+\link{TxpModel}, \link{TxpResult}
 }

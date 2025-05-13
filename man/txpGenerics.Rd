@@ -6,12 +6,26 @@
 \alias{txpValueNames<-}
 \alias{txpTransFuncs}
 \alias{txpTransFuncs<-}
+\alias{txpLowerNames}
+\alias{txpLowerNames<-}
+\alias{txpLowerFuncs}
+\alias{txpLowerFuncs<-}
+\alias{txpUpperNames}
+\alias{txpUpperNames<-}
+\alias{txpUpperFuncs}
+\alias{txpUpperFuncs<-}
 \alias{txpSlices}
 \alias{txpSlices<-}
 \alias{txpWeights}
 \alias{txpWeights<-}
+\alias{negativeHandling}
+\alias{negativeHandling<-}
+\alias{rankTies}
+\alias{rankTies<-}
 \alias{txpScores}
 \alias{txpSliceScores}
+\alias{txpSliceLows}
+\alias{txpSliceUps}
 \alias{txpModel}
 \alias{txpIDs}
 \alias{txpIDs<-}
@@ -28,6 +42,22 @@ txpTransFuncs(x, ...)
 
 txpTransFuncs(x, ...) <- value
 
+txpLowerNames(x, ...)
+
+txpLowerNames(x, ...) <- value
+
+txpLowerFuncs(x, ...)
+
+txpLowerFuncs(x, ...) <- value
+
+txpUpperNames(x, ...)
+
+txpUpperNames(x, ...) <- value
+
+txpUpperFuncs(x, ...)
+
+txpUpperFuncs(x, ...) <- value
+
 txpSlices(x, ...)
 
 txpSlices(x, ...) <- value
@@ -36,9 +66,21 @@ txpWeights(x, ...)
 
 txpWeights(x, ...) <- value
 
+negativeHandling(x, ...)
+
+negativeHandling(x, ...) <- value
+
+rankTies(x, ...)
+
+rankTies(x, ...) <- value
+
 txpScores(x, ...)
 
 txpSliceScores(x, ...)
+
+txpSliceLows(x, ...)
+
+txpSliceUps(x, ...)
 
 txpModel(x, ...)
 

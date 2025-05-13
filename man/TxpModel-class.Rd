@@ -12,13 +12,23 @@
 \alias{txpTransFuncs,TxpModel-method}
 \alias{txpTransFuncs<-,TxpModel-method}
 \alias{txpValueNames,TxpModel-method}
+\alias{negativeHandling,TxpModel-method}
+\alias{negativeHandling<-,TxpModel-method}
+\alias{rankTies,TxpModel-method}
+\alias{rankTies<-,TxpModel-method}
 \alias{names,TxpModel-method}
 \alias{names<-,TxpModel-method}
 \alias{length,TxpModel-method}
 \alias{merge,TxpModel,TxpModel-method}
 \title{ToxPi Model}
 \usage{
-TxpModel(txpSlices, txpWeights = NULL, txpTransFuncs = NULL)
+TxpModel(
+  txpSlices,
+  txpWeights = NULL,
+  txpTransFuncs = NULL,
+  negativeHandling = "keep",
+  rankTies = "average"
+)
 
 \S4method{txpSlices}{TxpModel}(x)
 
@@ -34,6 +44,14 @@ TxpModel(txpSlices, txpWeights = NULL, txpTransFuncs = NULL)
 
 \S4method{txpValueNames}{TxpModel}(x, simplify = FALSE)
 
+\S4method{negativeHandling}{TxpModel}(x)
+
+\S4method{negativeHandling}{TxpModel}(x) <- value
+
+\S4method{rankTies}{TxpModel}(x)
+
+\S4method{rankTies}{TxpModel}(x) <- value
+
 \S4method{names}{TxpModel}(x)
 
 \S4method{names}{TxpModel}(x) <- value
@@ -48,6 +66,10 @@ TxpModel(txpSlices, txpWeights = NULL, txpTransFuncs = NULL)
 \item{txpWeights}{Passed to \code{txpWeights} slot}
 
 \item{txpTransFuncs}{Passed to \code{txpTransFuncs} slot}
+
+\item{negativeHandling}{Passed to \code{negativeHandling} slot}
+
+\item{rankTies}{Passed to \code{rankTies} slot}
 
 \item{x, y}{TxpModel object}
 
@@ -72,6 +94,10 @@ S4 class to store ToxPi models
 \item \code{txpValueNames(TxpModel)}: Return \code{list} of \code{txpValueNames} slots for the
 contained \link{TxpSliceList} object, or \code{vector} when \code{simplify = TRUE}
 
+\item \code{negativeHandling(TxpModel)}: Return \code{negativeHandling} slot
+
+\item \code{rankTies(TxpModel)}: Return \code{rankTies} slot
+
 \item \code{names(TxpModel)}: Return slice names; shortcut for
 \code{names(txpSlices(x))}
 
@@ -92,6 +118,12 @@ when NULL, defaults to 1 (equal weighting) for each slice}
 
 \item{\code{txpTransFuncs}}{\link{TxpTransFuncList} object (or list of functions
 coercible to TxpTransFuncList)}
+
+\item{\code{negativeHandling}}{scalar character specifying how to handle negative values;
+options are 'keep' and missing'; when NULL, defaults to 'keep'}
+
+\item{\code{rankTies}}{scalar character specifying how to handle ties in ToxPi rankings;
+options are 'average', 'first', 'last', 'random', 'max', 'min'; when NULL, defaults to 'average'}
 }}
 
 \examples{
@@ -100,7 +132,7 @@ s1 <- list(S1 = TxpSlice("inpt1"), S2 = TxpSlice("inpt2"))
 tf <- list(NULL, sqrt = function(x) sqrt(x))
 
 ## Create TxpModel object
-m1 <- TxpModel(txpSlices = s1, txpWeights = 2:1, txpTransFuncs = tf)
+m1 <- TxpModel(txpSlices = s1, txpWeights = 2:1, txpTransFuncs = tf, negativeHandling = 'keep', rankTies = 'average')
 m1
 
 ## Access TxpModel slots
@@ -108,6 +140,8 @@ txpSlices(m1)
 txpWeights(m1)
 txpWeights(m1, adjusted = TRUE)
 txpTransFuncs(m1)
+negativeHandling(m1)
+rankTies(m1)
 
 ## length
 length(m1) ## equal to length(txpSlices(m1))

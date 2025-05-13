@@ -6,6 +6,8 @@
 \alias{TxpResult}
 \alias{txpScores,TxpResult-method}
 \alias{txpSliceScores,TxpResult-method}
+\alias{txpSliceUps,TxpResult-method}
+\alias{txpSliceLows,TxpResult-method}
 \alias{txpRanks,TxpResult-method}
 \alias{txpMissing,TxpResult-method}
 \alias{txpResultParam,TxpResult-method}
@@ -30,6 +32,10 @@
 \S4method{txpScores}{TxpResult}(x)
 
 \S4method{txpSliceScores}{TxpResult}(x, adjusted = TRUE)
+
+\S4method{txpSliceUps}{TxpResult}(x, adjusted = TRUE)
+
+\S4method{txpSliceLows}{TxpResult}(x, adjusted = TRUE)
 
 \S4method{txpRanks}{TxpResult}(x)
 
@@ -117,6 +123,12 @@ S4 class to store ToxPi results
 \item \code{txpSliceScores(TxpResult)}: Return \code{txpSliceScores} slot; default
 \code{adjusted = TRUE}, i.e. return slice scores adjusted for weight
 
+\item \code{txpSliceUps(TxpResult)}: Return \code{txpSliceUps} slot; default
+\code{adjusted = TRUE}, i.e. return slice upper confidence scores adjusted for weight
+
+\item \code{txpSliceLows(TxpResult)}: Return \code{txpSliceLows} slot; default
+\code{adjusted = TRUE}, i.e. return slice lower confidence scores adjusted for weight
+
 \item \code{txpRanks(TxpResult)}: Return \code{txpRanks} slot
 
 \item \code{txpMissing(TxpResult)}: Return \code{txpMissing} slot
@@ -159,6 +171,12 @@ with IDs, scores, ranks, and slice scores
 \item{\code{txpSliceScores}}{\verb{matrix(<numeric>)}, sample by slice \code{matrix} with
 individual slice scores}
 
+\item{\code{txpSliceLows}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
+individual slice lower confidence interval scores}
+
+\item{\code{txpSliceUps}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
+individual slice upper confidence interval scores}
+
 \item{\code{txpRanks}}{\verb{vector(<numeric>)} with rank of scores}
 
 \item{\code{txpMissing}}{\verb{vector(<numeric>)} with data missingness}
@@ -166,8 +184,6 @@ individual slice scores}
 \item{\code{txpModel}}{\link{TxpModel} object}
 
 \item{\code{txpIDs}}{\verb{vector(<character>)} of observation IDs}
-
-\item{\code{txpResultParam}}{\link{TxpResultParam} object}
 }}
 
 \examples{
