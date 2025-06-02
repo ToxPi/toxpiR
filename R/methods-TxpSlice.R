@@ -131,7 +131,26 @@ setMethod("txpValueNames", "TxpSlice", function(x) { x@txpValueNames })
 
 setReplaceMethod("txpValueNames", "TxpSlice", function(x, value) {
   x@txpValueNames <- value
+  needed <- 0
+  if(length(x@txpValueNames) > length(x@txpTransFuncs)){
+    needed <- length(x@txpValueNames) - length(x@txpTransFuncs)
+    padded <- c(as.list(x@txpTransFuncs), rep(list(NULL), needed))
+    x@txpTransFuncs <- do.call(TxpTransFuncList, padded)
+  }
+  if(length(x@txpValueNames) < length(x@txpTransFuncs)){
+    needed <- length(x@txpValueNames) - length(x@txpTransFuncs)
+    x@txpTransFuncs <- TxpTransFuncList(unlist(as.list(x@txpTransFuncs)[1:(length(x@txpTransFuncs) - length(x@txpValueNames))]))
+  }
+  
   validObject(x)
+  
+  if(needed > 0){
+    warning("Length of new <txpValueNames> greater than old length. Assuming extra have txpTransFuncs NULL. Please check txpTransFuncs<TxpSlice>.")
+  }
+  if(needed < 0){
+    warning("Length of new <txpValueNames> less than old length. Removing excess txpTransFuncs. Please check txpTransFuncs<TxpSlice>.")
+  }
+  
   x
 })
 
@@ -160,7 +179,31 @@ setMethod("txpLowerNames", "TxpSlice", function(x) { x@txpLowerNames })
 
 setReplaceMethod("txpLowerNames", "TxpSlice", function(x, value) {
   x@txpLowerNames <- value
+  if(is.null(value)){
+    warning("Setting <txpLowerFuncs> to NULL to match <txpLowerNames>")
+    x@txpLowerFuncs <- TxpTransFuncList()
+  }
+  
+  needed <- 0
+  if(length(x@txpLowerNames) > length(x@txpLowerFuncs)){
+    needed <- length(x@txpLowerNames) - length(x@txpLowerFuncs)
+    padded <- c(as.list(x@txpLowerFuncs), rep(list(NULL), needed))
+    x@txpLowerFuncs <- do.call(TxpTransFuncList, padded)
+  }
+  if(length(x@txpLowerNames) < length(x@txpLowerFuncs)){
+    needed <- length(x@txpLowerNames) - length(x@txpLowerFuncs)
+    x@txpLowerFuncs <- TxpTransFuncList(unlist(as.list(x@txpLowerFuncs)[1:(length(x@txpLowerFuncs) - length(x@txpLowerNames))]))
+  }
+
   validObject(x)
+  
+  if(needed > 0){
+    warning("Length of new <txpLowerNames> greater than old length. Assuming extra have txpLowerFuncs NULL. Please check txpLowerFuncs<TxpSlice>.")
+  }
+  if(needed < 0){
+    warning("Length of new <txpLowerNames> less than old length. Removing excess txpLowerFuncs. Please check txpLowerFuncs<TxpSlice>.")
+  }
+  
   x
 })
 
@@ -189,7 +232,31 @@ setMethod("txpUpperNames", "TxpSlice", function(x) { x@txpUpperNames })
 
 setReplaceMethod("txpUpperNames", "TxpSlice", function(x, value) {
   x@txpUpperNames <- value
+  if(is.null(value)){
+    warning("Setting <txpUpperFuncs> to NULL to match <txpUpperNames>")
+    x@txpUpperFuncs <- TxpTransFuncList()
+  }
+  
+  needed <- 0
+  if(length(x@txpUpperNames) > length(x@txpUpperFuncs)){
+    needed <- length(x@txpUpperNames) - length(x@txpUpperFuncs)
+    padded <- c(as.list(x@txpUpperFuncs), rep(list(NULL), needed))
+    x@txpUpperFuncs <- do.call(TxpTransFuncList, padded)
+  }
+  if(length(x@txpUpperNames) < length(x@txpUpperFuncs)){
+    needed <- length(x@txpUpperNames) - length(x@txpUpperFuncs)
+    x@txpUpperFuncs <- TxpTransFuncList(unlist(as.list(x@txpUpperFuncs)[1:(length(x@txpUpperFuncs) - length(x@txpUpperNames))]))
+  }
+  
   validObject(x)
+  
+  if(needed > 0){
+    warning("Length of new <txpUpperNames> greater than old length. Assuming extra have txpUpperFuncs NULL. Please check txpUpperFuncs<TxpSlice>.")
+  }
+  if(needed < 0){
+    warning("Length of new <txpUpperNames> less than old length. Removing excess txpUpperFuncs. Please check txpUpperFuncs<TxpSlice>.")
+  }
+  
   x
 })
 
@@ -250,7 +317,9 @@ setMethod("length", "TxpSlice", function(x) { length(txpValueNames(x)) })
                  "length(txpUpperFuncs(<TxpSlice>))")
     msg <- c(msg, tmp)
   }
-  if(any(duplicated(c(vl,ln,un)))){msg <- c(msg, "txpValueNames(<TxpSlice>), txpLowerNames(<TxpSlice>), and txpUpperNames(<TxpSlice>) must not intersect")}
+  if(any(duplicated(c(unique(vl),unique(ln),unique(un))))){
+    msg <- c(msg, "txpValueNames(<TxpSlice>), txpLowerNames(<TxpSlice>), and txpUpperNames(<TxpSlice>) must not intersect")
+  }
   if (is.null(msg)) return(TRUE)
   msg
 }
