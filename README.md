@@ -17,16 +17,21 @@ Package developed and maintained by the [Reif Lab](http://reif-lab.org).
 Current stable release (CRAN):
 
 ```r
+Note: Users need to ensure packages requiring "BiocManager" are manually 
+installed.
+
+if (!require(BiocManager, quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+BiocManager::install(c("S4Vectors","BiocGenerics"))
+
 install.packages("toxpiR")
 ```
 
 Current stable release (Build from GitHub):
 
 ```r
-remotes::install_github("ToxPi/toxpiR", 
-                        dependencies = TRUE)
-                        
-Note: Users may need to ensure "remotes" package and packages
+Note: Users need to ensure "remotes" package and packages
 requiring "BiocManager" are installed before building package.
 
 if (!require(remotes)) install.packages("remotes")
@@ -36,15 +41,25 @@ if (!require(BiocManager, quietly = TRUE)) {
 }
 BiocManager::install(c("S4Vectors","BiocGenerics"))
 
+remotes::install_github("ToxPi/toxpiR", 
+                        dependencies = TRUE)
 ```
 
 Current stable release (Build from GitHub with vignettes):
 
 ```r
+Note: Users need to ensure "remotes" package, "pandoc" package, and packages
+requiring "BiocManager" are installed before building package.
+
+if (!require(remotes)) install.packages("remotes")
+if (!require(pandoc)) install.packages("pandoc")
+
+if (!require(BiocManager, quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+BiocManager::install(c("S4Vectors","BiocGenerics"))
+                        
 remotes::install_github("ToxPi/toxpiR",
                         dependencies = TRUE, 
                         build_vignettes = TRUE)
-
-Note: Building packages with vignettes requires the package
-"pandoc" to be installed.
 ```
