@@ -98,6 +98,53 @@ setMethod("txpTransFuncs", "TxpSliceList", function(x, simplify = FALSE) {
   fxs
 })
 
+#' @describeIn TxpSliceList-class Return `list` of `txpLowerNames` slots for the 
+#' contained [TxpSlice] objects, or `vector` when `simplify = TRUE`
+#' @importFrom rlang is_scalar_logical
+#' @export
+
+setMethod("txpLowerNames", "TxpSliceList", function(x, simplify = FALSE) {
+  stopifnot(is_scalar_logical(simplify))
+  nms <- lapply(x, txpLowerNames)
+  if (simplify) nms <- unlist(nms)
+  nms
+})
+
+#' @describeIn TxpSliceList-class Return `list` of `txpLowerFuncs` slots for the 
+#' contained [TxpSlice] objects, or [TxpTransFuncList] when `simplify = TRUE`
+#' @importFrom rlang is_scalar_logical
+#' @export
+
+setMethod("txpLowerFuncs", "TxpSliceList", function(x, simplify = FALSE) { 
+  stopifnot(is_scalar_logical(simplify))
+  fxs <- lapply(x, txpLowerFuncs)
+  if (simplify) fxs <- Reduce(c, fxs)
+  fxs
+})
+
+#' @describeIn TxpSliceList-class Return `list` of `txpUpperNames` slots for the 
+#' contained [TxpSlice] objects, or `vector` when `simplify = TRUE`
+#' @importFrom rlang is_scalar_logical
+#' @export
+
+setMethod("txpUpperNames", "TxpSliceList", function(x, simplify = FALSE) {
+  stopifnot(is_scalar_logical(simplify))
+  nms <- lapply(x, txpUpperNames)
+  if (simplify) nms <- unlist(nms)
+  nms
+})
+
+#' @describeIn TxpSliceList-class Return `list` of `txpUpperFuncs` slots for the 
+#' contained [TxpSlice] objects, or [TxpTransFuncList] when `simplify = TRUE`
+#' @importFrom rlang is_scalar_logical
+#' @export
+
+setMethod("txpUpperFuncs", "TxpSliceList", function(x, simplify = FALSE) { 
+  stopifnot(is_scalar_logical(simplify))
+  fxs <- lapply(x, txpUpperFuncs)
+  if (simplify) fxs <- Reduce(c, fxs)
+  fxs
+})
 ##----------------------------------------------------------------------------##
 ## duplicated
 

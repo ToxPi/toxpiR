@@ -165,6 +165,28 @@ setMethod("txpValueNames", "TxpModel", function(x, simplify = FALSE) {
   nms
 })
 
+#' @describeIn TxpModel-class Return `list` of `txpLowerNames` slots for the 
+#' contained [TxpSliceList] object, or `vector` when `simplify = TRUE`
+#' @importFrom rlang is_scalar_logical
+#' @export
+
+setMethod("txpLowerNames", "TxpModel", function(x, simplify = FALSE) {
+  stopifnot(is_scalar_logical(simplify))
+  nms <- txpLowerNames(txpSlices(x), simplify = simplify)
+  nms
+})
+
+#' @describeIn TxpModel-class Return `list` of `txpUpperNames` slots for the 
+#' contained [TxpSliceList] object, or `vector` when `simplify = TRUE`
+#' @importFrom rlang is_scalar_logical
+#' @export
+
+setMethod("txpUpperNames", "TxpModel", function(x, simplify = FALSE) {
+  stopifnot(is_scalar_logical(simplify))
+  nms <- txpUpperNames(txpSlices(x), simplify = simplify)
+  nms
+})
+
 #' @describeIn TxpModel-class Return `negativeHandling` slot
 #' @export
 
