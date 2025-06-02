@@ -32,8 +32,12 @@
 
 NULL
 
-.sumNA <- function(x) {
+.sumNA <- function(x, level, max_cols) {
   if (all(is.na(x))) return(NA_real_)
+  if(level == "up"){
+    na_indices <- is.na(x)
+    x[na_indices] <- max_cols[na_indices]
+  }
   sum(x, na.rm = TRUE)
 }
 
@@ -42,9 +46,9 @@ NULL
 }
 
 .sumSlice <- function(slice, input, negative.value.handling) {
-  # Applies input-level transformation functions and sums the values to give
+  # Applies input-level transformation functions and averages the values to give
   # a raw slice score
-  .sumLevel <- function(nms, input, negative.value.handling){
+  .avgLevel <- function(nms, input, negative.value.handling, level){
     dat <- input[nms]
     if (negative.value.handling == "missing") dat[dat < 0]  <- NA
     tfs <- txpTransFuncs(slice)
@@ -52,7 +56,9 @@ NULL
       if (is.null(tfs[[i]])) next
       dat[[i]] <- tfs[[i]](dat[[i]])
     }
-    x <- apply(dat, MARGIN = 1, .sumNA)
+    max_cols <- sapply(dat, function(col) if (all(is.na(col))) NA_real_ else max(col, na.rm = TRUE))
+    x <- apply(dat, MARGIN = 1, .sumNA, level, max_cols)
+    x <- x/length(nms)
     
     dat <- unlist(dat)
     y <- sum(!is.finite(dat)) / length(dat)
@@ -61,15 +67,13 @@ NULL
   
   #main score
   nms <- txpValueNames(slice)
-  #print(nms)
-  sum <- .sumLevel(nms, input, negative.value.handling)$x
-  #print(sum)
-  mis <- .sumLevel(nms, input, negative.value.handling)$y
+  sum <- .avgLevel(nms, input, negative.value.handling, "mid")$x
+  mis <- .avgLevel(nms, input, negative.value.handling, "mid")$y
   
   #lower confidence interval
   nms <- txpLowerNames(slice)
   if(!is.null(nms)){
-    low_sum <- .sumLevel(nms, input, negative.value.handling)$x
+    low_sum <- .avgLevel(nms, input, negative.value.handling, "low")$x
   } else {
     low_sum <- NULL
   }
@@ -77,7 +81,7 @@ NULL
   #upper confidence interval
   nms <- txpUpperNames(slice)
   if(!is.null(nms)){
-    up_sum <- .sumLevel(nms, input, negative.value.handling)$x
+    up_sum <- .avgLevel(nms, input, negative.value.handling, "up")$x
   } else {
     up_sum <- NULL
   }
