@@ -34,7 +34,8 @@ test_that("We can create TxpModel objects", {
 
 test_that("TxpModel accessors return expected slots", {
   expect_silent({
-    sl <- TxpSliceList(S1 = TxpSlice("input1"), S2 = TxpSlice("input2"))
+    sl <- TxpSliceList(S1 = TxpSlice("input1", txpLowerNames = "input3"), 
+                       S2 = TxpSlice("input2"))
     md <- TxpModel(sl)
   })
   expect_s4_class(txpSlices(md), "TxpSliceList")
@@ -46,6 +47,12 @@ test_that("TxpModel accessors return expected slots", {
   expect_equal(txpValueNames(md), list(S1 = "input1", S2 = "input2"))
   expect_equal(txpValueNames(md, simplify = TRUE), 
                c(S1 = "input1", S2 = "input2"))
+  expect_equal(txpLowerNames(md), list(S1 = "input3", S2 = NULL))
+  expect_equal(txpLowerNames(md, simplify = TRUE), 
+               c(S1 = "input3", S2 = NULL))
+  expect_equal(txpUpperNames(md), list(S1 = NULL, S2 = NULL))
+  expect_equal(txpUpperNames(md, simplify = TRUE), 
+               c(S1 = NULL, S2 = NULL))
   expect_named(md, c("S1", "S2"))
   expect_length(md, 2)
 })
