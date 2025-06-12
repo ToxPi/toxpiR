@@ -366,8 +366,10 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     CI_df$radiiLow[is.na(CI_df$radiiLow)] <- CI_df$radii[is.na(CI_df$radiiLow)]
     CI_df$radiiUp[is.na(CI_df$radiiUp)]   <- CI_df$radii[is.na(CI_df$radiiUp)]
     
-    plot <- plot + geom_errorbar(data = CI_df, aes(x = as.numeric(mid), ymin = innerRad + radiiLow * (1 - innerRad), ymax = innerRad + radiiUp * (1 - innerRad)), linetype = "solid", colour = "black")
-    #placeholder to parse bootstrap data and plot results
+    plot <- plot + 
+      geom_segment(data = CI_df, aes(x = as.numeric(mid), y = innerRad + radiiLow * (1 - innerRad), yend = innerRad + radiiUp * (1 - innerRad)), linetype = "solid", colour = "black") +
+      geom_segment(data = CI_df, aes(x = left, xend = right, y = innerRad + radiiLow * (1 - innerRad)), linetype = "solid", colour = "black") +
+      geom_segment(data = CI_df, aes(x = left, xend = right, y = innerRad + radiiUp * (1 - innerRad)), linetype = "solid", colour = "black")
   }
   
   if (!is.null(bgColor)) {
