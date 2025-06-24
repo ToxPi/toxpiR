@@ -21,7 +21,8 @@ test_that("We can create TxpSlice objects", {
   expect_length(txpTransFuncs(recycle), 3)
   expect_error(TxpSlice())
   expect_error(TxpSlice(NA))
-  expect_error(TxpSlice(NULL))
+  expect_error(TxpSlice(NULL), 
+               "At least one of txpValueNames")
   expect_error(TxpSlice(invalnames))
   expect_error(TxpSlice(vnames, tfuncs[1:2]))
   expect_error(TxpSlice(txpValueNames = vnames, txpTransFuncs = tfuncs,
@@ -80,6 +81,8 @@ test_that("We can replace TxpSlice slots", {
   expect_equal(txpUpperFuncs(sl)[[1]](10), 10)
   expect_named(txpUpperFuncs(sl), "linear")
   expect_warning(txpUpperNames(sl) <- NULL, "Setting <txpUpperFuncs> to NULL to match <txpUpperNames>")
+  expect_warning(txpUpperNames(sl) <- c("input3"), "Length of new <txpUpperNames> greater than old length. Assuming extra have txpUpperFuncs NULL. Please check txpUpperFuncs<TxpSlice>.")
+  expect_warning(txpValueNames(sl) <- NULL, "Setting <txpTransFuncs> to NULL to match <txpValueNames>")
 })
 
 
@@ -93,12 +96,11 @@ test_that("TxpSlice shows correct information", {
   expect_output(print(sl), "txpTransFuncs\\(2\\)")
   expect_output(print(sl), "f1 NULL")
   
-  sl <- TxpSlice(c("input1", "input2"), list(f1 = function(x) x, NULL),
-                 txpLowerNames = "input3", txpUpperNames = "input4")
-  expect_output(print(sl), "txpValueNames\\(2\\)")
-  expect_output(print(sl), "input1 input2")
-  expect_output(print(sl), "txpTransFuncs\\(2\\)")
-  expect_output(print(sl), "f1 NULL")
+  sl <- TxpSlice(txpLowerNames = "input3", txpUpperNames = "input4")
+  expect_output(print(sl), "txpValueNames\\(0\\)")
+  expect_output(print(sl), "NULL")
+  expect_output(print(sl), "txpTransFuncs\\(0\\)")
+  expect_output(print(sl), "NULL")
   expect_output(print(sl), "txpLowerNames\\(1\\)")
   expect_output(print(sl), "input3")
   expect_output(print(sl), "txpLowerFuncs\\(1\\)")

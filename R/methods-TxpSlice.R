@@ -7,7 +7,8 @@
 #' @description S4 class to store ToxPi slices
 #' 
 #' @slot txpValueNames `vector(<character>)` specifying the input columns to 
-#' include in the slice
+#' include in the slice; when `NULL`, no main slice will be calculated. In this 
+#' case either/both of lower and upper bounds must be provided
 #' @slot txpTransFuncs [TxpTransFuncList] with one function per entry in 
 #' `txpValueNames` or an object that can be coerced to `TxpTransFuncList`; 
 #' when `NULL`, no transformation function applied
@@ -107,7 +108,7 @@ NULL
 #' @rdname TxpSlice-class
 #' @export 
 
-TxpSlice <- function(txpValueNames, txpTransFuncs = NULL, 
+TxpSlice <- function(txpValueNames = NULL, txpTransFuncs = NULL, 
                      txpLowerNames = NULL, txpLowerFuncs = NULL,
                      txpUpperNames = NULL, txpUpperFuncs = NULL) {
   txpTransFuncs <- .TxpSlice.handle.funcs(txpValueNames, txpTransFuncs)
@@ -131,24 +132,30 @@ setMethod("txpValueNames", "TxpSlice", function(x) { x@txpValueNames })
 
 setReplaceMethod("txpValueNames", "TxpSlice", function(x, value) {
   x@txpValueNames <- value
-  needed <- 0
-  if(length(x@txpValueNames) > length(x@txpTransFuncs)){
-    needed <- length(x@txpValueNames) - length(x@txpTransFuncs)
-    padded <- c(as.list(x@txpTransFuncs), rep(list(NULL), needed))
-    x@txpTransFuncs <- do.call(TxpTransFuncList, padded)
-  }
-  if(length(x@txpValueNames) < length(x@txpTransFuncs)){
-    needed <- length(x@txpValueNames) - length(x@txpTransFuncs)
-    x@txpTransFuncs <- TxpTransFuncList(unlist(as.list(x@txpTransFuncs)[1:(length(x@txpTransFuncs) - length(x@txpValueNames))]))
-  }
-  
-  validObject(x)
-  
-  if(needed > 0){
-    warning("Length of new <txpValueNames> greater than old length. Assuming extra have txpTransFuncs NULL. Please check txpTransFuncs<TxpSlice>.")
-  }
-  if(needed < 0){
-    warning("Length of new <txpValueNames> less than old length. Removing excess txpTransFuncs. Please check txpTransFuncs<TxpSlice>.")
+  if(is.null(value)){
+    x@txpTransFuncs <- TxpTransFuncList()
+    validObject(x)
+    warning("Setting <txpTransFuncs> to NULL to match <txpValueNames>")
+  } else {
+    needed <- 0
+    if(length(x@txpValueNames) > length(x@txpTransFuncs)){
+      needed <- length(x@txpValueNames) - length(x@txpTransFuncs)
+      padded <- c(as.list(x@txpTransFuncs), rep(list(NULL), needed))
+      x@txpTransFuncs <- do.call(TxpTransFuncList, padded)
+    }
+    if(length(x@txpValueNames) < length(x@txpTransFuncs)){
+      needed <- length(x@txpValueNames) - length(x@txpTransFuncs)
+      x@txpTransFuncs <- TxpTransFuncList(unlist(as.list(x@txpTransFuncs)[1:(length(x@txpTransFuncs) - length(x@txpValueNames))]))
+    }
+    
+    validObject(x)
+    
+    if(needed > 0){
+      warning("Length of new <txpValueNames> greater than old length. Assuming extra have txpTransFuncs NULL. Please check txpTransFuncs<TxpSlice>.")
+    }
+    if(needed < 0){
+      warning("Length of new <txpValueNames> less than old length. Removing excess txpTransFuncs. Please check txpTransFuncs<TxpSlice>.")
+    }
   }
   
   x
@@ -180,28 +187,29 @@ setMethod("txpLowerNames", "TxpSlice", function(x) { x@txpLowerNames })
 setReplaceMethod("txpLowerNames", "TxpSlice", function(x, value) {
   x@txpLowerNames <- value
   if(is.null(value)){
-    warning("Setting <txpLowerFuncs> to NULL to match <txpLowerNames>")
     x@txpLowerFuncs <- TxpTransFuncList()
-  }
-  
-  needed <- 0
-  if(length(x@txpLowerNames) > length(x@txpLowerFuncs)){
-    needed <- length(x@txpLowerNames) - length(x@txpLowerFuncs)
-    padded <- c(as.list(x@txpLowerFuncs), rep(list(NULL), needed))
-    x@txpLowerFuncs <- do.call(TxpTransFuncList, padded)
-  }
-  if(length(x@txpLowerNames) < length(x@txpLowerFuncs)){
-    needed <- length(x@txpLowerNames) - length(x@txpLowerFuncs)
-    x@txpLowerFuncs <- TxpTransFuncList(unlist(as.list(x@txpLowerFuncs)[1:(length(x@txpLowerFuncs) - length(x@txpLowerNames))]))
-  }
-
-  validObject(x)
-  
-  if(needed > 0){
-    warning("Length of new <txpLowerNames> greater than old length. Assuming extra have txpLowerFuncs NULL. Please check txpLowerFuncs<TxpSlice>.")
-  }
-  if(needed < 0){
-    warning("Length of new <txpLowerNames> less than old length. Removing excess txpLowerFuncs. Please check txpLowerFuncs<TxpSlice>.")
+    validObject(x)
+    warning("Setting <txpLowerFuncs> to NULL to match <txpLowerNames>")
+  } else {
+    needed <- 0
+    if(length(x@txpLowerNames) > length(x@txpLowerFuncs)){
+      needed <- length(x@txpLowerNames) - length(x@txpLowerFuncs)
+      padded <- c(as.list(x@txpLowerFuncs), rep(list(NULL), needed))
+      x@txpLowerFuncs <- do.call(TxpTransFuncList, padded)
+    }
+    if(length(x@txpLowerNames) < length(x@txpLowerFuncs)){
+      needed <- length(x@txpLowerNames) - length(x@txpLowerFuncs)
+      x@txpLowerFuncs <- TxpTransFuncList(unlist(as.list(x@txpLowerFuncs)[1:(length(x@txpLowerFuncs) - length(x@txpLowerNames))]))
+    }
+    
+    validObject(x)
+    
+    if(needed > 0){
+      warning("Length of new <txpLowerNames> greater than old length. Assuming extra have txpLowerFuncs NULL. Please check txpLowerFuncs<TxpSlice>.")
+    }
+    if(needed < 0){
+      warning("Length of new <txpLowerNames> less than old length. Removing excess txpLowerFuncs. Please check txpLowerFuncs<TxpSlice>.")
+    }
   }
   
   x
@@ -233,28 +241,29 @@ setMethod("txpUpperNames", "TxpSlice", function(x) { x@txpUpperNames })
 setReplaceMethod("txpUpperNames", "TxpSlice", function(x, value) {
   x@txpUpperNames <- value
   if(is.null(value)){
-    warning("Setting <txpUpperFuncs> to NULL to match <txpUpperNames>")
     x@txpUpperFuncs <- TxpTransFuncList()
-  }
-  
-  needed <- 0
-  if(length(x@txpUpperNames) > length(x@txpUpperFuncs)){
-    needed <- length(x@txpUpperNames) - length(x@txpUpperFuncs)
-    padded <- c(as.list(x@txpUpperFuncs), rep(list(NULL), needed))
-    x@txpUpperFuncs <- do.call(TxpTransFuncList, padded)
-  }
-  if(length(x@txpUpperNames) < length(x@txpUpperFuncs)){
-    needed <- length(x@txpUpperNames) - length(x@txpUpperFuncs)
-    x@txpUpperFuncs <- TxpTransFuncList(unlist(as.list(x@txpUpperFuncs)[1:(length(x@txpUpperFuncs) - length(x@txpUpperNames))]))
-  }
-  
-  validObject(x)
-  
-  if(needed > 0){
-    warning("Length of new <txpUpperNames> greater than old length. Assuming extra have txpUpperFuncs NULL. Please check txpUpperFuncs<TxpSlice>.")
-  }
-  if(needed < 0){
-    warning("Length of new <txpUpperNames> less than old length. Removing excess txpUpperFuncs. Please check txpUpperFuncs<TxpSlice>.")
+    validObject(x)
+    warning("Setting <txpUpperFuncs> to NULL to match <txpUpperNames>")
+  } else {
+    needed <- 0
+    if(length(x@txpUpperNames) > length(x@txpUpperFuncs)){
+      needed <- length(x@txpUpperNames) - length(x@txpUpperFuncs)
+      padded <- c(as.list(x@txpUpperFuncs), rep(list(NULL), needed))
+      x@txpUpperFuncs <- do.call(TxpTransFuncList, padded)
+    }
+    if(length(x@txpUpperNames) < length(x@txpUpperFuncs)){
+      needed <- length(x@txpUpperNames) - length(x@txpUpperFuncs)
+      x@txpUpperFuncs <- TxpTransFuncList(unlist(as.list(x@txpUpperFuncs)[1:(length(x@txpUpperFuncs) - length(x@txpUpperNames))]))
+    }
+    
+    validObject(x)
+    
+    if(needed > 0){
+      warning("Length of new <txpUpperNames> greater than old length. Assuming extra have txpUpperFuncs NULL. Please check txpUpperFuncs<TxpSlice>.")
+    }
+    if(needed < 0){
+      warning("Length of new <txpUpperNames> less than old length. Removing excess txpUpperFuncs. Please check txpUpperFuncs<TxpSlice>.")
+    }
   }
   
   x
@@ -293,6 +302,9 @@ setMethod("length", "TxpSlice", function(x) { length(txpValueNames(x)) })
   un <- txpUpperNames(object)
   ufx <- txpUpperFuncs(object)
   
+  if(is.null(c(vl, ln, un))){
+    msg <- c(msg, "At least one of txpValueNames, txpLowerNames, or txpUpperNames must be provided and non NULL.")
+  }
   if (any(duplicated(vl))) {
     msg <- c(msg, "txpValueNames(<TxpSlice>) must be unique.")
   }
@@ -331,9 +343,17 @@ setValidity2("TxpSlice", .TxpSlice.validity)
 
 .TxpSlice.show <- function(object) {
   n <- length(txpValueNames(object))
-  cat(sprintf("TxpSlice with %d input%s.\n", n, ifelse(n > 1, "s", "")))
+  ln <- length(txpLowerNames(object))
+  un <- length(txpUpperNames(object))
+  cat(sprintf("TxpSlice with %d main input%s,", n, ifelse(n != 1, "s", "")),
+      sprintf("%d lower bound input%s,", ln, ifelse(ln != 1, "s", "")),
+      sprintf("%d upper bound input%s.\n", un, ifelse(un != 1, "s", "")))
   .coolcat("  txpValueNames(%d): %s\n", txpValueNames(object))
-  fnms <- .listDisplayNames(txpTransFuncs(object))
+  if(length(txpValueNames(object)) == 0) {
+    fnms <- NULL
+  } else {
+    fnms <- .listDisplayNames(txpTransFuncs(object))
+  }  
   .coolcat("  txpTransFuncs(%d): %s\n", fnms)
   .coolcat("  txpLowerNames(%d): %s\n", txpLowerNames(object))
   if(length(txpLowerNames(object)) == 0) {

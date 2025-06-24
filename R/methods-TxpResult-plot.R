@@ -95,6 +95,12 @@ NULL
     showMissing = TRUE,
     showCenter = TRUE) {
 
+  if(is.null(txpIDs(x))){
+    warning("txpIDs(<txpResult>) is NULL; using indices as IDs. txpIDs(<txpResult>) can be assigned prior to plotting if desired")
+    n <- length(txpScores(x) %||% txpScoreLows(x) %||% txpScoreUps(x))
+    txpIDs(x) <- paste0(1:n)
+  }
+  
   if (tolower(substr(package[1], 0, 2)) == "gg") {
     .TxpResult.toxpiGGPlot(
       x, fills, showScore, ncol, bgColor, borderColor,
@@ -222,8 +228,15 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 
   #get plotting df
   toxResultDF <- as.data.frame(x)
-  txpModel <- txpModel(x)
-  profileDF <- .getPlotList(txpWeights(x), names(txpModel), toxResultDF)
+
+  nms <- names(txpModel(x))
+  low_nms <- paste0(nms, "_low")
+  up_nms <- paste0(nms, "_up")
+  missing_cols <- setdiff(c(low_nms, up_nms), colnames(toxResultDF))
+  for (col in missing_cols) {
+    toxResultDF[[col]] <- NA
+  }
+  profileDF <- .getPlotList(txpWeights(x), nms, toxResultDF)
 
   #make plot
   if(showCenter){
@@ -326,50 +339,73 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     yintercept = innerRad, color = "black", linewidth = 0.4
   )
 
-  if (!is.null(x@txpSliceLows) || !is.null(x@txpSliceUps)){
-    CI_df <- profileDF
-    lows <- x@txpSliceLows
-    if(is.null(lows)){
-      lows <- x@txpSliceScores
-      lows[,] <- NA
-      colnames(lows) <- paste0(colnames(lows), "_low")
-    } 
-    row.names(lows) <- txpIDs(x)
-    lookup_colnames <- paste0(CI_df$Slices, "_low")
-    lookup_rownames <- CI_df$Name
-    CI_df$radiiLow <- mapply(function(rn, cn) {
-      if (rn %in% rownames(lows) && cn %in% colnames(lows)) {
-        lows[rn, cn]
-      } else {
-        NA  
-      }
-    }, rn = lookup_rownames, cn = lookup_colnames)
+  # if (!is.null(x@txpSliceLows){
+  #   low_df <- profileDF
+  #   low_scores <- x@txpSliceLows
+  #   row.names(low_scores) <- txpIDs(x)
+  #   lookup_colnames <- paste0(low_df$Slices, "_low")
+  #   lookup_rownames <- low_df$Name
+  #   low_df$radiiLow <- mapply(function(rn, cn) {
+  #     if (rn %in% rownames(lows) && cn %in% colnames(lows)) {
+  #       lows[rn, cn]
+  #     } else {
+  #       NA  
+  #     }
+  #   }, rn = lookup_rownames, cn = lookup_colnames)
+  #   
+  # } || !is.null(x@txpSliceUps)){
+  #   CI_df <- profileDF
+  #   lows <- x@txpSliceLows
+  #   # if(is.null(lows)){
+  #   #   lows <- x@txpSliceScores
+  #   #   lows[,] <- NA
+  #   #   colnames(lows) <- paste0(colnames(lows), "_low")
+  #   # } 
+  #   row.names(lows) <- txpIDs(x)
+  #   lookup_colnames <- paste0(CI_df$Slices, "_low")
+  #   lookup_rownames <- CI_df$Name
+  #   CI_df$radiiLow <- mapply(function(rn, cn) {
+  #     if (rn %in% rownames(lows) && cn %in% colnames(lows)) {
+  #       lows[rn, cn]
+  #     } else {
+  #       NA  
+  #     }
+  #   }, rn = lookup_rownames, cn = lookup_colnames)
+  #   
+  #   ups <- x@txpSliceUps
+  #   if(is.null(ups)){
+  #     ups <- x@txpSliceScores
+  #     ups[,] <- NA
+  #     colnames(ups) <- paste0(colnames(ups), "_up")
+  #   } 
+  #   row.names(ups) <- txpIDs(x)
+  #   lookup_colnames <- paste0(CI_df$Slices, "_up")
+  #   lookup_rownames <- CI_df$Name
+  #   CI_df$radiiUp <- mapply(function(rn, cn) {
+  #     if (rn %in% rownames(ups) && cn %in% colnames(ups)) {
+  #       ups[rn, cn]
+  #     } else {
+  #       NA  
+  #     }
+  #   }, rn = lookup_rownames, cn = lookup_colnames)
+  #   
+    # CI_df <- CI_df[!is.na(CI_df$radiiLow) | !is.na(CI_df$radiiUp),]
+    # print(CI_df)
+    #CI_df$radiiLow[is.na(CI_df$radiiLow)] <- CI_df$radii[is.na(CI_df$radiiLow)]
+    #CI_df$radiiUp[is.na(CI_df$radiiUp)]   <- CI_df$radii[is.na(CI_df$radiiUp)]
     
-    ups <- x@txpSliceUps
-    if(is.null(ups)){
-      ups <- x@txpSliceScores
-      ups[,] <- NA
-      colnames(ups) <- paste0(colnames(ups), "_up")
-    } 
-    row.names(ups) <- txpIDs(x)
-    lookup_colnames <- paste0(CI_df$Slices, "_up")
-    lookup_rownames <- CI_df$Name
-    CI_df$radiiUp <- mapply(function(rn, cn) {
-      if (rn %in% rownames(ups) && cn %in% colnames(ups)) {
-        ups[rn, cn]
-      } else {
-        NA  
-      }
-    }, rn = lookup_rownames, cn = lookup_colnames)
-    
-    CI_df <- CI_df[!is.na(CI_df$radiiLow) | !is.na(CI_df$radiiUp),]
-    CI_df$radiiLow[is.na(CI_df$radiiLow)] <- CI_df$radii[is.na(CI_df$radiiLow)]
-    CI_df$radiiUp[is.na(CI_df$radiiUp)]   <- CI_df$radii[is.na(CI_df$radiiUp)]
-    
+  if(!is.null(x@txpSliceLows)){
+    low_df <- profileDF[!is.na(profileDF$radii_low),]
     plot <- plot + 
-      geom_segment(data = CI_df, aes(x = as.numeric(mid), y = innerRad + radiiLow * (1 - innerRad), yend = innerRad + radiiUp * (1 - innerRad)), linetype = "solid", colour = "black") +
-      geom_segment(data = CI_df, aes(x = left, xend = right, y = innerRad + radiiLow * (1 - innerRad)), linetype = "solid", colour = "black") +
-      geom_segment(data = CI_df, aes(x = left, xend = right, y = innerRad + radiiUp * (1 - innerRad)), linetype = "solid", colour = "black")
+      geom_segment(data = low_df, aes(x = as.numeric(mid), y = innerRad + radii_low * (1 - innerRad), yend = innerRad + radii * (1 - innerRad)), linetype = "solid", colour = "black") +
+      geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad)), linetype = "solid", colour = "black")
+  }
+  
+  if(!is.null(x@txpSliceUps)){
+    up_df <- profileDF[!is.na(profileDF$radii_up),]
+    plot <- plot + 
+      geom_segment(data = up_df, aes(x = as.numeric(mid), y = innerRad + radii * (1 - innerRad), yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = "black") +
+      geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = "black")
   }
   
   if (!is.null(bgColor)) {
@@ -389,13 +425,15 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 }
 
 # Generate dataframe for plotting a profile
-.generateProfileDF <- function(startWts, endWts, radii, sliceNames, id, score) {
+.generateProfileDF <- function(startWts, endWts, radii, sliceNames, radii_low, radii_up, id, score) {
   df <- data.frame(
     left = startWts,
     right = endWts,
     mid = (startWts + endWts) / 2,
     radii = round(radii, 3),
     Slices = sliceNames,
+    radii_low = radii_low,
+    radii_up = radii_up,
     Name = id,
     Score = round(score, 4)
   )
@@ -406,9 +444,13 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 #get dataframe containing all necessary info for selected samples
 .getPlotList <- function(wts, sliceNames, data) {
   pos <- .getSlicePositions(wts)
+  low_nms <- paste0(sliceNames, "_low")
+  up_nms <- paste0(sliceNames, "_up")
   do.call(rbind, lapply(1:nrow(data), function(x) {
     .generateProfileDF(
-      pos$start, pos$end, unlist(data[x, sliceNames]), sliceNames,
+      pos$start, pos$end, 
+      unlist(data[x, sliceNames]), sliceNames, 
+      unlist(data[x, low_nms]), unlist(data[x, up_nms]), 
       data[x, "id"], data[x, "score"]
     )
   }))

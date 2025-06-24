@@ -65,5 +65,6 @@
   rgb(red = mat[1, ], green = mat[2, ], blue = mat[3, ], maxColorValue = 255)
 }
 
+`%||%` <- function(a, b) if (!is.null(a)) a else b
 ##----------------------------------------------------------------------------##
 

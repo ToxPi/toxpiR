@@ -166,8 +166,14 @@ test_that("We can make and edit ToxPi diagrams", {
     res <- txpCalculateScores(model = txp_example_model, 
                               input = txp_example_input, 
                               id.var = "name")
+    names <- txpIDs(res)
+    txpIDs(res) <- NULL
   })
-  expect_silent(plot(res))
+  expect_warning(plot(res))
+  expect_silent({
+    txpIDs(res) <- names
+    plot(res)
+  })
   expect_silent(grid.edit("pie-1", fills = NULL))
   grid.edit("pie-10::slice1", gp = gpar(fill = "#7DBC3D"))
   expect_silent(plot(res, package = "gg"))
@@ -180,6 +186,11 @@ test_that("We can make and edit ToxPi diagrams", {
   expect_silent(plot(res, package = "gg",sliceLineColor = "#FF00FF"))
   expect_silent(plot(res, package = "gg",showMissing = FALSE))
   expect_silent(plot(res, package = "gg",showCenter = FALSE))
+  expect_silent({
+    res <- txp_example_results_CI
+    txpIDs(txp_example_results_CI) <- paste0(1:10)
+    plot(txp_example_results_CI, package = "gg")
+  })
 })
 
 ##----------------------------------------------------------------------------##

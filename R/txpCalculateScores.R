@@ -169,24 +169,39 @@ NULL
   slcMis <- .prepSlices(model = model, input = input)
   mis <- slcMis$mis
   slc <- slcMis$slc_main
+  if(ncol(slcMis$slc_main) == 0){slc <- NULL} else {slc <- slcMis$slc_main}
   if(ncol(slcMis$slc_low) == 0){slc_low <- NULL} else {slc_low <- slcMis$slc_low}
   if(ncol(slcMis$slc_up) == 0){slc_up <- NULL} else {slc_up <- slcMis$slc_up}
 
   ## Calculate ToxPi score
   wts <- txpWeights(model, adjusted = TRUE)
-  score <- rowSums(slc*rep(wts, each = NROW(slc)), na.rm = TRUE)
-
+  
+  if(is.null(slc)){score <- NULL} else {score <- rowSums(slc*rep(wts, each = NROW(slc)), na.rm = TRUE)}
+  if(is.null(slc_low)){score_low <- NULL} else {score_low <- rowSums(slc_low*rep(wts, each = NROW(slc_low)), na.rm = TRUE)}
+  if(is.null(slc_up)){score_up <- NULL} 
+  else {
+    slc_up_adjusted <- slc_up
+    slc_up_adjusted[is.na(slc_up_adjusted)] <- 1
+    score_up <- rowSums(slc_up_adjusted*rep(wts, each = NROW(slc_up_adjusted)))
+  } 
+  
   ## Calculate ToxPi ranks
-  rnks <- rank(-score, ties.method = slot(model, "rankTies"))
-
+  if(is.null(score)){rnks <- NULL} else{rnks <- rank(-score, ties.method = slot(model, "rankTies"))}
+  if(is.null(score_low)){rnk_low <- NULL} else{rnk_low <- rank(-score_low, ties.method = slot(model, "rankTies"))}
+  if(is.null(score_up)){rnk_up <- NULL} else{rnk_up <- rank(-score_up, ties.method = slot(model, "rankTies"))}
+  
   ## Assign IDs
   ids <- if (!is.null(id.var)) as.character(input[[id.var]]) else NULL
 
   TxpResult(txpScores = score,
+            txpScoreLows = score_low,
+            txpScoreUps = score_up,
             txpSliceScores = slc,
             txpSliceLows = slc_low,
             txpSliceUps = slc_up,
             txpRanks = rnks,
+            txpRankLows = rnk_low,
+            txpRankUps = rnk_up,
             txpMissing = mis,
             txpModel = model,
             txpIDs = ids)

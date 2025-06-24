@@ -44,7 +44,7 @@ setClass("TxpTransFuncList",
 #' @exportClass TxpSlice
 
 setClass("TxpSlice",
-         slots = c(txpValueNames = "character",
+         slots = c(txpValueNames = "character_OR_NULL",
                    txpTransFuncs = "TxpTransFuncList",
                    txpLowerNames = "character_OR_NULL",
                    txpLowerFuncs = "TxpTransFuncList",
@@ -107,12 +107,17 @@ setClass("TxpResultParam",
 #' @exportClass TxpResult
 
 setClassUnion("matrix_OR_NULL", members = c("matrix", "NULL"))
+setClassUnion("numeric_OR_NULL", members = c("numeric", "NULL"))
 setClass("TxpResult",
-         slots = c(txpScores = "numeric",
-                   txpSliceScores = "matrix",
+         slots = c(txpScores = "numeric_OR_NULL",
+                   txpScoreLows = "numeric_OR_NULL",
+                   txpScoreUps = "numeric_OR_NULL",
+                   txpSliceScores = "matrix_OR_NULL",
                    txpSliceLows = "matrix_OR_NULL",
                    txpSliceUps = "matrix_OR_NULL",
-                   txpRanks = "numeric",
+                   txpRanks = "numeric_OR_NULL",
+                   txpRankLows = "numeric_OR_NULL",
+                   txpRankUps = "numeric_OR_NULL",
                    txpMissing = "numeric",
                    txpModel = "TxpModel",
                    txpIDs = "character_OR_NULL"))

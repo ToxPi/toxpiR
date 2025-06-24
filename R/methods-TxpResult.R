@@ -106,14 +106,18 @@ NULL
 ##----------------------------------------------------------------------------##
 ## constructor -- NOT exported
 
-TxpResult <- function(txpScores, txpSliceScores, txpSliceLows, txpSliceUps, txpRanks, txpMissing,
+TxpResult <- function(txpScores, txpScoreLows, txpScoreUps, txpSliceScores, txpSliceLows, txpSliceUps, txpRanks, txpRankLows, txpRankUps, txpMissing,
                       txpModel, txpIDs = NULL) {
   new2("TxpResult",
        txpScores = txpScores,
+       txpScoreLows = txpScoreLows,
+       txpScoreUps = txpScoreUps,
        txpSliceScores = txpSliceScores,
        txpSliceLows = txpSliceLows,
        txpSliceUps = txpSliceUps,
        txpRanks = txpRanks,
+       txpRankLows = txpRankLows,
+       txpRankUps = txpRankUps,
        txpMissing = txpMissing,
        txpModel = txpModel,
        txpIDs = txpIDs)
@@ -126,6 +130,16 @@ TxpResult <- function(txpScores, txpSliceScores, txpSliceLows, txpSliceUps, txpR
 #' @export
 
 setMethod("txpScores", "TxpResult", function(x) { x@txpScores })
+
+#' @describeIn TxpResult-class Return `txpScoreLows` slot
+#' @export
+
+setMethod("txpScoreLows", "TxpResult", function(x) { x@txpScoreLows })
+
+#' @describeIn TxpResult-class Return `txpScoreUps` slot
+#' @export
+
+setMethod("txpScoreUps", "TxpResult", function(x) { x@txpScoreUps })
 
 #' @describeIn TxpResult-class Return `txpSliceScores` slot; default
 #' `adjusted = TRUE`, i.e. return slice scores adjusted for weight
@@ -151,7 +165,10 @@ setMethod("txpSliceUps", "TxpResult", function(x, adjusted = TRUE) {
   stopifnot(is_scalar_logical(adjusted))
   scr <- x@txpSliceUps
   if (adjusted) {
-    wts <- txpWeights(x, adjusted = TRUE)
+    nms <- names(txpSlices(x))
+    up_nms <- paste0(nms, "_up")
+    val_ind <- which(up_nms %in% colnames(scr))
+    wts <- txpWeights(x, adjusted = TRUE)[val_ind]
     scr <- scr*rep(wts, each = NROW(scr))
   }
   scr
@@ -166,7 +183,10 @@ setMethod("txpSliceLows", "TxpResult", function(x, adjusted = TRUE) {
   stopifnot(is_scalar_logical(adjusted))
   scr <- x@txpSliceLows
   if (adjusted) {
-    wts <- txpWeights(x, adjusted = TRUE)
+    nms <- names(txpSlices(x))
+    low_nms <- paste0(nms, "_low")
+    val_ind <- which(low_nms %in% colnames(scr))
+    wts <- txpWeights(x, adjusted = TRUE)[val_ind]
     scr <- scr*rep(wts, each = NROW(scr))
   }
   scr
@@ -176,6 +196,16 @@ setMethod("txpSliceLows", "TxpResult", function(x, adjusted = TRUE) {
 #' @export
 
 setMethod("txpRanks", "TxpResult", function(x) { x@txpRanks })
+
+#' @describeIn TxpResult-class Return `txpRankLows` slot
+#' @export
+
+setMethod("txpRankLows", "TxpResult", function(x) { x@txpRankLows })
+
+#' @describeIn TxpResult-class Return `txpRanks` slot
+#' @export
+
+setMethod("txpRankUps", "TxpResult", function(x) { x@txpRankUps })
 
 #' @describeIn TxpResult-class Return `txpMissing` slot
 #' @export
@@ -256,10 +286,14 @@ setMethod("txpValueNames", "TxpResult", function(x, simplify = FALSE) {
   us <- txpSliceUps(x, adjusted = FALSE)[i, , drop = FALSE]
   
   TxpResult(txpScores = txpScores(x)[i],
+            txpScoreLows = txpScoreLows(x)[i],
+            txpScoreUps = txpScoreUps(x)[i],
             txpSliceScores = ss,
             txpSliceLows = ls,
             txpSliceUps = us,
             txpRanks = txpRanks(x)[i],
+            txpRankLows = txpRankLows(x)[i],
+            txpRankUps = txpRankUps(x)[i],
             txpMissing = txpMissing(x),
             txpModel = txpModel(x),
             txpIDs = txpIDs(x)[i])
@@ -336,16 +370,67 @@ setReplaceMethod("names", "TxpResult", .TxpResult.replaceIDs)
 .TxpResult.validity <- function(object) {
   msg <- NULL
   scores <- txpScores(object)
+  scoreLows <- txpScoreLows(object)
+  scoreUps <- txpScoreUps(object)
+  
+  if(all(is.null(list(scores, scoreLows, scoreUps)))){
+    msg <- c(msg, "At least one scoring level must be non-NULL")
+  }
+  
   sliceScores <- txpSliceScores(object, adjusted = FALSE)
+  sliceLows <- txpSliceLows(object, adjusted = FALSE)
+  sliceUps <- txpSliceUps(object, adjusted = FALSE)
+  
+  ranks <- txpRanks(object)
+  rankLows <- txpRankLows(object)
+  rankUps <- txpRankUps(object)
+  
   model <- txpModel(object)
   ids <- txpIDs(object)
-  if (!is(sliceScores[1], "numeric")) {
-    msg <- c(msg, "Entries in txpSliceScores must be \"numeric\"")
+  lengths <- NULL
+  if(!is.null(scores)){
+    if (!is(ranks[1], "numeric")) {
+      msg <- c(msg, "Entries in txpRanks must be \"numeric\"")
+    }    
+    if (!is(sliceScores[1], "numeric")) {
+      msg <- c(msg, "Entries in txpSliceScores must be \"numeric\"")
+    }
+    if (length(scores) != nrow(sliceScores)) {
+      msg <- c(msg, "length(txpScores) != nrow(txpSliceScores)")
+    }
+    lengths <- c(lengths, length(scores))
   }
-  if (length(scores) != nrow(sliceScores)) {
-    msg <- c(msg, "length(txpScores) != nrow(txpSliceScores)")
+  
+  if(!is.null(scoreLows)){
+    if (!is(rankLows[1], "numeric")) {
+      msg <- c(msg, "Entries in txpRankLows must be \"numeric\"")
+    } 
+    if (!is(sliceLows[1], "numeric")) {
+      msg <- c(msg, "Entries in txpSliceLows must be \"numeric\"")
+    }
+    if (length(scoreLows) != nrow(sliceLows)) {
+      msg <- c(msg, "length(txpScoreLows) != nrow(txpSliceLows)")
+    }
+    lengths <- c(lengths, length(scoreLows))
   }
-  if (!is.null(ids) && length(ids) != length(scores)) {
+  
+  if(!is.null(scoreUps)){
+    if (!is(rankUps[1], "numeric")) {
+      msg <- c(msg, "Entries in txpRankUps must be \"numeric\"")
+    } 
+    if (!is(sliceUps[1], "numeric")) {
+      msg <- c(msg, "Entries in txpSliceUps must be \"numeric\"")
+    }
+    if (length(scoreUps) != nrow(sliceUps)) {
+      msg <- c(msg, "length(txpScoreUps) != nrow(txpSliceUps)")
+    }
+    lengths <- c(lengths, length(scoreUps))
+  }
+  
+  length <- unique(lengths)
+  if(length(length) != 1) { 
+    msg <- c(msg, "non-NULL txpScores, txpScoreLows, txpScoreUps must have same length")
+  } else if (!is.null(ids) && length(ids) != length(scores)) {
     msg <- c(msg, "length(txpIDs) != length(object)")
   }
   if (is.null(msg)) return(TRUE)
@@ -371,12 +456,34 @@ setValidity2("TxpResult", .TxpResult.validity)
   stopifnot(is_scalar_character(score.name))
   stopifnot(is_scalar_character(rank.name))
   stopifnot(is_scalar_logical(adjusted))
-  df <- as.data.frame(txpSliceScores(x, adjusted = adjusted), ...)
-  df[[score.name]] <- txpScores(x)
-  df[[rank.name]] <- txpRanks(x)
-  df[[id.name]] <- txpIDs(x)
-  outCols <- c(score.name, rank.name, names(txpSlices(x)))
-  if (!is.null(df[[id.name]])) {
+  
+  outCols <- c()
+  n <- length(txpScores(x) %||% txpScoreLows(x) %||% txpScoreUps(x))
+  df <- data.frame(row = seq_len(n))
+  
+  if(!is.null(txpScores(x))){
+    df <- cbind(df, txpSliceScores(x, adjusted = adjusted))
+    df[[score.name]] <- txpScores(x)
+    df[[rank.name]] <- txpRanks(x)
+    outCols <- c(outCols, score.name, rank.name, names(txpSlices(x)))
+  }
+  
+  if(!is.null(txpSliceLows(x, adjusted = adjusted))){
+    df[[paste0(score.name, "_low")]] <- txpScoreLows(x)
+    df[[paste0(rank.name, "_low")]] <- txpRankLows(x)
+    df <- cbind(df, txpSliceLows(x, adjusted = adjusted))
+    outCols <- c(outCols, paste0(score.name, "_low"), paste0(rank.name, "_low"), colnames(txpSliceLows(x)))
+  }
+  
+  if(!is.null(txpSliceUps(x, adjusted = adjusted))){
+    df[[paste0(score.name, "_up")]] <- txpScoreUps(x)
+    df[[paste0(rank.name, "_up")]] <- txpRankUps(x)
+    df <- cbind(df, txpSliceUps(x, adjusted = adjusted))
+    outCols <- c(outCols, paste0(score.name, "_up"), paste0(rank.name, "_up"), colnames(txpSliceUps(x)))
+  }
+
+  if (!is.null(txpIDs(x))) {
+    df[[id.name]] <- txpIDs(x)
     outCols <- c(id.name, outCols)
   } else {
     warning("txpIDs(x) is NULL; no ID column in returned data.frame.")

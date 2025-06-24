@@ -93,6 +93,12 @@ setGeneric("txpCalculateScores",
 setGeneric("txpScores", function(x, ...) standardGeneric("txpScores"))
 
 #' @rdname txpGenerics
+setGeneric("txpScoreLows", function(x, ...) standardGeneric("txpScoreLows"))
+
+#' @rdname txpGenerics
+setGeneric("txpScoreUps", function(x, ...) standardGeneric("txpScoreUps"))
+
+#' @rdname txpGenerics
 setGeneric("txpSliceScores", function(x, ...) standardGeneric("txpSliceScores"))
 
 #' @rdname txpGenerics
@@ -112,6 +118,12 @@ setGeneric("txpIDs<-", function(x, ..., value) standardGeneric("txpIDs<-"))
 
 #' @rdname txpGenerics
 setGeneric("txpRanks", function(x, ...) standardGeneric("txpRanks"))
+
+#' @rdname txpGenerics
+setGeneric("txpRankLows", function(x, ...) standardGeneric("txpRankLows"))
+
+#' @rdname txpGenerics
+setGeneric("txpRankUps", function(x, ...) standardGeneric("txpRankUps"))
 
 #' @rdname txpGenerics
 setGeneric("txpMissing", function(x, ...) standardGeneric("txpMissing"))
