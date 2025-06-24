@@ -154,7 +154,7 @@ NULL
   ## Make NA 0
   slc_main[is.na(slc_main)] <- 0
   slc_low[is.na(slc_low)] <- 0
-  slc_up[is.na(slc_up)] <- 0
+  slc_up[is.na(slc_up)] <- 1
 
   list(slc_main = slc_main, mis = mis, slc_low = slc_low, slc_up = slc_up)
 }
@@ -178,12 +178,7 @@ NULL
   
   if(is.null(slc)){score <- NULL} else {score <- rowSums(slc*rep(wts, each = NROW(slc)), na.rm = TRUE)}
   if(is.null(slc_low)){score_low <- NULL} else {score_low <- rowSums(slc_low*rep(wts, each = NROW(slc_low)), na.rm = TRUE)}
-  if(is.null(slc_up)){score_up <- NULL} 
-  else {
-    slc_up_adjusted <- slc_up
-    slc_up_adjusted[is.na(slc_up_adjusted)] <- 1
-    score_up <- rowSums(slc_up_adjusted*rep(wts, each = NROW(slc_up_adjusted)))
-  } 
+  if(is.null(slc_up)){score_up <- NULL} else {score_up <- rowSums(slc_up*rep(wts, each = NROW(slc_up)), na.rm = TRUE)}
   
   ## Calculate ToxPi ranks
   if(is.null(score)){rnks <- NULL} else{rnks <- rank(-score, ties.method = slot(model, "rankTies"))}
