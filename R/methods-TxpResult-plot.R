@@ -91,7 +91,7 @@ NULL
     borderColor = "white",
     sliceBorderColor = "white",
     sliceValueColor = NULL,
-    sliceLineColor = NULL,
+    sliceLineColor = "white",
     showMissing = TRUE,
     showCenter = TRUE) {
 
@@ -271,7 +271,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     yend <- rep(1, length(x1))
     plot <- plot + ggplot2::geom_segment(
       ggplot2::aes(x = x1, y = y1, xend = xend, yend = yend),
-      linetype = "dashed",
+      linetype = "solid",
       colour = sliceLineColor
     )
   }
@@ -334,10 +334,10 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       size = 3
     )
   }
-
-  plot <- plot + ggplot2::geom_hline(
-    yintercept = innerRad, color = "black", linewidth = 0.4
-  )
+# 
+#   plot <- plot + ggplot2::geom_hline(
+#     yintercept = innerRad, color = sliceLineColor, linewidth = 0.4
+#   )
 
   # if (!is.null(x@txpSliceLows){
   #   low_df <- profileDF
@@ -397,17 +397,24 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
   if(!is.null(x@txpSliceLows)){
     low_df <- profileDF[!is.na(profileDF$radii_low),]
     plot <- plot + 
-      geom_segment(data = low_df, aes(x = as.numeric(mid), y = innerRad + radii_low * (1 - innerRad), yend = innerRad + radii * (1 - innerRad)), linetype = "solid", colour = "black") +
-      geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad)), linetype = "solid", colour = "black")
+      geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad)), linetype = "2121", colour = "black")
   }
   
   if(!is.null(x@txpSliceUps)){
     up_df <- profileDF[!is.na(profileDF$radii_up),]
     plot <- plot + 
-      geom_segment(data = up_df, aes(x = as.numeric(mid), y = innerRad + radii * (1 - innerRad), yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = "black") +
-      geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = "black")
+      #geom_segment(data = up_df, aes(x = as.numeric(mid), y = innerRad + radii * (1 - innerRad), yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = "black") +
+      geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad)), linetype = "9393", colour = "black")
   }
   
+  # if(!is.null(x@txpSliceUps)){
+  #   plot <- plot + 
+  #     geom_segment(data = low_df, aes(x = as.numeric(mid), y = innerRad + radii_low * (1 - innerRad), yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = "black")
+  # } else {
+  #   plot <- plot +
+  #     geom_segment(data = low_df, aes(x = as.numeric(mid), y = innerRad + radii_low * (1 - innerRad), yend = innerRad + radii * (1 - innerRad)), linetype = "solid", colour = "black")
+  # }
+  # 
   if (!is.null(bgColor)) {
     plot <- plot + ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = bgColor, color = bgColor)
