@@ -348,9 +348,17 @@ setMethod("length", "TxpResult", function(x) { length(txpScores(x)) })
 #' @describeIn TxpResult-class Sort the ``TxpResult` object by their ranks
 #' @export
 
-setMethod("sort", "TxpResult", function(x, decreasing = TRUE,
+setMethod("sort", "TxpResult", function(x, decreasing = TRUE, level = "main",
                                         na.last = TRUE, ...) {
-  ind <- order(txpScores(x), decreasing = decreasing, na.last = na.last, ...)
+  if(level == "main"){
+    ind <- order(txpScores(x), decreasing = decreasing, na.last = na.last, ...)
+  } else if(level == "low"){
+    ind <- order(txpScoreLows(x), decreasing = decreasing, na.last = na.last, ...)
+  } else if(level == "up"){
+    ind <- order(txpScoreUps(x), decreasing = decreasing, na.last = na.last, ...)
+  } else {
+    stop("Invalid level parameter for sort function. Options are 'main', 'low', or 'up'")
+  }
   x[ind]
 })
 
