@@ -3,19 +3,28 @@
 ##----------------------------------------------------------------------------##
 
 #' @name txpExportGui
-#' @title Export comma-separated file intended for ToxPi GUI
-#' @description Export comma-separated file intended for ToxPi GUI
+#' @title Export comma-separated file intended for ToxPi GUI (Deprecated)
+#' @description This function is deprecated. Please use [txpExportCSV()] with `format = "gui"` instead.
+#' @seealso [txpExportCSV()]
+#' @keywords internal
 #' 
 #' @param fileName Character scalar, the path to the output file
 #' @inheritParams txpCalculateScores 
 #' @inheritParams pieGrob
 #' 
 #' @details 
-#' The GUI differs in two meaninful ways for exporting `toxpiR` models: (1) the
-#' GUI only allows for integer weights; (2) the GUI applies transformation 
-#' functions differently. 
+#' This function exports data and models to csv files for easy sharing and 
+#' recreation. The suggested format is toxpiR, whereas gui is provided for 
+#' backwards compatibility with the toxpi GUI. The GUI format differs in several
+#' meaningful ways: (1) the GUI only allows for integer weights; (2) the GUI can
+#' only apply metric transformations; (3) all metrics within a slice undergo one 
+#' common metric transformation; (4) metric transformations can only be chosen 
+#' from a predefined subset; (5) negative handling can only be treated as 
+#' missing; (6) the GUI doesn't allow for user provided confidence intervals 
 #' 
-#' `txpExporGui` will not work for models with non-integer weights.
+#' `txpExportCSV` with `format = "gui"` will not work for models with 
+#' non-integer weights, negative handling set to missing, nor slices containing 
+#' upper/lower CIs
 #' 
 #' The GUI only applies a single transformation function to every input within
 #' a slice, and only functions from a pre-determined list; `toxpiR` allows 
@@ -38,6 +47,7 @@ txpExportGui <- function(fileName = "txpModel.csv",
                          fills = NULL) {
   
   ## TODO: fileName checks, can it be written? does it already exist? etc.
+  lifecycle::deprecate_warn("1.3.0", "txpExportGUI()", "txpExportCSV()")
   
   stopifnot(is_scalar_character(fileName))
   
@@ -52,7 +62,10 @@ txpExportGui <- function(fileName = "txpModel.csv",
     stop("ToxPi GUI only allows integer weights in the model.")
   }
   if (slot(model, "negativeHandling") != "missing") {
-    stop("ToxPi GUI only compatible with negativeHandling of 'missing'.")
+    stop("ToxPi GUI only compatible with models containing negativeHandling of 'missing'.")
+  }
+  if (any(!sapply(txpLowerNames(model), is.null)) || any(!sapply(txpUpperNames(model), is.null))) {
+    stop("ToxPi GUI not compatible for models containing slices with confidence intervals.")
   }
   ## Check for slice-level transformations 
   tfs <- txpTransFuncs(model)
