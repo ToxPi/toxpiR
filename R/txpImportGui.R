@@ -24,6 +24,7 @@
 #' @export
 
 txpImportGui <- function(guiDataFile) {
+  lifecycle::deprecate_warn("1.3.0", "txpImportGUI()", "txpImportCSV()")
   
   stopifnot(is_scalar_character(guiDataFile))
   stopifnot(file.exists(guiDataFile))
@@ -35,98 +36,4 @@ txpImportGui <- function(guiDataFile) {
   res
   
 }
-
-#' @importFrom tidyr separate
-#' @importFrom rlang is_scalar_character
-
-.fromGui <- function(gui) {
-  
-  sliceInfoInd <- grepl('^#', gui[ , 1])
-  infoNms <- c("name", "wt", "col", "scale")
-  sliceInfo <- tidyr::separate(data = gui[sliceInfoInd, ], 
-                               col = "V1", 
-                               into = infoNms, 
-                               sep = "!", 
-                               convert = FALSE)
-  sliceInfo$name <- sub('^#\\s+', '', sliceInfo$name)
-  sliceInfo$col  <- sub('^0x', '#', sliceInfo$col)
-  sliceInfo$wt   <- sapply(strsplit(sliceInfo$wt, split = '/'), function(x) {
-    as.numeric(x[1]) / as.numeric(ifelse(length(x) == 2, x[2], 1))
-  })
-  sliceInfo <- sliceInfo[ , infoNms]
-  validFuncs <- sliceInfo$scale %in% names(TXP_GUI_FUNCS)
-  if (!all(validFuncs)) {
-    f <- paste(sliceInfo$scale[!validFuncs], collapse = ", ")
-    msg <- sprintf(paste("Given scaling function(s), '%s', not compatible with",
-                         "toxpiR. See ?txpImportGui for more information."),
-                   f)
-    return(simpleCondition(msg))
-  }
-  sliceInfo$ind <- lapply(seq_len(nrow(gui[sliceInfoInd, ])), function(i) {
-    which(gui[sliceInfoInd, ][i, ] == "x")
-  })
-
-  inputStart <- which(grepl('^row$', gui[ , 1], ignore.case = TRUE))
-  if (length(inputStart) != 1) {
-    inputStart <- which(gui[ , 1] == '') # Format D
-  }
-  inputNms <- as.character(gui[inputStart, ])
-  input <- gui[(inputStart + 1):nrow(gui), ]
-  input[] <- lapply(input, type.convert, as.is = TRUE)
-  names(input) <- inputNms
-  input[input < 0] <- NA
-  row.names(input) <- 1:nrow(input)
-  
-  mkSl <- function(i) {
-    s <- TxpSlice(txpValueNames = inputNms[sliceInfo[i, "ind"][[1]]])
-    sl <- length(s)
-    tnm <- sliceInfo[i, "scale"]
-    tfs <- .repFunc(TXP_GUI_FUNCS[[tnm]], sl)
-    names(tfs) <- rep(tnm, sl)
-    txpTransFuncs(s) <- tfs
-    s
-  }
-  
-  sliceLst <- lapply(seq(nrow(sliceInfo)), mkSl)
-  names(sliceLst) <- sliceInfo$name
-  sliceLst <- as.TxpSliceList(sliceLst) 
-  
-  model <- TxpModel(txpSlices = sliceLst, txpWeights = sliceInfo[ , "wt"], negativeHandling = "missing")
-  
-  vnms <- unique(txpValueNames(txpSlices(model), simplify = TRUE))
-  numCols <- sapply(input[vnms], is.numeric)
-  if (!all(numCols)) {
-    cols <- paste(vnms[numCols], collapse = ", ")
-    msg <- sprintf(paste("Following input column(s), '%s', could not be",
-                         "coerced to numeric."),
-                   cols)
-    return(simpleCondition(msg))
-  }
-  
-  list(model = model, input = input, fills = sliceInfo$col)
-  
-}
-
-#' @importFrom stats sd
-
-TXP_GUI_FUNCS <- list(
-  'linear(x)' = function(x) { x },
-  'hit count' = function(x) { as.integer(x != 0) },
-  '-log10(x)' = function(x) { ifelse(x <= 0, NA, -log10(x)) },
-  '-log10(x)+log10(max(x))' = function(x) {
-    ifelse(x <= 0, NA, -log10(x) + log10(max(x, na.rm = TRUE)))
-  },
-  '-log10(x)+6' = function(x) { ifelse(x <= 0, NA, -log10(x) + 6) },
-  '-ln(x)' = function(x) { ifelse(x <= 0, NA, -log(x)) },
-  'log10(x)' = function(x) { ifelse(x <= 0, NA, log10(x)) },
-  'sqrt(x)' = function(x) { sqrt(x) },
-  'zscore(x)' = function(x) { (x - mean(x, na.rm = TRUE))/sd(x, na.rm = TRUE) },
-  'uniform(x)' = function(x) {
-    xmn <- min(x, na.rm = TRUE)
-    xmx <- max(x, na.rm = TRUE)
-    (x - xmn)/(xmx - xmn)
-  }
-)
-
-##----------------------------------------------------------------------------##
 
