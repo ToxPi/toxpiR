@@ -97,8 +97,7 @@ NULL
 
   if(is.null(txpIDs(x))){
     warning("txpIDs(<txpResult>) is NULL; using indices as IDs. txpIDs(<txpResult>) can be assigned prior to plotting if desired")
-    n <- length(txpScores(x) %||% txpScoreLows(x) %||% txpScoreUps(x))
-    txpIDs(x) <- paste0(1:n)
+    suppressWarnings(txpIDs(x) <- rownames(as.data.frame(x)))
   }
   
   if (tolower(substr(package[1], 0, 2)) == "gg") {
