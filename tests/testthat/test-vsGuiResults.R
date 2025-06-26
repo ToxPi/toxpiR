@@ -14,9 +14,12 @@ test_that("We reproduce GUI results", {
   ##------------------------------##
   
   # Load data and model
-  expect_warning({
+  warnings <- testthat::capture_warnings({
     gui1 <- txpImportGui(file.path("guiFiles", "gui_test_data.csv"))
   })
+  
+  expect_true(any(grepl("deprecated", warnings)))
+  expect_true(any(grepl("columns are duplicated", warnings)))
   
   # Compute scores
   expect_silent({
@@ -56,9 +59,9 @@ test_that("We reproduce GUI results", {
   })
   
   # Load data and model
-  expect_silent({
+  expect_warning({
     gui2 <- txpImportGui(data_exported)
-  })
+  }, "deprecated")
   
   # Compute scores
   expect_silent({
