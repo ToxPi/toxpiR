@@ -14,17 +14,15 @@
 #' 
 #' @details 
 #' This function exports data and models to csv files for easy sharing and 
-#' recreation. The suggested format is toxpiR, whereas gui is provided for 
-#' backwards compatibility with the toxpi GUI. The GUI format differs in several
+#' recreation with the Toxpi GUI. The GUI format differs in several
 #' meaningful ways: (1) the GUI only allows for integer weights; (2) the GUI can
 #' only apply metric transformations; (3) all metrics within a slice undergo one 
 #' common metric transformation; (4) metric transformations can only be chosen 
 #' from a predefined subset; (5) negative handling can only be treated as 
 #' missing; (6) the GUI doesn't allow for user provided confidence intervals 
 #' 
-#' `txpExportCSV` with `format = "gui"` will not work for models with 
-#' non-integer weights, negative handling set to missing, nor slices containing 
-#' upper/lower CIs
+#' This function will not work for models with non-integer weights, 
+#' negativeHandling set to missing, nor slices containing upper/lower CIs
 #' 
 #' The GUI only applies a single transformation function to every input within
 #' a slice, and only functions from a pre-determined list; `toxpiR` allows 
