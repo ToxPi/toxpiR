@@ -90,12 +90,13 @@ txpExportCSV <- function(fileName = "txpModel.csv",
   
   #get text for slice tfs
   tfsText <- lapply(
-    X = tfs,
-    FUN = function(func){
+    tfs,
+    function(func) {
+      if (is.null(func)) return("x")
       gsub(" ", "", paste0(deparse(body(func)), collapse = ""))
     }
   )
-
+  
   slcVec <- names(model)
   vnmLst <-  txpValueNames(model)
   vnmLstLower <- txpLowerNames(model)
@@ -105,7 +106,7 @@ txpExportCSV <- function(fileName = "txpModel.csv",
   itfsLst <- txpTransFuncs(txpSlices(model))
   itfsLstLower <- txpLowerFuncs(txpSlices(model))
   itfsLstUpper <- txpUpperFuncs(txpSlices(model))
-  
+
   #CHANGE THIS LOGIC TO AVOID DOING ANY TRANSFORMATIONS
   mat <- matrix(NA_real_, nrow = NROW(input), ncol = 0)
   for (i in allVnm) {#looks like they do the transform here, take that out
