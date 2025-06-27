@@ -50,6 +50,7 @@ txpExportCSV <- function(fileName = "txpModel.csv",
   stopifnot(is_scalar_character(fileName))
   stopifnot(is_scalar_character(format))
   if(!(format %in% c("toxpiR", "gui"))){stop("Invalid format parameter. Valid options are 'toxpiR' and 'gui'.")}
+  if (!is.null(id.var) && !(id.var %in% colnames(input))){stop(paste0("Provided id.var (", id.var, ") not found in provided input"))}
   
   ## Test inputs
   .chkModelInput(model = model, input = input)
@@ -201,7 +202,7 @@ txpExportCSV <- function(fileName = "txpModel.csv",
   if (any(!sapply(txpLowerNames(model), is.null)) || any(!sapply(txpUpperNames(model), is.null))) {
     stop("ToxPi GUI not compatible for models containing slices with confidence intervals.")
   }
-  
+
   ## Check for slice-level transformations 
   tfs <- txpTransFuncs(model)
   if (any(!sapply(tfs, is.null))) {
