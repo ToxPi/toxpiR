@@ -85,6 +85,8 @@ TxpModel <- function(txpSlices, txpWeights = NULL, txpTransFuncs = NULL, negativ
   if (!is(txpTransFuncs, "TxpTransFuncList")) {
     txpTransFuncs <- as.TxpTransFuncList(txpTransFuncs)
   }
+  
+  .checkInputNameDuplicates(txpSlices)
   new2("TxpModel", 
        txpSlices = txpSlices, 
        txpWeights = txpWeights, 
@@ -111,6 +113,7 @@ setReplaceMethod("txpSlices", "TxpModel", function(x, value) {
   if (!is(value, "TxpSliceList")) value <- as.TxpSliceList(value)
   x@txpSlices <- value
   validObject(x)
+  .checkInputNameDuplicates(x@txpSlices)
   x
 })
 
@@ -276,13 +279,6 @@ setMethod("txpCalculateScores", c("TxpModel", "data.frame"), .TxpModel.calc)
     tmp <- "length(txpSlices(<TxpModel>)) != length(txpTransFuncs(<TxpModel>))"
     msg <- c(msg, tmp)
   }
-  valNms <- txpValueNames(sl, simplify = TRUE)
-  valDup <- duplicated(valNms)
-  if (any(valDup)) {
-    dup <- valNms[valDup]
-    wrn <- "The following 'input' columns are duplicated in the model:\n    %s"
-    warning(sprintf(wrn, paste(dup, collapse = ", ")))
-  }
   if(!(nh %in% validNegHand)){
     tmp <- paste("Invalid negativeHandling. Options are", paste(validNegHand, collapse = ","))
     msg <- c(msg, tmp)
@@ -296,6 +292,25 @@ setMethod("txpCalculateScores", c("TxpModel", "data.frame"), .TxpModel.calc)
 }
 
 setValidity2("TxpModel", .TxpModel.validity)
+
+##----------------------------------------------------------------------------##
+## duplicated input warning
+
+.checkInputNameDuplicates <- function(txpSlices) {
+  nms     <- txpValueNames(txpSlices, simplify = TRUE)
+  nms_low <- txpLowerNames(txpSlices, simplify = TRUE)
+  nms_up  <- txpUpperNames(txpSlices, simplify = TRUE)
+
+  all_nms <- c(nms, nms_low, nms_up)
+  dup <- unique(all_nms[duplicated(all_nms)])
+
+  if (length(dup)) {
+    warning(sprintf(
+      "The following 'input' columns are duplicated across slices in the model:\n    %s",
+      paste(dup, collapse = ", ")
+    ), call. = FALSE)
+  }
+}
 
 ##----------------------------------------------------------------------------##
 ## show
