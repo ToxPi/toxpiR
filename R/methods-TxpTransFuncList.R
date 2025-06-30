@@ -91,7 +91,11 @@ setValidity2("TxpTransFuncList", .TxpTransFuncList.validity)
 ## show
 
 .TxpTransFuncList.show <- function(object) {
-  lnms <- .listDisplayNames(object)
+  if(length(object) == 0) {
+    lnms <- NULL
+  } else {
+    lnms <- .listDisplayNames(object)
+  }
   .coolcat("  TxpTransFuncList of length %d: %s\n", lnms)
 }
 
