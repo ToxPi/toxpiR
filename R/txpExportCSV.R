@@ -120,26 +120,30 @@ txpExportCSV <- function(fileName = "txpModel.csv",
   metricFuncsText <- list()
   metricFuncsTextLower <- list()
   metricFuncsTextUpper <- list()
-  
+
   for(sliceName in slcVec){
     tmpList <- c()
-    for(funcName in names(itfsLst[[sliceName]])){
-      func <- itfsLst[[sliceName]][[funcName]]
-      tmpList <- c(tmpList, gsub(" ", "", paste0(deparse(body(func)), collapse = "")))
+
+    for(index in seq_along(itfsLst[[sliceName]])){
+      func <- itfsLst[[sliceName]][[index]]
+      xfunc <- .setFuncArg(func, "x")
+      tmpList <- c(tmpList, .getFuncBodyText(xfunc))
     }
     metricFuncsText[[sliceName]] <- tmpList
     
     tmpList <- c()
-    for(funcName in names(itfsLstLower[[sliceName]])){
-      func <- itfsLstLower[[sliceName]][[funcName]]
-      tmpList <- c(tmpList, gsub(" ", "", paste0(deparse(body(func)), collapse = "")))
+    for(index in seq_along(itfsLstLower[[sliceName]])){
+      func <- itfsLstLower[[sliceName]][[index]]
+      lfunc <- .setFuncArg(func, "l")
+      tmpList <- c(tmpList, .getFuncBodyText(lfunc))
     }
     metricFuncsTextLower[[sliceName]] <- tmpList
     
     tmpList <- c()
-    for(funcName in names(itfsLstUpper[[sliceName]])){
-      func <- itfsLstUpper[[sliceName]][[funcName]]
-      tmpList <- c(tmpList, gsub(" ", "", paste0(deparse(body(func)), collapse = "")))
+    for(index in seq_along(itfsLstUpper[[sliceName]])){
+      func <- itfsLstUpper[[sliceName]][[index]]
+      ufunc <- .setFuncArg(func, "u")
+      tmpList <- c(tmpList, .getFuncBodyText(ufunc))
     }
     metricFuncsTextUpper[[sliceName]] <- tmpList
   }
@@ -297,5 +301,21 @@ txpExportCSV <- function(fileName = "txpModel.csv",
   out <- rbind(hdr, c('', vnmVec), cbind(ids, mat))
   
   return(out)
+}
+
+.setFuncArg <- function(func, arg_name) {
+  if (is.null(func)) {
+    arg_sym <- as.name(arg_name)
+    return(eval(call("function", setNames(as.pairlist(alist(x = )), arg_name), arg_sym)))
+  }
+  
+  orig_arg <- names(formals(func))[1]
+  new_formals <- setNames(as.pairlist(alist(x = )), arg_name)
+  new_body <- do.call(substitute, list(body(func), setNames(list(as.name(arg_name)), orig_arg)))
+  eval(call("function", new_formals, new_body))
+}
+
+.getFuncBodyText <- function(func) {
+  gsub(" ", "", paste0(deparse(body(func)), collapse = ""))
 }
 ##----------------------------------------------------------------------------##
