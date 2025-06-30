@@ -145,7 +145,7 @@ setReplaceMethod("txpValueNames", "TxpSlice", function(x, value) {
     }
     if(length(x@txpValueNames) < length(x@txpTransFuncs)){
       needed <- length(x@txpValueNames) - length(x@txpTransFuncs)
-      x@txpTransFuncs <- TxpTransFuncList(unlist(as.list(x@txpTransFuncs)[1:(length(x@txpTransFuncs) - length(x@txpValueNames))]))
+      x@txpTransFuncs <- do.call(TxpTransFuncList, as.list(x@txpTransFuncs)[1:(length(x@txpTransFuncs) - length(x@txpValueNames))])
     }
     
     validObject(x)
@@ -199,7 +199,7 @@ setReplaceMethod("txpLowerNames", "TxpSlice", function(x, value) {
     }
     if(length(x@txpLowerNames) < length(x@txpLowerFuncs)){
       needed <- length(x@txpLowerNames) - length(x@txpLowerFuncs)
-      x@txpLowerFuncs <- TxpTransFuncList(unlist(as.list(x@txpLowerFuncs)[1:(length(x@txpLowerFuncs) - length(x@txpLowerNames))]))
+      x@txpLowerFuncs <- do.call(TxpTransFuncList, as.list(x@txpLowerFuncs)[1:(length(x@txpLowerFuncs) - length(x@txpLowerNames))])
     }
     
     validObject(x)
@@ -253,7 +253,7 @@ setReplaceMethod("txpUpperNames", "TxpSlice", function(x, value) {
     }
     if(length(x@txpUpperNames) < length(x@txpUpperFuncs)){
       needed <- length(x@txpUpperNames) - length(x@txpUpperFuncs)
-      x@txpUpperFuncs <- TxpTransFuncList(unlist(as.list(x@txpUpperFuncs)[1:(length(x@txpUpperFuncs) - length(x@txpUpperNames))]))
+      x@txpUpperFuncs <- do.call(TxpTransFuncList, as.list(x@txpUpperFuncs)[1:(length(x@txpUpperFuncs) - length(x@txpUpperNames))])
     }
     
     validObject(x)
