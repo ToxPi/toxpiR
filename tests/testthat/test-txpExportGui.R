@@ -30,7 +30,7 @@ test_that("We can export GUI-ready files", {
   }, "deprecated")
   # Non-integer weights
   test_model <- gui$model
-  expect_warning({
+  expect_silent({
     # See Note1 above
     txpWeights(test_model)[1] <- 0.5
   })
@@ -46,7 +46,7 @@ test_that("We can export GUI-ready files", {
     }), "deprecated")
   # Slice-level transformation function
   test_model <- gui$model
-  expect_warning({
+  expect_silent({
     # See Note1 above
     txpTransFuncs(test_model)[[1]] <- function(x) log10(x)
   })
@@ -63,10 +63,9 @@ test_that("We can export GUI-ready files", {
     "deprecated")
   # Input-level transformation function that creates negative values
   test_model <- gui$model
-  expect_warning({
-    # See Note1 above
+  expect_warning({ 
     txpTransFuncs(txpSlices(test_model)[[1]])[[1]] <- function(x) -x
-  })
+  }, "duplicated")
   expect_warning(
     expect_warning({
       txpExportGui(
