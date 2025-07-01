@@ -33,7 +33,7 @@
 #' complexity, any exported models with slice-level transformation functions
 #' will not export at the input level. In other words, the export will have only
 #' the final slice scores. Otherwise, all input-level transformations will be 
-#' performed, the and the export will contain transformed input-level data with
+#' performed, and the export will contain transformed input-level data with
 #' the `linear(x)` GUI transformation.
 #' 
 #' @importFrom rlang is_scalar_character
@@ -115,6 +115,10 @@ txpExportCSV <- function(fileName = "txpModel.csv",
   
   ## Determine colors
   nSlices <- length(slcVec)
+  if (is.null(fills)) fills <- getOption("txp.fills", TXP_FILLS)
+  if (nSlices > length(fills)) fills <- colorRampPalette(fills)(nSlices)
+  if (nSlices < length(fills)) fills <- fills[1:nSlices]
+  fills <- .col2hex(fills)
   
   #get metrics funcs as text strings
   metricFuncsText <- list()
