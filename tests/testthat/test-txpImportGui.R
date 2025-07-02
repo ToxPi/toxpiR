@@ -26,7 +26,7 @@ test_that("We can import GUI outputs", {
     expect_warning(
       expect_error({
         txpImportGui(file.path("guiFiles", "gui_output_nonNumeric.csv"))
-      }, "metric1, metric3"), 
+      }, "metric2, metric4"), 
       "columns are duplicated"),
     "deprecated")
   # expect_silent({

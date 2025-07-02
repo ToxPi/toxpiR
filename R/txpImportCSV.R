@@ -220,10 +220,13 @@ txpImportCSV <- function(csvDataFile) {
                     negativeHandling = negativeHandling,
                     rankTies = rankHandling)
   
-  vnms <- unique(txpValueNames(txpSlices(model), simplify = TRUE))
+  vnms <- unique(c(txpValueNames(txpSlices(model), simplify = TRUE),
+                   txpLowerNames(txpSlices(model), simplify = TRUE),
+                   txpUpperNames(txpSlices(model), simplify = TRUE))
+  )
   numCols <- sapply(input[vnms], is.numeric)
   if (!all(numCols)) {
-    cols <- paste(vnms[numCols], collapse = ", ")
+    cols <- paste(vnms[!numCols], collapse = ", ")
     msg <- sprintf(paste("Following input column(s), '%s', could not be",
                          "coerced to numeric."),
                    cols)
@@ -314,7 +317,7 @@ is_valid_math_function <- function(text, var) {
   vnms <- unique(txpValueNames(txpSlices(model), simplify = TRUE))
   numCols <- sapply(input[vnms], is.numeric)
   if (!all(numCols)) {
-    cols <- paste(vnms[numCols], collapse = ", ")
+    cols <- paste(vnms[!numCols], collapse = ", ")
     msg <- sprintf(paste("Following input column(s), '%s', could not be",
                          "coerced to numeric."),
                    cols)
