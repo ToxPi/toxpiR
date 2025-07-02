@@ -76,7 +76,7 @@ txpImportCSV <- function(csvDataFile) {
   sliceInfo$ind <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
     inds <- which(sapply(row, is_valid_math_function, var = "x"))
-    if (length(inds) == 0) stop()
+    if (length(inds) == 0) return(NULL)
     inds + 1
   })
   sliceInfo$indLower <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
@@ -96,7 +96,7 @@ txpImportCSV <- function(csvDataFile) {
   sliceInfo$metricTF <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
     valid_exprs <- row[sapply(row, is_valid_math_function, var = "x")]
-    if (length(valid_exprs) == 0) stop()
+    if (length(valid_exprs) == 0) return(NULL)
     valid_exprs
   })
   sliceInfo$metricTFLower <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
@@ -127,15 +127,20 @@ txpImportCSV <- function(csvDataFile) {
   #build the slices
   mkSl <- function(i) {
     #main slice
-    nmsMain <- inputNms[sliceInfo[i, "ind"][[1]]]
-    transforms <- paste0("function(x) ", sliceInfo[i, "metricTF"][[1]])
-    tfs <- list()
-    for(j in 1:length(transforms)){
-      tfs <- c(tfs, eval(parse(text = transforms[j])))
+    if(!is.null(sliceInfo[i, "ind"][[1]])){
+      nmsMain <- inputNms[sliceInfo[i, "ind"][[1]]]
+      transforms <- paste0("function(x) ", sliceInfo[i, "metricTF"][[1]])
+      tfs <- list()
+      for(j in 1:length(transforms)){
+        tfs <- c(tfs, eval(parse(text = transforms[j])))
+      }
+      names(tfs) <- transforms
+      tfsMain <- do.call(TxpTransFuncList, tfs)
+    } else {
+      nmsMain <- NULL
+      tfsMain <- NULL
     }
-    names(tfs) <- transforms
-    tfsMain <- do.call(TxpTransFuncList, tfs)
-
+      
     #lower confidence interval slice
     if(!is.null(sliceInfo[i, "indLower"][[1]])){
       nmsLower <- inputNms[sliceInfo[i, "indLower"][[1]]]
@@ -172,7 +177,7 @@ txpImportCSV <- function(csvDataFile) {
              txpLowerNames = nmsLower, txpLowerFuncs = tfsLower,
              txpUpperNames = nmsUpper, txpUpperFuncs = tfsUpper)
   }
-  
+
   sliceLst <- lapply(seq(nrow(sliceInfo)), mkSl)
   names(sliceLst) <- sliceInfo$name
   sliceLst <- as.TxpSliceList(sliceLst) 
