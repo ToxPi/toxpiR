@@ -75,19 +75,19 @@ txpImportCSV <- function(csvDataFile) {
   #get metric transformation functions (non-empty cells) in slice info header
   sliceInfo$ind <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    inds <- which(sapply(row, is_valid_math_function, var = "x"))
+    inds <- which(sapply(row, is_valid_math_function, var = "x") | row %in% names(TXP_GUI_FUNCS))
     if (length(inds) == 0) return(NULL)
     inds + 1
   })
   sliceInfo$indLower <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    inds <- which(sapply(row, is_valid_math_function, var = "l"))
+    inds <- which(sapply(row, is_valid_math_function, var = "l") | row %in% names(TXP_GUI_FUNCS_LOWER))
     if (length(inds) == 0) return(NULL)
     inds + 1
   })
   sliceInfo$indUpper <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    inds <- which(sapply(row, is_valid_math_function, var = "u"))
+    inds <- which(sapply(row, is_valid_math_function, var = "u") | row %in% names(TXP_GUI_FUNCS_UPPER))
     if (length(inds) == 0) return(NULL)
     inds + 1
   })
@@ -95,19 +95,19 @@ txpImportCSV <- function(csvDataFile) {
   # Get the valid expressions corresponding to the functions
   sliceInfo$metricTF <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    valid_exprs <- row[sapply(row, is_valid_math_function, var = "x")]
+    valid_exprs <- row[sapply(row, is_valid_math_function, var = "x") | row %in% names(TXP_GUI_FUNCS)]
     if (length(valid_exprs) == 0) return(NULL)
     valid_exprs
   })
   sliceInfo$metricTFLower <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    valid_exprs <- row[sapply(row, is_valid_math_function, var = "l")]
+    valid_exprs <- row[sapply(row, is_valid_math_function, var = "l") | row %in% names(TXP_GUI_FUNCS_LOWER)]
     if (length(valid_exprs) == 0) return(NULL)
     valid_exprs
   })
   sliceInfo$metricTFUpper <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    valid_exprs <- row[sapply(row, is_valid_math_function, var = "u")]
+    valid_exprs <- row[sapply(row, is_valid_math_function, var = "u") | row %in% names(TXP_GUI_FUNCS_UPPER)]
     if (length(valid_exprs) == 0) return(NULL)
     valid_exprs
   })
@@ -132,9 +132,15 @@ txpImportCSV <- function(csvDataFile) {
       transforms <- paste0("function(x) ", sliceInfo[i, "metricTF"][[1]])
       tfs <- list()
       for(j in 1:length(transforms)){
-        tfs <- c(tfs, eval(parse(text = transforms[j])))
+        func <- sliceInfo[i, "metricTF"][[1]][[j]]
+        if(func %in% names(TXP_GUI_FUNCS)){
+          newFunc <- TXP_GUI_FUNCS[[func]]
+          tfs <- c(tfs, newFunc)
+        } else {
+          tfs <- c(tfs, eval(parse(text = transforms[j])))
+        }
       }
-      names(tfs) <- transforms
+      names(tfs) <- nmsMain
       tfsMain <- do.call(TxpTransFuncList, tfs)
     } else {
       nmsMain <- NULL
@@ -147,25 +153,36 @@ txpImportCSV <- function(csvDataFile) {
       transforms <- paste0("function(l) ", sliceInfo[i, "metricTFLower"][[1]])
       tfs <- list()
       for(j in 1:length(transforms)){
-        tfs <- c(tfs, eval(parse(text = transforms[j])))
+        func <- sliceInfo[i, "metricTFLower"][[1]][[j]]
+        if(func %in% names(TXP_GUI_FUNCS_LOWER)){
+          newFunc <- TXP_GUI_FUNCS_LOWER[[func]]
+          tfs <- c(tfs, newFunc)
+        } else {
+          tfs <- c(tfs, eval(parse(text = transforms[j])))
+        }
       }
-      names(tfs) <- transforms
+      names(tfs) <- nmsLower
       tfsLower <- do.call(TxpTransFuncList, tfs)
     } else {
       nmsLower <- NULL
       tfsLower <- NULL
     }
     
-
     #upper confidence interval slice
     if(!is.null(sliceInfo[i, "indUpper"][[1]])){
       nmsUpper <- inputNms[sliceInfo[i, "indUpper"][[1]]]
       transforms <- paste0("function(u) ", sliceInfo[i, "metricTFUpper"][[1]])
       tfs <- list()
       for(j in 1:length(transforms)){
-        tfs <- c(tfs, eval(parse(text = transforms[j])))
+        func <- sliceInfo[i, "metricTFUpper"][[1]][[j]]
+        if(func %in% names(TXP_GUI_FUNCS_UPPER)){
+          newFunc <- TXP_GUI_FUNCS_UPPER[[func]]
+          tfs <- c(tfs, newFunc)
+        } else {
+          tfs <- c(tfs, eval(parse(text = transforms[j])))
+        }
       }
-      names(tfs) <- transforms
+      names(tfs) <- nmsUpper
       tfsUpper <- do.call(TxpTransFuncList, tfs)
     } else {
       nmsUpper <- NULL
@@ -329,4 +346,41 @@ TXP_GUI_FUNCS <- list(
   }
 )
 
+TXP_GUI_FUNCS_LOWER <- list(
+  'linear(l)' = function(l) { l },
+  'hit count(l)' = function(l) { as.integer(l != 0) },
+  '-log10(l)' = function(l) { ifelse(l <= 0, NA, -log10(l)) },
+  '-log10(l)+log10(max(l))' = function(l) {
+    ifelse(l <= 0, NA, -log10(l) + log10(max(l, na.rm = TRUE)))
+  },
+  '-log10(l)+6' = function(l) { ifelse(l <= 0, NA, -log10(l) + 6) },
+  '-ln(l)' = function(l) { ifelse(l <= 0, NA, -log(l)) },
+  'log10(l)' = function(l) { ifelse(l <= 0, NA, log10(l)) },
+  'sqrt(l)' = function(l) { sqrt(l) },
+  'zscore(l)' = function(l) { (l - mean(l, na.rm = TRUE))/sd(l, na.rm = TRUE) },
+  'uniform(l)' = function(l) {
+    xmn <- min(l, na.rm = TRUE)
+    xmx <- max(l, na.rm = TRUE)
+    (l - xmn)/(xmx - xmn)
+  }
+)
+
+TXP_GUI_FUNCS_UPPER <- list(
+  'linear(u)' = function(u) { u },
+  'hit count(u)' = function(u) { as.integer(u != 0) },
+  '-log10(u)' = function(u) { ifelse(u <= 0, NA, -log10(u)) },
+  '-log10(u)+log10(max(u))' = function(u) {
+    ifelse(u <= 0, NA, -log10(u) + log10(max(u, na.rm = TRUE)))
+  },
+  '-log10(u)+6' = function(u) { ifelse(u <= 0, NA, -log10(u) + 6) },
+  '-ln(u)' = function(u) { ifelse(u <= 0, NA, -log(u)) },
+  'log10(u)' = function(u) { ifelse(u <= 0, NA, log10(u)) },
+  'sqrt(u)' = function(u) { sqrt(u) },
+  'zscore(u)' = function(u) { (u - mean(u, na.rm = TRUE))/sd(u, na.rm = TRUE) },
+  'uniform(u)' = function(u) {
+    xmn <- min(u, na.rm = TRUE)
+    xmx <- max(u, na.rm = TRUE)
+    (u - xmn)/(xmx - xmn)
+  }
+)
 ##----------------------------------------------------------------------------##
