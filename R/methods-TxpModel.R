@@ -26,6 +26,18 @@
 #' @param adjusted Scalar logical, when `TRUE` weights are adjusted to sum to 1
 #' @param simplify Scalar logical, when `TRUE` the returned `list` is simplified
 #' 
+#' @details
+#' The `rankTies` slot is passed to [base::rank] for calculating the 
+#' ranks of observations, with the highest-scoring observation having the rank
+#' of 1. 
+#' 
+#' `negativeHandling` indicates how to handle negative values in the 
+#' inputs. The ToxPi algorithm originally intended to accept non-negative 
+#' potency values; the GUI, therefore, treats negative values in the input as 
+#' missing. By default, [txpCalculateScores] keeps negative values
+#' (`negativeHandling = "keep"`). To replicate the GUI behavior, users
+#' can set `negativeHandling = "missing"`. 
+#' 
 #' @examples 
 #' ## Create TxpSliceList & TxpTransFuncList objects
 #' s1 <- list(S1 = TxpSlice("inpt1"), S2 = TxpSlice("inpt2"))

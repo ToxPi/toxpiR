@@ -4,8 +4,8 @@
 
 #' @name TxpResultParam-class
 #' @aliases TxpResultParam
-#' @title ToxPi Result Parameters
-#' @description S4 class to store ToxPi result calculation parameters
+#' @title ToxPi Result Parameters (Deprecated)
+#' @description This function is deprecated. Please use [txpModel(<txpResult>)] instead.
 #' 
 #' @slot rank.ties.method Character scalar, method used to calculate score 
 #' ranks passed to [base::rank]
@@ -16,7 +16,7 @@
 #' @param negative.value.handling Passed to `negative.value.handling` slot
 #' 
 #' @details 
-#' If more than one value is passed to `TxoResultParam` scalar options, e.g. 
+#' If more than one value is passed to `TxpResultParam` scalar options, e.g. 
 #' `rank.ties.method`, only the first value is kept. 
 #' 
 #' The `rank.ties.method` slot is passed to [base::rank] for calculating the 

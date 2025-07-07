@@ -18,7 +18,8 @@
 #' @slot txpMissing `vector(<numeric>)` with data missingness
 #' @slot txpModel [TxpModel] object
 #' @slot txpIDs `vector(<character>)` of observation IDs
-#'
+#' @slot txpResultParam [TxpResultParam] object
+#' 
 #' @param x [TxpResult] object
 #' @param value Replacement value
 #' @param adjusted Logical scalar, when `TRUE` the weights are adjusted to sum
@@ -107,7 +108,7 @@ NULL
 ## constructor -- NOT exported
 
 TxpResult <- function(txpScores, txpScoreLows, txpScoreUps, txpSliceScores, txpSliceLows, txpSliceUps, txpRanks, txpRankLows, txpRankUps, txpMissing,
-                      txpModel, txpIDs = NULL) {
+                      txpModel, txpIDs = NULL, txpResultParam) {
   new2("TxpResult",
        txpScores = txpScores,
        txpScoreLows = txpScoreLows,
@@ -120,7 +121,8 @@ TxpResult <- function(txpScores, txpScoreLows, txpScoreUps, txpSliceScores, txpS
        txpRankUps = txpRankUps,
        txpMissing = txpMissing,
        txpModel = txpModel,
-       txpIDs = txpIDs)
+       txpIDs = txpIDs,
+       txpResultParam = txpResultParam)
 }
 
 ##----------------------------------------------------------------------------##
@@ -215,7 +217,15 @@ setMethod("txpMissing", "TxpResult", function(x) { x@txpMissing })
 #' @describeIn TxpResult-class Return `txpResultParam` slot
 #' @export
 
-setMethod("txpResultParam", "TxpResult", function(x) { x@txpResultParam })
+setMethod("txpResultParam", "TxpResult", function(x) { 
+  lifecycle::deprecate_warn(
+    when = "1.3.0",
+    what = "txpResultParam()",
+    details = "This slot will be removed in a future version as the same information
+    is now provided in txpModel(<txpResult>)."
+  )
+  x@txpResultParam 
+})
 
 #' @describeIn TxpResult-class Return `txpModel` slot
 #' @export
@@ -296,7 +306,8 @@ setMethod("txpValueNames", "TxpResult", function(x, simplify = FALSE) {
             txpRankUps = txpRankUps(x)[i],
             txpMissing = txpMissing(x),
             txpModel = txpModel(x),
-            txpIDs = txpIDs(x)[i])
+            txpIDs = txpIDs(x)[i],
+            txpResultParam = suppressWarnings(txpResultParam(x)))
 }
 
 #' @rdname TxpResult-class

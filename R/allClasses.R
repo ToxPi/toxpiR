@@ -120,7 +120,8 @@ setClass("TxpResult",
                    txpRankUps = "numeric_OR_NULL",
                    txpMissing = "numeric",
                    txpModel = "TxpModel",
-                   txpIDs = "character_OR_NULL"))
+                   txpIDs = "character_OR_NULL",
+                   txpResultParam = "TxpResultParam"))
 
 setClassUnion("TxpResult_OR_NULL", members = c("TxpResult", "NULL"))
 

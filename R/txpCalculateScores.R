@@ -13,7 +13,8 @@
 #'  Providing here will overwrite the existing txpModel slot with the newly provided parameter
 #' @param negative.value.handling Should be provided in txpModel objects under `negativeHandling`. 
 #' Providing here will overwrite the existing txpModel slot with the newly provided parameter 
-#'
+#' @inheritParams txpGenerics
+
 #' @details
 #' `txpCalculateScores` is implemented as an S4 generic function with methods
 #' for [TxpModel] and [TxpModelList].
@@ -23,7 +24,7 @@
 #' Missingness is determined after applying input-level transformations but
 #' before applying slice-level transformations.
 #'
-#' @seealso [TxpModel], [TxpResult]
+#' @seealso [TxpModel], [TxpResult], [TxpResultParam]
 #'
 #' @template roxgn-loadExamples
 #' @template roxgn-calcTxpModel
@@ -179,7 +180,9 @@ NULL
 
   ## Test inputs
   .chkModelInput(model = model, input = input)
-
+  param <- TxpResultParam(rank.ties.method = rankTies(model),
+                          negative.value.handling = negativeHandling(model))
+  
   ## Preprocess data, aggregate into slices, and determine missing data
   slcMis <- .prepSlices(model = model, input = input)
   mis <- slcMis$mis
@@ -214,7 +217,8 @@ NULL
             txpRankUps = rnk_up,
             txpMissing = mis,
             txpModel = model,
-            txpIDs = ids)
+            txpIDs = ids, 
+            txpResultParam = param)
   
 }
 
