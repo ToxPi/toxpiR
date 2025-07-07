@@ -9,7 +9,10 @@
 #' @param model [TxpModel] object or [TxpModelList] object
 #' @param input data.frame object containing the model input data
 #' @param id.var Character scalar, column in 'input' to store in
-#' @inheritParams txpGenerics
+#' @param rank.ties.method Should be provided in txpModel objects under `rankTies`. 
+#'  Providing here will overwrite the existing txpModel slot with the newly provided parameter
+#' @param negative.value.handling Should be provided in txpModel objects under `negativeHandling`. 
+#' Providing here will overwrite the existing txpModel slot with the newly provided parameter 
 #'
 #' @details
 #' `txpCalculateScores` is implemented as an S4 generic function with methods
@@ -160,7 +163,19 @@ NULL
 }
 
 .calculateScores <- function(model, input,
-                             id.var = NULL) {
+                             id.var = NULL,
+                             rank.ties.method = NULL,
+                             negative.value.handling = NULL) {
+  ## Check for overwritten model parameters 
+  if(!is.null(rank.ties.method)){
+    warning("Provided rank.ties.method overwriting rankTies slot in txpModel")
+    model@rankTies <- rank.ties.method
+  }
+  if(!is.null(negative.value.handling)){
+    warning("Provided negative.value.handling overwriting negativeHandling slot in txpModel")
+    model@negativeHandling <- negative.value.handling
+  }
+  validObject(model)  
 
   ## Test inputs
   .chkModelInput(model = model, input = input)
@@ -172,7 +187,7 @@ NULL
   if(ncol(slcMis$slc_main) == 0){slc <- NULL} else {slc <- slcMis$slc_main}
   if(ncol(slcMis$slc_low) == 0){slc_low <- NULL} else {slc_low <- slcMis$slc_low}
   if(ncol(slcMis$slc_up) == 0){slc_up <- NULL} else {slc_up <- slcMis$slc_up}
-
+  
   ## Calculate ToxPi score
   wts <- txpWeights(model, adjusted = TRUE)
   
@@ -187,7 +202,7 @@ NULL
   
   ## Assign IDs
   ids <- if (!is.null(id.var)) as.character(input[[id.var]]) else NULL
-
+  
   TxpResult(txpScores = score,
             txpScoreLows = score_low,
             txpScoreUps = score_up,
@@ -200,7 +215,7 @@ NULL
             txpMissing = mis,
             txpModel = model,
             txpIDs = ids)
-
+  
 }
 
 ##----------------------------------------------------------------------------##

@@ -69,7 +69,9 @@ setValidity2("TxpModelList", .TxpModelList.validity)
 ## txpCalculateScores
 
 .TxpModelList.calc <- function(model, input, 
-                               id.var = NULL) {
+                               id.var = NULL,
+                               rank.ties.method = NULL,
+                               negative.value.handling = NULL) {
   if (is.list(model)) {
     model <- try(as.TxpModelList(model), silent = TRUE)
     if (is(model, "try-error")) {
@@ -78,7 +80,9 @@ setValidity2("TxpModelList", .TxpModelList.validity)
   }
   resLst <- lapply(model, .calculateScores,
                    input = input, 
-                   id.var = id.var)
+                   id.var = id.var,
+                   rank.ties.method = rank.ties.method,
+                   negative.value.handling = negative.value.handling)
   as.TxpResultList(resLst)
 }
 

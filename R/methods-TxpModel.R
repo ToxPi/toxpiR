@@ -240,10 +240,14 @@ setReplaceMethod("names", "TxpModel", function(x, value) {
 })
 
 .TxpModel.calc <- function(model, input, 
-                           id.var = NULL) {
+                           id.var = NULL,
+                           rank.ties.method = NULL,
+                           negative.value.handling = NULL) {
   .calculateScores(model = model, 
                    input = input, 
-                   id.var = id.var)
+                   id.var = id.var,
+                   rank.ties.method = rank.ties.method,
+                   negative.value.handling = negative.value.handling)
 }
 
 #' @describeIn TxpModel-class Return number of slices in model; shortcut for
