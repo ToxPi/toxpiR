@@ -55,7 +55,9 @@ NULL
   .avgLevel <- function(nms, input, negative.value.handling, level){
     dat <- input[nms]
     if (negative.value.handling == "missing") dat[dat < 0]  <- NA
-    tfs <- txpTransFuncs(slice)
+    if(level == "low"){ tfs <- txpLowerFuncs(slice)}
+    else if(level == "up"){tfs <- txpUpperFuncs(slice)}
+    else {tfs <- txpTransFuncs(slice)}
     for (i in seq_along(nms)) {
       if (is.null(tfs[[i]])) next
       dat[[i]] <- tfs[[i]](dat[[i]])
@@ -71,7 +73,11 @@ NULL
   
   #main score
   nms <- txpValueNames(slice)
-  sum <- .avgLevel(nms, input, negative.value.handling, "mid")$x
+  if(!is.null(nms)){
+    sum <- .avgLevel(nms, input, negative.value.handling, "mid")$x
+  } else {
+    sum <- NULL
+  }
   mis <- .avgLevel(nms, input, negative.value.handling, "mid")$y
   
   #lower confidence interval
@@ -105,10 +111,6 @@ NULL
   
   mis <- sapply(x, "[[", "mis")
   
-  ##########TEMP FOR TESTING
-  #x$s1$low_sum <- rep(10, length(x$s1$sum))
-  #print(x)
-  ##########
   cols <- c("sum", "low_sum", "up_sum")
   # Extract each component into a named list
   slc <- lapply(names(x), function(name) {
