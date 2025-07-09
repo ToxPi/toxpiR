@@ -151,8 +151,11 @@ setMethod("txpScoreUps", "TxpResult", function(x) { x@txpScoreUps })
 setMethod("txpSliceScores", "TxpResult", function(x, adjusted = TRUE) {
   stopifnot(is_scalar_logical(adjusted))
   scr <- x@txpSliceScores
+  if(is.null(scr)){return(NULL)}
   if (adjusted) {
-    wts <- txpWeights(x, adjusted = TRUE)
+    nms <- names(txpSlices(x))
+    val_ind <- which(nms %in% colnames(scr))
+    wts <- txpWeights(x, adjusted = TRUE)[val_ind]
     scr <- scr*rep(wts, each = NROW(scr))
   }
   scr
@@ -166,6 +169,7 @@ setMethod("txpSliceScores", "TxpResult", function(x, adjusted = TRUE) {
 setMethod("txpSliceUps", "TxpResult", function(x, adjusted = TRUE) {
   stopifnot(is_scalar_logical(adjusted))
   scr <- x@txpSliceUps
+  if(is.null(scr)){return(NULL)}
   if (adjusted) {
     nms <- names(txpSlices(x))
     up_nms <- paste0(nms, "_up")
@@ -184,6 +188,7 @@ setMethod("txpSliceUps", "TxpResult", function(x, adjusted = TRUE) {
 setMethod("txpSliceLows", "TxpResult", function(x, adjusted = TRUE) {
   stopifnot(is_scalar_logical(adjusted))
   scr <- x@txpSliceLows
+  if(is.null(scr)){return(NULL)}
   if (adjusted) {
     nms <- names(txpSlices(x))
     low_nms <- paste0(nms, "_low")
@@ -481,10 +486,10 @@ setValidity2("TxpResult", .TxpResult.validity)
   df <- data.frame(row = seq_len(n))
   
   if(!is.null(txpScores(x))){
-    df <- cbind(df, txpSliceScores(x, adjusted = adjusted))
     df[[score.name]] <- txpScores(x)
     df[[rank.name]] <- txpRanks(x)
-    outCols <- c(outCols, score.name, rank.name, names(txpSlices(x)))
+    df <- cbind(df, txpSliceScores(x, adjusted = adjusted))
+    outCols <- c(outCols, score.name, rank.name, colnames(txpSliceScores(x)))
   }
   
   if(!is.null(txpSliceLows(x, adjusted = adjusted))){
