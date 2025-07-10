@@ -28,7 +28,7 @@
   duplicated(as.list(x))
 }
 
-.chkModelInput <- function(model, input) {
+.chkModelInput <- function(model, input, id.var) {
   stopifnot(is(model, "TxpModel"))
   stopifnot(is.data.frame(input))
   valNms <- txpValueNames(model, simplify = TRUE)
@@ -44,6 +44,20 @@
     nc2n <- valNms[!inptCls]
     msg <- "The following 'input' columns not numeric:\n    %s"
     stop(sprintf(msg, paste(nc2n, collapse = ", ")))
+  }
+  if(!is.null(id.var)){
+    stopifnot(is.numeric(id.var) || is.character(id.var))
+    if(is.character(id.var) && !(id.var %in% inptNms)){
+      msg <- "Specified identifier column %s not found in 'input'"
+      stop(sprintf(msg, id.var))
+    }
+    if(is.numeric(id.var) && !(id.var >=1 & id.var <= length(inptNms))){
+      stop("Invalid column index specified for 'id.var' for the provided 'input'")
+    }
+    if(any(duplicated(input[[id.var]]))){
+      msg <- paste("'input' identifier column", id.var, "has non-unique values")
+      stop(msg)
+    }
   }
 }
 

@@ -454,7 +454,7 @@ setReplaceMethod("names", "TxpResult", .TxpResult.replaceIDs)
   length <- unique(lengths)
   if(length(length) != 1) { 
     msg <- c(msg, "non-NULL txpScores, txpScoreLows, txpScoreUps must have same length")
-  } else if (!is.null(ids) && length(ids) != length(scores)) {
+  } else if (length(ids) != length(scores)) {
     msg <- c(msg, "length(txpIDs) != length(object)")
   }
   if (is.null(msg)) return(TRUE)

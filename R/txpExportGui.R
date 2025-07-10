@@ -50,7 +50,7 @@ txpExportGui <- function(fileName = "txpModel.csv",
   stopifnot(is_scalar_character(fileName))
   
   ## Test inputs
-  .chkModelInput(model = model, input = input)
+  .chkModelInput(model = model, input = input, id.var = id.var)
   
   ## Clean up infinite in input
   input <- .rmInfinite(model, input)
@@ -72,7 +72,7 @@ txpExportGui <- function(fileName = "txpModel.csv",
     warning("Model contains slice-level transformation; export will not ",
             "contain input-level data. See ?txpExportGui for more ",
             "information.")
-    res <- .calculateScores(model = model, input = input)
+    res <- .calculateScores(model = model, input = input, id.var = id.var)
     mat <- txpSliceScores(res)
     slcVec <- vnmVec <- colnames(mat)
   } else {

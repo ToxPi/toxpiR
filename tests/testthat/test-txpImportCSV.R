@@ -8,8 +8,8 @@
 test_that("We can upload toxpiR format csv files accurately", {
   expect_silent({
     csv <- txpImportCSV(file.path("csvFiles", "txp_example_input_CI.csv"))
-    res <- txpCalculateScores(csv$model, csv$input)
-    res2 <- txpCalculateScores(txp_example_model_CI, txp_example_input_CI)
+    res <- txpCalculateScores(csv$model, csv$input, id.var = 1)
+    res2 <- txpCalculateScores(txp_example_model_CI, txp_example_input_CI, id.var = 1)
   })
   expect_identical(suppressWarnings(as.data.frame(res)), suppressWarnings(as.data.frame(res2)))
   

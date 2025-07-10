@@ -6,15 +6,18 @@
 #' @title Calculate ToxPi Scores for the given model and input data
 #' @description Calculate ToxPi Scores for the given model and input data
 #'
-#' @param model [TxpModel] object or [TxpModelList] object
-#' @param input data.frame object containing the model input data
-#' @param id.var Character scalar, column in 'input' to store in
-#' @param rank.ties.method Should be provided in txpModel objects under `rankTies`. 
-#'  Providing here will overwrite the existing txpModel slot with the newly provided parameter
-#' @param negative.value.handling Should be provided in txpModel objects under `negativeHandling`. 
-#' Providing here will overwrite the existing txpModel slot with the newly provided parameter 
-#' @inheritParams txpGenerics
-
+#' @param model S4 [TxpModel] object or [TxpModelList] object. The txpModel object to be used in the calculation
+#' @param input data.frame. The input dataframe to be analyzed that corresponds to the txpModel object provided
+#' @param id.var Optional scalar character. The name of the column in the input containing
+#' unique identifiers for the rows. If NULL, the row indices of the original data will be used as
+#' unique names for identification
+#' @param rank.ties.method Scalar character. Optionally overwrite `rankTies` in 
+#' the provided txpModel with a new method for handling rank ties. Options are 
+#' average', 'first', 'last', 'random', 'max', 'min'; when NULL keeps method stated in model
+#' @param negative.value.handling Scalar character. Optionally overwrite `negativeHandling` in 
+#' the provided txpModel with a new method for handling negative data. Options are 
+#' 'keep' and missing'; when NULL keeps method stated in model
+#' 
 #' @details
 #' `txpCalculateScores` is implemented as an S4 generic function with methods
 #' for [TxpModel] and [TxpModelList].
@@ -34,7 +37,7 @@
 #'
 #' @export
 
-NULL
+NULL 
 
 .sumNA <- function(x, level, max_cols) {
   if (all(is.na(x))) return(NA_real_)
@@ -99,7 +102,7 @@ NULL
   list(sum = sum, mis = mis, low_sum = low_sum, up_sum = up_sum)
 }
 
-.prepSlices <- function(model, input) {
+.prepSlices <- function(model, input, id.var) {
   
   ## Clean up infinite in input
   input <- .rmInfinite(model = model, input = input)
@@ -139,11 +142,19 @@ NULL
   
   ## Scale slice scores from 0 to 1
   slc <- lapply(slc, .z2o)
-  
-  # Initialize empty matrices for low and up columns
+
+  # Initialize empty matrices for confidence levels
+  if (is.null(id.var)) {
+    id_names <- as.character(1:nrow(slc[[1]]))
+  } else {
+    id_names <- input[[id.var]]
+  }
   slc_main <- matrix(ncol = 0, nrow = nrow(slc[[1]]))
+  rownames(slc_main) <- id_names
   slc_low <- matrix(ncol = 0, nrow = nrow(slc[[1]]))
+  rownames(slc_low) <- id_names
   slc_up <- matrix(ncol = 0, nrow = nrow(slc[[1]]))
+  rownames(slc_up) <- id_names
   
   # Loop through the list of matrices and extract the columns
   for (mat in slc) {
@@ -181,12 +192,12 @@ NULL
   validObject(model)  
 
   ## Test inputs
-  .chkModelInput(model = model, input = input)
+  .chkModelInput(model = model, input = input, id.var = id.var)
   param <- TxpResultParam(rank.ties.method = rankTies(model),
                           negative.value.handling = negativeHandling(model))
   
   ## Preprocess data, aggregate into slices, and determine missing data
-  slcMis <- .prepSlices(model = model, input = input)
+  slcMis <- .prepSlices(model = model, input = input, id.var = id.var)
   mis <- slcMis$mis
   slc <- slcMis$slc_main
   if(ncol(slcMis$slc_main) == 0){slc <- NULL} else {slc <- slcMis$slc_main}
@@ -195,10 +206,31 @@ NULL
   
   ## Calculate ToxPi score
   wts <- txpWeights(model, adjusted = TRUE)
-  
-  if(is.null(slc)){score <- NULL} else {score <- rowSums(slc*rep(wts, each = NROW(slc)), na.rm = TRUE)}
-  if(is.null(slc_low)){score_low <- NULL} else {score_low <- rowSums(slc_low*rep(wts, each = NROW(slc_low)), na.rm = TRUE)}
-  if(is.null(slc_up)){score_up <- NULL} else {score_up <- rowSums(slc_up*rep(wts, each = NROW(slc_up)), na.rm = TRUE)}
+
+  if (!is.null(slc)) {
+    nms <- names(txpSlices(model))
+    val_ind <- which(nms %in% colnames(slc))
+    aligned_wts <- wts[val_ind]
+    score <- rowSums(slc*rep(aligned_wts, each = NROW(slc)), na.rm = TRUE)
+  } else {
+    score <- NULL
+  }
+  if (!is.null(slc_low)) {
+    nms <- paste0(names(txpSlices(model)), "_low")
+    val_ind <- which(nms %in% colnames(slc_low))
+    aligned_wts <- wts[val_ind]
+    score_low <- rowSums(slc_low*rep(aligned_wts, each = NROW(slc_low)), na.rm = TRUE)
+  } else {
+    score_low <- NULL
+  }
+  if (!is.null(slc_up)) {
+    nms <- paste0(names(txpSlices(model)), "_up")
+    val_ind <- which(nms %in% colnames(slc_up))
+    aligned_wts <- wts[val_ind]
+    score_up <- rowSums(slc_up*rep(aligned_wts, each = NROW(slc_up)), na.rm = TRUE)
+  } else {
+    score_up <- NULL
+  }
   
   ## Calculate ToxPi ranks
   if(is.null(score)){rnks <- NULL} else{rnks <- rank(-score, ties.method = slot(model, "rankTies"))}
@@ -206,7 +238,13 @@ NULL
   if(is.null(score_up)){rnk_up <- NULL} else{rnk_up <- rank(-score_up, ties.method = slot(model, "rankTies"))}
   
   ## Assign IDs
-  ids <- if (!is.null(id.var)) as.character(input[[id.var]]) else NULL
+  n <- length(score %||% score_low %||% score_up)
+  if (!is.null(id.var)){
+    ids <- as.character(input[[id.var]])
+  } else {
+    warning("id.var not provided. Generating unique identifiers for samples based on original row indices")
+    ids <- as.character(c(1:n))
+  }
   
   TxpResult(txpScores = score,
             txpScoreLows = score_low,

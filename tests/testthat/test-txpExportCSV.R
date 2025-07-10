@@ -17,10 +17,10 @@ test_that("We can export toxpiR format csv files accurately", {
       fills = csv$fills,
       format = "toxpiR")
     data_imported <- txpImportCSV(data_exported)
-    res <- txpCalculateScores(data_imported$model, data_imported$input)
-    res2 <- txpCalculateScores(csv$model, csv$input)
+    res <- txpCalculateScores(data_imported$model, data_imported$input, id.var = 1)
+    res2 <- txpCalculateScores(csv$model, csv$input, id.var = 1)
   })
-  expect_identical(suppressWarnings(as.data.frame(res)), suppressWarnings(as.data.frame(res2)))
+  expect_identical(as.data.frame(res), as.data.frame(res2))
 
   expect_silent({
     gui <- suppressWarnings(txpImportCSV(file.path("guiFiles", "gui_output_data.csv")))
@@ -32,8 +32,8 @@ test_that("We can export toxpiR format csv files accurately", {
       fills = gui$fills,
       format = "toxpiR")
     data_imported <-suppressWarnings(txpImportCSV(data_exported))
-    res <- txpCalculateScores(data_imported$model, data_imported$input)
-    res2 <- txpCalculateScores(gui$model, gui$input)
+    res <- txpCalculateScores(data_imported$model, data_imported$input, id.var = 1)
+    res2 <- txpCalculateScores(gui$model, gui$input, id.var = 1)
   })
   expect_identical(suppressWarnings(as.data.frame(res)), suppressWarnings(as.data.frame(res2)))
   

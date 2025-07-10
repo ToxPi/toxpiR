@@ -87,7 +87,15 @@ setGeneric("rankTies<-",
 
 #' @rdname txpCalculateScores
 setGeneric("txpCalculateScores",
-           function(model, input, ...) standardGeneric("txpCalculateScores"))
+           function(model,
+                    input,
+                    id.var = NULL,
+                    rank.ties.method = NULL,
+                    negative.value.handling = NULL
+           ) {
+             standardGeneric("txpCalculateScores")
+           }
+)
 
 #' @rdname txpGenerics
 setGeneric("txpScores", function(x, ...) standardGeneric("txpScores"))

@@ -23,7 +23,7 @@ test_that("We reproduce GUI results", {
   
   # Compute scores
   expect_silent({
-    res1 <- txpCalculateScores(gui1$model, gui1$input)
+    res1 <- txpCalculateScores(gui1$model, gui1$input, id.var = 1)
   })
   
   # Compare ToxPi Scores
@@ -65,7 +65,7 @@ test_that("We reproduce GUI results", {
   
   # Compute scores
   expect_silent({
-    res2 <- txpCalculateScores(gui2$model, gui2$input)
+    res2 <- txpCalculateScores(gui2$model, gui2$input, id.var = 1)
   })
   
   # Compare ToxPi Scores
@@ -126,7 +126,7 @@ test_that("We reproduce GUI results", {
   
   # Compute scores
   expect_silent({
-    res3 <- txpCalculateScores(model, input)
+    res3 <- txpCalculateScores(model, input, id.var = 1)
   })
   
   # Compare ToxPi Scores

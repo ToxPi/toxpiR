@@ -53,7 +53,7 @@ txpExportCSV <- function(fileName = "txpModel.csv",
   if (!is.null(id.var) && !(id.var %in% colnames(input))){stop(paste0("Provided id.var (", id.var, ") not found in provided input"))}
   
   ## Test inputs
-  .chkModelInput(model = model, input = input)
+  .chkModelInput(model = model, input = input, id.var = id.var)
   
   ## Clean up infinite in input
   input <- .rmInfinite(model, input)
@@ -219,7 +219,7 @@ txpExportCSV <- function(fileName = "txpModel.csv",
     warning("Model contains slice-level transformation; export will not ",
             "contain input-level data. See ?txpExportGui for more ",
             "information.")
-    res <- .calculateScores(model = model, input = input)
+    res <- .calculateScores(model = model, input = input, id.var = id.var)
     mat <- txpSliceScores(res)
     slcVec <- vnmVec <- colnames(mat)
   } else {

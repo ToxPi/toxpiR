@@ -8,7 +8,7 @@
 #' 
 #' @slot txpSlices [TxpSliceList] object
 #' @slot txpWeights numeric vector specifying the relative weight of each slice; 
-#' when NULL, defaults to 1 (equal weighting) for each slice 
+#' when NULL, defaults to 1 (equal weighting) for each slice
 #' @slot txpTransFuncs [TxpTransFuncList] object (or list of functions 
 #' coercible to TxpTransFuncList)
 #' @slot negativeHandling scalar character specifying how to handle negative values;
@@ -91,6 +91,7 @@ TxpModel <- function(txpSlices, txpWeights = NULL, txpTransFuncs = NULL, negativ
   if (!is(txpSlices, "TxpSliceList")) txpSlices <- as.TxpSliceList(txpSlices)
   n <- length(txpSlices)
   if (is.null(txpWeights)) txpWeights <- rep(1, n)
+  if (is.null(names(txpWeights))){names(txpWeights) <- names(txpSlices)}
   if (is.null(txpTransFuncs)) {
     txpTransFuncs <- as(List(vector("list", n)), "TxpTransFuncList")
   }
@@ -124,6 +125,7 @@ setMethod("txpSlices", "TxpModel", function(x) {
 setReplaceMethod("txpSlices", "TxpModel", function(x, value) {
   if (!is(value, "TxpSliceList")) value <- as.TxpSliceList(value)
   x@txpSlices <- value
+  names(txpWeights(x)) <- names(x)
   validObject(x)
   .checkInputNameDuplicates(x@txpSlices)
   x
@@ -147,6 +149,7 @@ setMethod("txpWeights", "TxpModel", function(x, adjusted = FALSE) {
 
 setReplaceMethod("txpWeights", "TxpModel", function(x, value) {
   x@txpWeights <- value
+  if(is.null(names(x@txpWeights))){names(x@txpWeights) <- names(x)}
   validObject(x)
   x
 })
@@ -247,6 +250,7 @@ setMethod("names", "TxpModel", function(x) {
 
 setReplaceMethod("names", "TxpModel", function(x, value) {
   names(x@txpSlices) <- value
+  names(x@txpWeights) <- value
   validObject(x, complete = TRUE)
   x
 })
@@ -289,6 +293,10 @@ setMethod("txpCalculateScores", c("TxpModel", "data.frame"), .TxpModel.calc)
   validRank <- c("average", "first", "last", "random", "max", "min")
   if (length(sl) != length(wt)) {
     tmp <- "length(txpSlices(<TxpModel>)) != length(txpWeights(<TxpModel>))"
+    msg <- c(msg, tmp)
+  }
+  if(!identical(names(wt), names(object))){
+    tmp <- paste("names(txpWeights(<TxpModel>)) != names(txpSlices(<TxpModel))")
     msg <- c(msg, tmp)
   }
   if (length(sl) != length(tf)) {

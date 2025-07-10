@@ -1,0 +1,9 @@
+# Generated From toxpiR!missing!max,,,,,,,,,
+# ExampleA!3!0x0000FF!log(x+1),l,l,x,x,u,u,,,
+# ExampleB!1!0xFF0000!x ,,,,,,,log(l),u^2,
+# ExampleC!2!0xFFA500!x,,,,,,,,,sqrt(x)
+,Slice1_L1,Slice1_L2,Slice1_M1,Slice1_M2,Slice1_U1,Slice1_U2,Slice2_L1,Slice2_U1,Slice3_M1
+1,0,0,1,1,2,2,0,0,0
+2,1,1,2,2,2,2,1,NA,1
+3,2,2,2,2,3,3,2,2,NA
+4,1,1,3,3,4,4,3,3,3
