@@ -8,7 +8,7 @@
 #'
 #' @param model S4 [TxpModel] object or [TxpModelList] object. The txpModel object to be used in the calculation
 #' @param input data.frame. The input dataframe to be analyzed that corresponds to the txpModel object provided
-#' @param id.var Optional scalar character. The name of the column in the input containing
+#' @param id.var Optional scalar character or numeric. The name or index of the column in the input containing
 #' unique identifiers for the rows. If NULL, the row indices of the original data will be used as
 #' unique names for identification
 #' @param rank.ties.method Scalar character. Optionally overwrite `rankTies` in 
@@ -68,9 +68,9 @@ NULL
     max_cols <- sapply(dat, function(col) if (all(is.na(col))) NA_real_ else max(col, na.rm = TRUE))
     x <- apply(dat, MARGIN = 1, .sumNA, level, max_cols)
     x <- x/length(nms)
-    
+
     dat <- unlist(dat)
-    y <- sum(!is.finite(dat)) / length(dat)
+    y <- sum(!is.finite(dat)) 
     return(list(x = x,y = y))
   }
   
@@ -78,28 +78,35 @@ NULL
   nms <- txpValueNames(slice)
   if(!is.null(nms)){
     sum <- .avgLevel(nms, input, negative.value.handling, "mid")$x
+    mis <- .avgLevel(nms, input, negative.value.handling, "mid")$y
   } else {
     sum <- NULL
+    mis <- NULL
   }
-  mis <- .avgLevel(nms, input, negative.value.handling, "mid")$y
   
   #lower confidence interval
-  nms <- txpLowerNames(slice)
-  if(!is.null(nms)){
-    low_sum <- .avgLevel(nms, input, negative.value.handling, "low")$x
+  low_nms <- txpLowerNames(slice)
+  if(!is.null(low_nms)){
+    low_sum <- .avgLevel(low_nms, input, negative.value.handling, "low")$x
+    low_mis <- .avgLevel(low_nms, input, negative.value.handling, "low")$y
   } else {
     low_sum <- NULL
+    low_mis <- NULL
   }
   
   #upper confidence interval
-  nms <- txpUpperNames(slice)
-  if(!is.null(nms)){
-    up_sum <- .avgLevel(nms, input, negative.value.handling, "up")$x
+  up_nms <- txpUpperNames(slice)
+  if(!is.null(up_nms)){
+    up_sum <- .avgLevel(up_nms, input, negative.value.handling, "up")$x
+    up_mis <- .avgLevel(up_nms, input, negative.value.handling, "up")$y
   } else {
     up_sum <- NULL
+    up_mis <- NULL
   }
   
-  list(sum = sum, mis = mis, low_sum = low_sum, up_sum = up_sum)
+  #missing data between all levels
+  total_mis <- sum(mis, low_mis, up_mis)/length(unlist(input[,c(nms, low_nms, up_nms)]))
+  list(sum = sum, mis = total_mis, low_sum = low_sum, up_sum = up_sum)
 }
 
 .prepSlices <- function(model, input, id.var) {
