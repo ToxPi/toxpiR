@@ -51,30 +51,51 @@ test_that("We can upload gui format csv files accurately", {
 ## invalid file tests
 
 test_that("Incorrect files return error message", {
-  expect_error(txpImportCSV(file.path("guiFiles", "gui_bad_input.csv")))
-  expect_error(txpImportCSV(file.path("guiFiles", 
-                                      "gui_output_missingFuncs.csv")), 
-               "hitcall\\(x\\), function\\(x\\), f\\(x\\), hello\\(x\\)")
-  expect_error({
-    txpImportCSV(file.path("csvFiles", "bad_csv_nonnumeric.csv"))
-  }, "Slice3_U2")
-  expect_warning(
-    expect_error({
-      txpImportCSV(file.path("guiFiles", "gui_output_nonNumeric.csv"))
-    }, "metric2, metric4"), 
-    "columns are duplicated")
-  
+  #bad indicator
   expect_error({ #numeric indicator
     data_exported <- tempfile()
     csv <- as.data.frame(c(1,2))
     write.csv(csv, file = data_exported)
     txpImportCSV(data_exported)
   })
-  expect_error(txpImportCSV(file.path("csvFiles", "gui_csv_empty_slice.csv")))
-  expect_error(txpImportCSV(file.path("csvFiles", "gui_csv_indicator.csv")))
-  expect_error(txpImportCSV(file.path("csvFiles", "gui_csv_slice_func.csv")))
-  expect_error(txpImportCSV(file.path("csvFiles", "gui_csv_indicator.csv")))
-  expect_error(txpImportCSV(file.path("csvFiles", "gui_csv_color.csv")))
-  expect_error(txpImportCSV(file.path("csvFiles", "gui_csv_weight.csv")))
-  expect_error(txpImportCSV(file.path("csvFiles", "gui_csv_empty_rank.csv")))
+  
+  #toxpiR files
+  expect_error({
+    txpImportCSV(file.path("csvFiles", "bad_csv_metric_func.csv"))
+  }, "x*u")
+  expect_error({
+    txpImportCSV(file.path("csvFiles", "bad_csv_nonnumeric.csv"))
+  }, "Slice3_U2")
+  expect_error({
+    txpImportCSV(file.path("csvFiles", "bad_csv_empty_slice.csv"))
+  }, "ExampleA") 
+  expect_error({
+    txpImportCSV(file.path("csvFiles", "bad_csv_indicator.csv"))
+  }, "indicator")
+  expect_error({
+    txpImportCSV(file.path("csvFiles", "bad_csv_slice_func.csv"))
+  }, "xy")
+  expect_error({
+    txpImportCSV(file.path("csvFiles", "bad_csv_color.csv"))
+  }, "#g")
+  expect_error({
+    txpImportCSV(file.path("csvFiles", "bad_csv_weight.csv"))
+  }, "ExampleB, ExampleC")
+  expect_error({
+    txpImportCSV(file.path("csvFiles", "bad_csv_rank.csv"))
+  }, "avg")
+  expect_error({
+    txpImportCSV(file.path("csvFiles", "bad_csv_negativeHandling.csv"))
+  }, "''")
+  
+  #gui files
+  expect_warning(
+    expect_error({
+      txpImportCSV(file.path("guiFiles", "gui_output_nonNumeric.csv"))
+    }, "metric2, metric4"), 
+    "columns are duplicated")
+  expect_error(txpImportCSV(file.path("guiFiles", "gui_bad_input.csv")))
+  expect_error(txpImportCSV(file.path("guiFiles", 
+                                      "gui_output_missingFuncs.csv")), 
+               "hitcall\\(x\\), function\\(x\\), f\\(x\\), hello\\(x\\)")
 })

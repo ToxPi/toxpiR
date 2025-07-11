@@ -47,10 +47,8 @@ txpImportCSV <- function(csvDataFile) {
 .fromToxpiR <- function(csv) {
   # Separate toxpiR indicator value 
   indicator <- csv[1,1]
-  validNegHand <- c("keep", "missing")
-  validRank <- c("average", "first", "last", "random", "max", "min")
-  stopifnot(strsplit(indicator, "!")[[1]][2] %in% validNegHand)
-  stopifnot(strsplit(indicator, "!")[[1]][3] %in% validRank)
+  invalidIndicatorMsg <- .chkInvalidIndicator(indicator)
+  if(!is.null(invalidIndicatorMsg)){return(simpleCondition(invalidIndicatorMsg))}
   negativeHandling <- strsplit(indicator, "!")[[1]][2]
   rankHandling <- strsplit(indicator, "!")[[1]][3]
   
@@ -67,27 +65,38 @@ txpImportCSV <- function(csvDataFile) {
                                convert = FALSE)
   sliceInfo$name <- sub('^#\\s+', '', sliceInfo$name)
   sliceInfo$col  <- sub('^0x', '#', sliceInfo$col)
-  sliceInfo$wt   <- sapply(strsplit(sliceInfo$wt, split = '/'), function(x) {
+  invalidWtMsg <- .chkInvalidWts(sliceInfo$wt, sliceInfo$name)
+  if(!is.null(invalidWtMsg)){return(simpleCondition(invalidWtMsg))}
+  sliceInfo$wt <- sapply(strsplit(sliceInfo$wt, split = '/'), function(x) {
     as.numeric(x[1]) / as.numeric(ifelse(length(x) == 2, x[2], 1))
   })
   sliceInfo <- sliceInfo[ , infoNms]
   
+  invalidColMsg <- .chkInvalidColors(sliceInfo$col)
+  if(!is.null(invalidColMsg)){return(simpleCondition(invalidColMsg))}
+  invalidFuncMsg <- .chkInvalidFunctions(csv[sliceInfoInd, -1], sliceInfo$scale)
+  if(!is.null(invalidFuncMsg)){return(simpleCondition(invalidFuncMsg))}
+  emptySliceMsg <- .chkEmptySlices(csv[sliceInfoInd, -1], sliceInfo$name)
+  if(!is.null(emptySliceMsg)){return(simpleCondition(emptySliceMsg))}
+  
+  
+  
   #get metric transformation functions (non-empty cells) in slice info header
   sliceInfo$ind <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    inds <- which(sapply(row, is_valid_math_function, var = "x") | row %in% names(TXP_GUI_FUNCS))
+    inds <- which(sapply(row, .isValidMathFunction, var = "x") | row %in% names(TXP_GUI_FUNCS))
     if (length(inds) == 0) return(NULL)
     inds + 1
   })
   sliceInfo$indLower <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    inds <- which(sapply(row, is_valid_math_function, var = "l") | row %in% names(TXP_GUI_FUNCS_LOWER))
+    inds <- which(sapply(row, .isValidMathFunction, var = "l") | row %in% names(TXP_GUI_FUNCS_LOWER))
     if (length(inds) == 0) return(NULL)
     inds + 1
   })
   sliceInfo$indUpper <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    inds <- which(sapply(row, is_valid_math_function, var = "u") | row %in% names(TXP_GUI_FUNCS_UPPER))
+    inds <- which(sapply(row, .isValidMathFunction, var = "u") | row %in% names(TXP_GUI_FUNCS_UPPER))
     if (length(inds) == 0) return(NULL)
     inds + 1
   })
@@ -95,19 +104,19 @@ txpImportCSV <- function(csvDataFile) {
   # Get the valid expressions corresponding to the functions
   sliceInfo$metricTF <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    valid_exprs <- row[sapply(row, is_valid_math_function, var = "x") | row %in% names(TXP_GUI_FUNCS)]
+    valid_exprs <- row[sapply(row, .isValidMathFunction, var = "x") | row %in% names(TXP_GUI_FUNCS)]
     if (length(valid_exprs) == 0) return(NULL)
     valid_exprs
   })
   sliceInfo$metricTFLower <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    valid_exprs <- row[sapply(row, is_valid_math_function, var = "l") | row %in% names(TXP_GUI_FUNCS_LOWER)]
+    valid_exprs <- row[sapply(row, .isValidMathFunction, var = "l") | row %in% names(TXP_GUI_FUNCS_LOWER)]
     if (length(valid_exprs) == 0) return(NULL)
     valid_exprs
   })
   sliceInfo$metricTFUpper <- lapply(1:nrow(csv[sliceInfoInd, -1]), function(i) {
     row <- csv[i, -1]
-    valid_exprs <- row[sapply(row, is_valid_math_function, var = "u") | row %in% names(TXP_GUI_FUNCS_UPPER)]
+    valid_exprs <- row[sapply(row, .isValidMathFunction, var = "u") | row %in% names(TXP_GUI_FUNCS_UPPER)]
     if (length(valid_exprs) == 0) return(NULL)
     valid_exprs
   })
@@ -213,7 +222,6 @@ txpImportCSV <- function(csvDataFile) {
   names(tfs) <- sliceInfo$name
   
   #ADD SLICE TXPTRANSFUNCS TO MODEL
-  negativeHandling <- 
   model <- TxpModel(txpSlices = sliceLst, 
                     txpWeights = sliceInfo[ , "wt"], 
                     txpTransFuncs = do.call(TxpTransFuncList,tfs),
@@ -238,7 +246,7 @@ txpImportCSV <- function(csvDataFile) {
 }
 
 # Check a string expression for a valid function of a letter
-is_valid_math_function <- function(text, var) {
+.isValidMathFunction <- function(text, var) {
   expr <- paste0("function(", var, ") ", text)
   
   # Create a clean environment with var <- 1
@@ -255,6 +263,125 @@ is_valid_math_function <- function(text, var) {
     
     TRUE
   }, error = function(e) FALSE)
+}
+
+.chkInvalidFunctions <- function(data, scale){
+  exprs <- unlist(data, use.names = FALSE)
+  is_invalid <- nzchar(exprs) & 
+    !(sapply(exprs, .isValidMathFunction, var = "x") |
+        sapply(exprs, .isValidMathFunction, var = "l") |
+        sapply(exprs, .isValidMathFunction, var = "u") |
+        exprs %in% names(TXP_GUI_FUNCS) |
+        exprs %in% names(TXP_GUI_FUNCS_LOWER) |
+        exprs %in% names(TXP_GUI_FUNCS_UPPER))
+  invalid_funcs <- unique(exprs[is_invalid])
+  
+  slice_exprs <- unlist(scale, use.names = FALSE)
+  is_invalid <- nzchar(slice_exprs) & 
+    !(sapply(slice_exprs, .isValidMathFunction, var = "x") |
+        slice_exprs %in% names(TXP_GUI_FUNCS))
+  invalid_funcs <- c(invalid_funcs, unique(slice_exprs[is_invalid]))
+  
+  if (length(invalid_funcs) > 0) {
+    msg <- sprintf(
+      "The following invalid transformation functions were found in the CSV:\n  %s",
+      paste(invalid_funcs, collapse = ", ")
+    )
+    return(msg)
+  } else {
+    return(NULL)
+  }
+}
+
+.chkInvalidColors <- function(cols) {
+  invalid <- cols[!sapply(cols, function(col) {
+    tryCatch({
+      grDevices::col2rgb(col)
+      TRUE
+    }, error = function(e) FALSE)
+  })]
+  if (length(invalid) > 0) {
+    msg <- sprintf(
+      "The following invalid colors were found in the CSV:\n  %s",
+      paste(invalid, collapse = ", ")
+    )
+    return(msg)
+  } else {
+    return(NULL)
+  }
+}
+
+.chkEmptySlices <- function(data, sliceNames) {
+  row_empty <- vapply(seq_len(nrow(data)), function(i) {
+    all(is.na(data[i, ]) | data[i, ] == "")
+  }, logical(1))
+  
+  empty_rows <- which(row_empty)
+  if (length(empty_rows) > 0) {
+    row_labels <- sliceNames[empty_rows]
+    msg <- sprintf(
+      "The following slices are empty:\n  %s",
+      paste(row_labels, collapse = ", ")
+    )
+    return(msg)
+  } else {
+    return(NULL)
+  }
+}
+
+.chkInvalidIndicator <- function(indicator) {
+  validNegHand <- c("keep", "missing")
+  validRank <- c("average", "first", "last", "random", "max", "min")
+  parts <- strsplit(indicator, "!")[[1]]
+  
+  msgs <- character()
+  
+  # Check for correct number of parts
+  if (length(parts) != 3) {
+    msgs <- c(msgs, sprintf("Invalid file indicator format: expected first cell to be 3 parts separated by '!', got %d.", length(parts)))
+  } else {
+    neg_hand <- parts[2]
+    rank_method <- parts[3]
+    
+    if (!neg_hand %in% validNegHand) {
+      msgs <- c(msgs, sprintf("Invalid negative handling method '%s' in indicator cell. Valid options are: %s",
+                              neg_hand, paste(validNegHand, collapse = ", ")))
+    }
+    
+    if (!rank_method %in% validRank) {
+      msgs <- c(msgs, sprintf("Invalid rank method '%s' in indicator cell. Valid options are: %s",
+                              rank_method, paste(validRank, collapse = ", ")))
+    }
+  }
+  
+  if (length(msgs) > 0) {
+    return(paste(msgs, collapse = "\n"))
+  } else {
+    return(NULL)
+  }
+}
+
+.chkInvalidWts <- function(wts, nms) {
+  parsed <- lapply(strsplit(wts, "/"), function(x) {
+    num <- suppressWarnings(as.numeric(x[1]))
+    den <- suppressWarnings(as.numeric(ifelse(length(x) == 2, x[2], 1)))
+    list(num = num, den = den)
+  })
+  
+  invalid <- vapply(parsed, function(x) {
+    is.na(x$num) || is.na(x$den) || x$den == 0
+  }, logical(1))
+  
+  if (any(invalid)) {
+    bad_slices <- unique(nms[invalid])
+    msg <- sprintf(
+      "The following slices have invalid weights:\n  %s",
+      paste(bad_slices, collapse = ", ")
+    )
+    return(msg)
+  }
+  
+  return(NULL)
 }
 
 #' @importFrom tidyr separate
