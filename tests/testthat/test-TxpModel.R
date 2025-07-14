@@ -50,7 +50,7 @@ test_that("TxpModel accessors return expected slots", {
   expect_equal(txpLowerNames(md), list(S1 = "input3", S2 = NULL))
   expect_equal(txpLowerNames(md, simplify = TRUE), 
                c(S1 = "input3", S2 = NULL))
-  expect_equal(txpUpperNames(md), list(S1 = NULL, S2 = NULL))
+  expect_equal(txpUpperNames(md), NULL)
   expect_equal(txpUpperNames(md, simplify = TRUE), 
                c(S1 = NULL, S2 = NULL))
   expect_named(md, c("S1", "S2"))

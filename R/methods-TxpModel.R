@@ -180,6 +180,7 @@ setReplaceMethod("txpTransFuncs", "TxpModel", function(x, value) {
 setMethod("txpValueNames", "TxpModel", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
   nms <- txpValueNames(txpSlices(x), simplify = simplify)
+  if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
 
@@ -191,6 +192,7 @@ setMethod("txpValueNames", "TxpModel", function(x, simplify = FALSE) {
 setMethod("txpLowerNames", "TxpModel", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
   nms <- txpLowerNames(txpSlices(x), simplify = simplify)
+  if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
 
@@ -202,6 +204,7 @@ setMethod("txpLowerNames", "TxpModel", function(x, simplify = FALSE) {
 setMethod("txpUpperNames", "TxpModel", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
   nms <- txpUpperNames(txpSlices(x), simplify = simplify)
+  if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
 

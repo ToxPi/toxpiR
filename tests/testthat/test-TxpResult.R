@@ -198,6 +198,14 @@ test_that("Improper txpCalculateScores throw proper error", {
     data <- txpImportCSV(file.path("csvFiles", "csv_test_data.csv"))
     txpCalculateScores(data$model, data$input, id.var = "INVALID")
   }, "identifier column")
+  
+  expect_silent({
+    mod <- txp_example_model_CI
+    txpTransFuncs(mod)$ExampleA <- function(x) log(-x)
+  })
+  expect_error({
+    suppressWarnings(txpCalculateScores(mod, txp_example_input_CI, id.var = 1))
+  }, "ExampleA, ExampleA_low, ExampleA_up")
 })
 
 ##----------------------------------------------------------------------------##

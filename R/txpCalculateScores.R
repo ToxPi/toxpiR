@@ -159,30 +159,51 @@ NULL
   } else {
     id_names <- input[[id.var]]
   }
-  slc_main <- matrix(ncol = 0, nrow = nrow(slc[[1]]))
-  rownames(slc_main) <- id_names
-  slc_low <- matrix(ncol = 0, nrow = nrow(slc[[1]]))
-  rownames(slc_low) <- id_names
-  slc_up <- matrix(ncol = 0, nrow = nrow(slc[[1]]))
-  rownames(slc_up) <- id_names
+  if(!is.null(txpValueNames(model))){
+    slc_main <- matrix(ncol = length(model), nrow = nrow(slc[[1]]))
+    colnames(slc_main) <- names(model)
+    rownames(slc_main) <- id_names
+  } else {
+    slc_main <- NULL
+  }
+  if(!is.null(txpLowerNames(model))){
+    slc_low <- matrix(ncol = length(model), nrow = nrow(slc[[1]]))
+    colnames(slc_low) <- paste0(names(model), "_low")
+    rownames(slc_low) <- id_names
+  } else {
+    slc_low <- NULL
+  }
+  if(!is.null(txpUpperNames(model))){
+    slc_up <- matrix(ncol = length(model), nrow = nrow(slc[[1]]))
+    colnames(slc_up) <- paste0(names(model), "_up")
+    rownames(slc_up) <- id_names
+  } else {
+    slc_up <- NULL
+  }
   
   # Loop through the list of matrices and extract the columns
   for (mat in slc) {
     mat_cols <- colnames(mat)
-    main_cols <- intersect(names(x), mat_cols)
-    low_cols  <- intersect(paste0(names(x), "_low"), mat_cols)
-    up_cols   <- intersect(paste0(names(x), "_up"), mat_cols)
+    main_col <- intersect(names(x), mat_cols)
+    low_col  <- intersect(paste0(names(x), "_low"), mat_cols)
+    up_col   <- intersect(paste0(names(x), "_up"), mat_cols)
 
-    if (length(main_cols)) slc_main <- cbind(slc_main, mat[, main_cols, drop = FALSE])
-    if (length(low_cols))  slc_low  <- cbind(slc_low,  mat[, low_cols,  drop = FALSE])
-    if (length(up_cols))   slc_up   <- cbind(slc_up,   mat[, up_cols,   drop = FALSE])
+    if (!is.null(slc_main)) {
+      slc_main[, main_col] <- mat[, main_col]
+    }
+    if (!is.null(slc_low)) {
+      slc_low[, low_col] <- mat[, low_col]
+    }
+    if (!is.null(slc_up)) {
+      slc_up[, up_col] <- mat[, up_col]
+    }
   }
-  
-  ## Make NA 0
-  slc_main[is.na(slc_main)] <- 0
-  slc_low[is.na(slc_low)] <- 0
-  slc_up[is.na(slc_up)] <- 1
 
+  ## Make NA 0/1
+  if(!is.null(slc_main)){slc_main[is.na(slc_main)] <- 0}
+  if(!is.null(slc_low)){slc_low[is.na(slc_low)] <- 0}
+  if(!is.null(slc_up)){slc_up[is.na(slc_up)] <- 1}
+  
   list(slc_main = slc_main, mis = mis, slc_low = slc_low, slc_up = slc_up)
 }
 
@@ -210,10 +231,9 @@ NULL
   slcMis <- .prepSlices(model = model, input = input, id.var = id.var)
   mis <- slcMis$mis
   slc <- slcMis$slc_main
-  if(ncol(slcMis$slc_main) == 0){slc <- NULL} else {slc <- slcMis$slc_main}
-  if(ncol(slcMis$slc_low) == 0){slc_low <- NULL} else {slc_low <- slcMis$slc_low}
-  if(ncol(slcMis$slc_up) == 0){slc_up <- NULL} else {slc_up <- slcMis$slc_up}
-  
+  slc_low <- slcMis$slc_low
+  slc_up <- slcMis$slc_up
+
   ## Calculate ToxPi score
   wts <- txpWeights(model, adjusted = TRUE)
 
