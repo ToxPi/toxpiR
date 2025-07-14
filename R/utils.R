@@ -80,5 +80,22 @@
 }
 
 `%||%` <- function(a, b) if (!is.null(a)) a else b
+
+.chkNonFiniteCols <- function(df_list) {
+  bad_cols <- unlist(lapply(df_list, function(df) {
+    df <- as.data.frame(df)
+    colnames(df)[sapply(df, function(col) all(!is.finite(col)))]
+  }))
+  
+  if (length(bad_cols) > 0) {
+    msg <- sprintf(
+      "The following slices contain only non-finite values after all transformations:\n  %s",
+      paste(unique(bad_cols), collapse = ", ")
+    )
+    stop(msg, call. = FALSE)
+  }
+  
+  return(NULL)
+}
 ##----------------------------------------------------------------------------##
 

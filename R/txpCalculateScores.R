@@ -118,7 +118,7 @@ NULL
   x <- lapply(
     txpSlices(model), .sumSlice, input = input,
     negative.value.handling = slot(model, "negativeHandling"))
-  
+
   mis <- sapply(x, "[[", "mis")
   
   cols <- c("sum", "low_sum", "up_sum")
@@ -129,7 +129,7 @@ NULL
     val <- Filter(Negate(is.null), val)
     val <- as.matrix(as.data.frame(do.call(cbind, val)))
   })
-
+  
   ## Look for and apply slice-level transformation functions
   tfs <- txpTransFuncs(model)
   if (any(!sapply(tfs, is.null))) {
@@ -141,12 +141,15 @@ NULL
     }
   }
   
-  ## Make infinite NaN
+  ## Make infinite NaN 
   slc <- lapply(slc, function(x) {
     x[is.infinite(x)] <- NaN
     x
   })
-  
+
+  ## Check for entirely missing slices
+  .chkNonFiniteCols(slc)
+
   ## Scale slice scores from 0 to 1
   slc <- lapply(slc, .z2o)
 
