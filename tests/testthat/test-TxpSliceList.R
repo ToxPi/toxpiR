@@ -32,7 +32,11 @@ test_that("We can access TxpSlice slots from TxpSliceList", {
   expect_type(txpTransFuncs(sl), "list")
   expect_length(txpTransFuncs(sl), 2)
   expect_s4_class(txpTransFuncs(sl, simplify = TRUE), "TxpTransFuncList")
+  expect_s4_class(txpLowerFuncs(sl, simplify = TRUE), "TxpTransFuncList")
+  expect_s4_class(txpUpperFuncs(sl, simplify = TRUE), "TxpTransFuncList")
   expect_length(txpTransFuncs(sl, simplify = TRUE), 3)
+  expect_length(txpLowerFuncs(sl, simplify = TRUE), 0)
+  expect_length(txpUpperFuncs(sl, simplify = TRUE), 0)
 })
 
 ##----------------------------------------------------------------------------##

@@ -212,6 +212,7 @@ test_that("TxpResult objects can be sorted", {
   expect_equal(unname(txpRankUps(sort(txp_example_results_CI, level = "up"))), 1:10)
   expect_equal(unname(txpRankLows(sort(txp_example_results_CI, level = "low", decreasing = FALSE))), 10:1)
   expect_failure(expect_equal(unname(txpRanks(sort(txp_example_results_CI, level = "low"))), 1:10))
+  expect_error({txpRanks(sort(txp_example_results_CI, level = "INVALID"))}, "Invalid level parameter")
 })
 
 ##----------------------------------------------------------------------------##
@@ -221,7 +222,14 @@ test_that("Improper txpCalculateScores throw proper error", {
     data <- txpImportCSV(file.path("csvFiles", "csv_test_data.csv"))
     txpCalculateScores(data$model, data$input, id.var = "INVALID")
   }, "identifier column")
-  
+  expect_error({
+    data <- txpImportCSV(file.path("csvFiles", "csv_test_data.csv"))
+    txpCalculateScores(data$model, data$input, id.var = "Slice1_L1")
+  }, "non-unique values")
+  expect_error({
+    data <- txpImportCSV(file.path("csvFiles", "csv_test_data.csv"))
+    txpCalculateScores(data$model, data$input, id.var = 0)
+  }, "Invalid column index")
   expect_silent({
     mod <- txp_example_model_CI
     txpTransFuncs(mod)$ExampleA <- function(x) log(-x)

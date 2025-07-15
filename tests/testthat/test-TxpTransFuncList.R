@@ -34,6 +34,8 @@ test_that("TxpTransFuncList show method displays correct information", {
   expect_output(print(l), "NULL NULL f1 '' NULL")
   expect_silent(names(l) <- NULL)
   expect_output(print(l), "NULL NULL '' '' NULL")
+  expect_silent(l_empty <- TxpTransFuncList())
+  expect_output(print(l_empty), "TxpTransFuncList of length 0:")
 })
 
 ##----------------------------------------------------------------------------##
