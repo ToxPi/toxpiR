@@ -91,7 +91,7 @@ TxpModel <- function(txpSlices, txpWeights = NULL, txpTransFuncs = NULL, negativ
   if (!is(txpSlices, "TxpSliceList")) txpSlices <- as.TxpSliceList(txpSlices)
   n <- length(txpSlices)
   if (is.null(txpWeights)) txpWeights <- rep(1, n)
-  if (is.null(names(txpWeights))){names(txpWeights) <- names(txpSlices)}
+  if (is.null(names(txpWeights)) && (length(txpWeights) == n)){names(txpWeights) <- names(txpSlices)}
   if (is.null(txpTransFuncs)) {
     txpTransFuncs <- as(List(vector("list", n)), "TxpTransFuncList")
   }
@@ -149,7 +149,7 @@ setMethod("txpWeights", "TxpModel", function(x, adjusted = FALSE) {
 
 setReplaceMethod("txpWeights", "TxpModel", function(x, value) {
   x@txpWeights <- value
-  if(is.null(names(x@txpWeights))){names(x@txpWeights) <- names(x)}
+  if (is.null(names(value)) && (length(value) == length(names(x)))){names(x@txpWeights) <- names(x)}
   validObject(x)
   x
 })
@@ -297,8 +297,7 @@ setMethod("txpCalculateScores", c("TxpModel", "data.frame"), .TxpModel.calc)
   if (length(sl) != length(wt)) {
     tmp <- "length(txpSlices(<TxpModel>)) != length(txpWeights(<TxpModel>))"
     msg <- c(msg, tmp)
-  }
-  if(!identical(names(wt), names(object))){
+  } else if(!identical(names(wt), names(object))){
     tmp <- paste("names(txpWeights(<TxpModel>)) != names(txpSlices(<TxpModel))")
     msg <- c(msg, tmp)
   }

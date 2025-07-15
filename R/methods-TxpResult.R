@@ -359,8 +359,10 @@ setMethod("[",
 #' `length(txpScores(x))`
 #' @export
 
-setMethod("length", "TxpResult", function(x) { length(txpScores(x)) })
-
+setMethod("length", "TxpResult", function(x) { 
+  length(txpScores(x) %||% txpScoreLows(x) %||% txpScoreUps(x))
+})
+  
 #' @describeIn TxpResult-class Sort the ``TxpResult` object by their ranks
 #' @export
 
@@ -454,7 +456,7 @@ setReplaceMethod("names", "TxpResult", .TxpResult.replaceIDs)
   length <- unique(lengths)
   if(length(length) != 1) { 
     msg <- c(msg, "non-NULL txpScores, txpScoreLows, txpScoreUps must have same length")
-  } else if (length(ids) != length(scores)) {
+  } else if (length(ids) != length(scores %||% scoreLows %||% scoreUps)) {
     msg <- c(msg, "length(txpIDs) != length(object)")
   }
   if (is.null(msg)) return(TRUE)

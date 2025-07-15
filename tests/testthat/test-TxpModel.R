@@ -55,6 +55,13 @@ test_that("TxpModel accessors return expected slots", {
                c(S1 = NULL, S2 = NULL))
   expect_named(md, c("S1", "S2"))
   expect_length(md, 2)
+  
+  expect_silent({
+    slcLst <- TxpSliceList(S1 = TxpSlice(txpLowerNames = "input1", txpUpperNames = "input2"), 
+                           S2 = TxpSlice(txpLowerNames = "input3", txpUpperNames = "input4"))
+    md <- TxpModel(slcLst)
+  })
+  expect_equal(txpValueNames(md), NULL)
 })
 
 ##----------------------------------------------------------------------------##
@@ -74,6 +81,8 @@ test_that("We can replace TxpModel slots", {
   expect_silent(txpWeights(md) <- 1:2)
   expect_equal(unname(txpWeights(md)), 1:2)
   expect_named(txpWeights(md), c("S1", "S3"))
+  expect_error({txpWeights(md) <- 1}, "length\\(txpWeights")
+  expect_error({txpWeights(md) <- c("Invalid" = 1, "Invalid2" = 2)}, "names\\(txpWeights")
   expect_silent(txpTransFuncs(md) <- fl)
   expect_named(txpTransFuncs(md), c("f1", "f2"))
   expect_silent(txpTransFuncs(md) <- as.list(fl)[2:1])

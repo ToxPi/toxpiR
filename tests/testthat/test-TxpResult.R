@@ -12,6 +12,16 @@ test_that("We can create TxpResult objects through txpCalculateScores", {
                                             input = txp_example_input, 
                                             id.var = "name"),
                   "TxpResult")
+  expect_warning({txpCalculateScores(model = txp_example_model,
+                                     input = txp_example_input,
+                                     id.var = "name",
+                                     rank.ties.method = "average")},
+                 "overwriting rankTies")
+  expect_warning({txpCalculateScores(model = txp_example_model,
+                                     input = txp_example_input,
+                                     id.var = "name",
+                                     negative.value.handling = "keep")},
+                 "overwriting negativeHandling")             
   inf_example <- txp_example_input
   inf_example["chem4", "metric1"] <- Inf
   expect_warning(inf_res <- txpCalculateScores(model = txp_example_model, 
@@ -24,6 +34,19 @@ test_that("We can create TxpResult objects through txpCalculateScores", {
   txp_example_input$notInput <- "hello"
   expect_error(txpCalculateScores(model = txp_example_model, 
                                   input = txp_example_input))
+  
+  expect_silent({
+    slcLst <- TxpSliceList(S1 = TxpSlice(txpLowerNames = "metric1", txpUpperNames = "metric2"), 
+                           S2 = TxpSlice(txpLowerNames = "metric3", txpUpperNames = "metric4"))
+    md <- TxpModel(slcLst)
+    txpCalculateScores(md, txp_example_input, id.var = "name")
+  })
+  expect_silent({
+    slcLst <- TxpSliceList(S1 = TxpSlice(txpLowerNames = "Invalid", txpUpperNames = "Invalid1"), 
+                           S2 = TxpSlice(txpLowerNames = "metric3", txpUpperNames = "metric4"))
+    md <- TxpModel(slcLst)
+  })
+  expect_error({txpCalculateScores(md, txp_example_input, id.var = "name")}, "Invalid, Invalid1")
 })
 
 ##----------------------------------------------------------------------------##
