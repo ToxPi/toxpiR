@@ -5,10 +5,14 @@
 \alias{TxpResult-class}
 \alias{TxpResult}
 \alias{txpScores,TxpResult-method}
+\alias{txpScoreLows,TxpResult-method}
+\alias{txpScoreUps,TxpResult-method}
 \alias{txpSliceScores,TxpResult-method}
 \alias{txpSliceUps,TxpResult-method}
 \alias{txpSliceLows,TxpResult-method}
 \alias{txpRanks,TxpResult-method}
+\alias{txpRankLows,TxpResult-method}
+\alias{txpRankUps,TxpResult-method}
 \alias{txpMissing,TxpResult-method}
 \alias{txpResultParam,TxpResult-method}
 \alias{txpModel,TxpResult-method}
@@ -31,6 +35,10 @@
 \usage{
 \S4method{txpScores}{TxpResult}(x)
 
+\S4method{txpScoreLows}{TxpResult}(x)
+
+\S4method{txpScoreUps}{TxpResult}(x)
+
 \S4method{txpSliceScores}{TxpResult}(x, adjusted = TRUE)
 
 \S4method{txpSliceUps}{TxpResult}(x, adjusted = TRUE)
@@ -38,6 +46,10 @@
 \S4method{txpSliceLows}{TxpResult}(x, adjusted = TRUE)
 
 \S4method{txpRanks}{TxpResult}(x)
+
+\S4method{txpRankLows}{TxpResult}(x)
+
+\S4method{txpRankUps}{TxpResult}(x)
 
 \S4method{txpMissing}{TxpResult}(x)
 
@@ -67,7 +79,7 @@
 
 \S4method{length}{TxpResult}(x)
 
-\S4method{sort}{TxpResult}(x, decreasing = TRUE, na.last = TRUE, ...)
+\S4method{sort}{TxpResult}(x, decreasing = TRUE, level = "main", na.last = TRUE, ...)
 
 \S4method{names}{TxpResult}(x)
 
@@ -120,6 +132,10 @@ S4 class to store ToxPi results
 \itemize{
 \item \code{txpScores(TxpResult)}: Return \code{txpScores} slot
 
+\item \code{txpScoreLows(TxpResult)}: Return \code{txpScoreLows} slot
+
+\item \code{txpScoreUps(TxpResult)}: Return \code{txpScoreUps} slot
+
 \item \code{txpSliceScores(TxpResult)}: Return \code{txpSliceScores} slot; default
 \code{adjusted = TRUE}, i.e. return slice scores adjusted for weight
 
@@ -130,6 +146,10 @@ S4 class to store ToxPi results
 \code{adjusted = TRUE}, i.e. return slice lower confidence scores adjusted for weight
 
 \item \code{txpRanks(TxpResult)}: Return \code{txpRanks} slot
+
+\item \code{txpRankLows(TxpResult)}: Return \code{txpRankLows} slot
+
+\item \code{txpRankUps(TxpResult)}: Return \code{txpRanks} slot
 
 \item \code{txpMissing(TxpResult)}: Return \code{txpMissing} slot
 
@@ -184,6 +204,8 @@ individual slice upper confidence interval scores}
 \item{\code{txpModel}}{\link{TxpModel} object}
 
 \item{\code{txpIDs}}{\verb{vector(<character>)} of observation IDs}
+
+\item{\code{txpResultParam}}{\link{TxpResultParam} object}
 }}
 
 \examples{

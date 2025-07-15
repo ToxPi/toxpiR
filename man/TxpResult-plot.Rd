@@ -22,7 +22,7 @@
   borderColor = "white",
   sliceBorderColor = "white",
   sliceValueColor = NULL,
-  sliceLineColor = NULL,
+  sliceLineColor = "white",
   showMissing = TRUE,
   showCenter = TRUE
 )

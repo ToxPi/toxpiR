@@ -12,6 +12,8 @@
 \alias{txpTransFuncs,TxpModel-method}
 \alias{txpTransFuncs<-,TxpModel-method}
 \alias{txpValueNames,TxpModel-method}
+\alias{txpLowerNames,TxpModel-method}
+\alias{txpUpperNames,TxpModel-method}
 \alias{negativeHandling,TxpModel-method}
 \alias{negativeHandling<-,TxpModel-method}
 \alias{rankTies,TxpModel-method}
@@ -43,6 +45,10 @@ TxpModel(
 \S4method{txpTransFuncs}{TxpModel}(x) <- value
 
 \S4method{txpValueNames}{TxpModel}(x, simplify = FALSE)
+
+\S4method{txpLowerNames}{TxpModel}(x, simplify = FALSE)
+
+\S4method{txpUpperNames}{TxpModel}(x, simplify = FALSE)
 
 \S4method{negativeHandling}{TxpModel}(x)
 
@@ -83,6 +89,18 @@ such that they sum to 1?}
 \description{
 S4 class to store ToxPi models
 }
+\details{
+The \code{rankTies} slot is passed to \link[base:rank]{base::rank} for calculating the
+ranks of observations, with the highest-scoring observation having the rank
+of 1.
+
+\code{negativeHandling} indicates how to handle negative values in the
+inputs. The ToxPi algorithm originally intended to accept non-negative
+potency values; the GUI, therefore, treats negative values in the input as
+missing. By default, \link{txpCalculateScores} keeps negative values
+(\code{negativeHandling = "keep"}). To replicate the GUI behavior, users
+can set \code{negativeHandling = "missing"}.
+}
 \section{Functions}{
 \itemize{
 \item \code{txpSlices(TxpModel)}: Return \code{txpSlices} slot
@@ -92,6 +110,12 @@ S4 class to store ToxPi models
 \item \code{txpTransFuncs(TxpModel)}: Return \code{txpTransFuncs} slot
 
 \item \code{txpValueNames(TxpModel)}: Return \code{list} of \code{txpValueNames} slots for the
+contained \link{TxpSliceList} object, or \code{vector} when \code{simplify = TRUE}
+
+\item \code{txpLowerNames(TxpModel)}: Return \code{list} of \code{txpLowerNames} slots for the
+contained \link{TxpSliceList} object, or \code{vector} when \code{simplify = TRUE}
+
+\item \code{txpUpperNames(TxpModel)}: Return \code{list} of \code{txpUpperNames} slots for the
 contained \link{TxpSliceList} object, or \code{vector} when \code{simplify = TRUE}
 
 \item \code{negativeHandling(TxpModel)}: Return \code{negativeHandling} slot

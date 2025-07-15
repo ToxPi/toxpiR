@@ -47,10 +47,6 @@ Imports:
     tidyr,
     utils,
     ggplot2,
-    shiny,
-    shinyjs,
-    shinyBS,
-    colourpicker,
     sortable, 
     lifecycle
 Encoding: UTF-8

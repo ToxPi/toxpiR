@@ -21,7 +21,7 @@
 \title{ToxPi Slice}
 \usage{
 TxpSlice(
-  txpValueNames,
+  txpValueNames = NULL,
   txpTransFuncs = NULL,
   txpLowerNames = NULL,
   txpLowerFuncs = NULL,
@@ -106,7 +106,8 @@ slice
 
 \describe{
 \item{\code{txpValueNames}}{\verb{vector(<character>)} specifying the input columns to
-include in the slice}
+include in the slice; when \code{NULL}, no main slice will be calculated. In this
+case either/both of lower and upper bounds must be provided}
 
 \item{\code{txpTransFuncs}}{\link{TxpTransFuncList} with one function per entry in
 \code{txpValueNames} or an object that can be coerced to \code{TxpTransFuncList};

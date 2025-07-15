@@ -4,17 +4,17 @@
 \name{TxpResultParam-class}
 \alias{TxpResultParam-class}
 \alias{TxpResultParam}
-\title{ToxPi Result Parameters}
+\title{ToxPi Result Parameters (Deprecated)}
 \arguments{
 \item{rank.ties.method}{Passed to \code{rank.ties.method} slot}
 
 \item{negative.value.handling}{Passed to \code{negative.value.handling} slot}
 }
 \description{
-S4 class to store ToxPi result calculation parameters
+This function is deprecated. Please use  instead.
 }
 \details{
-If more than one value is passed to \code{TxoResultParam} scalar options, e.g.
+If more than one value is passed to \code{TxpResultParam} scalar options, e.g.
 \code{rank.ties.method}, only the first value is kept.
 
 The \code{rank.ties.method} slot is passed to \link[base:rank]{base::rank} for calculating the

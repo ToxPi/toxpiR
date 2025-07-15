@@ -23,6 +23,8 @@
 \alias{rankTies}
 \alias{rankTies<-}
 \alias{txpScores}
+\alias{txpScoreLows}
+\alias{txpScoreUps}
 \alias{txpSliceScores}
 \alias{txpSliceLows}
 \alias{txpSliceUps}
@@ -30,6 +32,8 @@
 \alias{txpIDs}
 \alias{txpIDs<-}
 \alias{txpRanks}
+\alias{txpRankLows}
+\alias{txpRankUps}
 \alias{txpMissing}
 \alias{txpResultParam}
 \title{toxpiR package generics}
@@ -76,6 +80,10 @@ rankTies(x, ...) <- value
 
 txpScores(x, ...)
 
+txpScoreLows(x, ...)
+
+txpScoreUps(x, ...)
+
 txpSliceScores(x, ...)
 
 txpSliceLows(x, ...)
@@ -89,6 +97,10 @@ txpIDs(x, ...)
 txpIDs(x, ...) <- value
 
 txpRanks(x, ...)
+
+txpRankLows(x, ...)
+
+txpRankUps(x, ...)
 
 txpMissing(x, ...)
 

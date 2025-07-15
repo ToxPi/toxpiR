@@ -6,6 +6,10 @@
 \alias{TxpSliceList}
 \alias{txpValueNames,TxpSliceList-method}
 \alias{txpTransFuncs,TxpSliceList-method}
+\alias{txpLowerNames,TxpSliceList-method}
+\alias{txpLowerFuncs,TxpSliceList-method}
+\alias{txpUpperNames,TxpSliceList-method}
+\alias{txpUpperFuncs,TxpSliceList-method}
 \alias{duplicated,TxpSliceList-method}
 \alias{as.TxpSliceList}
 \title{List of TxpSlice objects}
@@ -15,6 +19,14 @@ TxpSliceList(...)
 \S4method{txpValueNames}{TxpSliceList}(x, simplify = FALSE)
 
 \S4method{txpTransFuncs}{TxpSliceList}(x, simplify = FALSE)
+
+\S4method{txpLowerNames}{TxpSliceList}(x, simplify = FALSE)
+
+\S4method{txpLowerFuncs}{TxpSliceList}(x, simplify = FALSE)
+
+\S4method{txpUpperNames}{TxpSliceList}(x, simplify = FALSE)
+
+\S4method{txpUpperFuncs}{TxpSliceList}(x, simplify = FALSE)
 
 \S4method{duplicated}{TxpSliceList}(x)
 
@@ -43,6 +55,18 @@ names are required.
 contained \link{TxpSlice} objects, or \code{vector} when \code{simplify = TRUE}
 
 \item \code{txpTransFuncs(TxpSliceList)}: Return \code{list} of \code{txpTransFuncs} slots for the
+contained \link{TxpSlice} objects, or \link{TxpTransFuncList} when \code{simplify = TRUE}
+
+\item \code{txpLowerNames(TxpSliceList)}: Return \code{list} of \code{txpLowerNames} slots for the
+contained \link{TxpSlice} objects, or \code{vector} when \code{simplify = TRUE}
+
+\item \code{txpLowerFuncs(TxpSliceList)}: Return \code{list} of \code{txpLowerFuncs} slots for the
+contained \link{TxpSlice} objects, or \link{TxpTransFuncList} when \code{simplify = TRUE}
+
+\item \code{txpUpperNames(TxpSliceList)}: Return \code{list} of \code{txpUpperNames} slots for the
+contained \link{TxpSlice} objects, or \code{vector} when \code{simplify = TRUE}
+
+\item \code{txpUpperFuncs(TxpSliceList)}: Return \code{list} of \code{txpUpperFuncs} slots for the
 contained \link{TxpSlice} objects, or \link{TxpTransFuncList} when \code{simplify = TRUE}
 
 \item \code{duplicated(TxpSliceList)}: Returns logical vector of \code{length(x)}, where

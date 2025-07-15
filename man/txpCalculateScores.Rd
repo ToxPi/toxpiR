@@ -8,22 +8,54 @@
 \alias{txpCalculateScores,list,data.frame-method}
 \title{Calculate ToxPi Scores for the given model and input data}
 \usage{
-txpCalculateScores(model, input, ...)
+txpCalculateScores(
+  model,
+  input,
+  id.var = NULL,
+  rank.ties.method = NULL,
+  negative.value.handling = NULL
+)
 
-\S4method{txpCalculateScores}{TxpModel,data.frame}(model, input, id.var = NULL)
+\S4method{txpCalculateScores}{TxpModel,data.frame}(
+  model,
+  input,
+  id.var = NULL,
+  rank.ties.method = NULL,
+  negative.value.handling = NULL
+)
 
-\S4method{txpCalculateScores}{TxpModelList,data.frame}(model, input, id.var = NULL)
+\S4method{txpCalculateScores}{TxpModelList,data.frame}(
+  model,
+  input,
+  id.var = NULL,
+  rank.ties.method = NULL,
+  negative.value.handling = NULL
+)
 
-\S4method{txpCalculateScores}{list,data.frame}(model, input, id.var = NULL)
+\S4method{txpCalculateScores}{list,data.frame}(
+  model,
+  input,
+  id.var = NULL,
+  rank.ties.method = NULL,
+  negative.value.handling = NULL
+)
 }
 \arguments{
-\item{model}{\link{TxpModel} object or \link{TxpModelList} object}
+\item{model}{S4 \link{TxpModel} object or \link{TxpModelList} object. The txpModel object to be used in the calculation}
 
-\item{input}{data.frame object containing the model input data}
+\item{input}{data.frame. The input dataframe to be analyzed that corresponds to the txpModel object provided}
 
-\item{...}{Included for extendability; not currently used}
+\item{id.var}{Optional scalar character or numeric. The name or index of the column in the input containing
+unique identifiers for the rows. If NULL, the row indices of the original data will be used as
+unique names for identification}
 
-\item{id.var}{Character scalar, column in 'input' to store in}
+\item{rank.ties.method}{Scalar character. Optionally overwrite \code{rankTies} in
+the provided txpModel with a new method for handling rank ties. Options are
+average', 'first', 'last', 'random', 'max', 'min'; when NULL keeps method stated in model}
+
+\item{negative.value.handling}{Scalar character. Optionally overwrite \code{negativeHandling} in
+the provided txpModel with a new method for handling negative data. Options are
+'keep' and missing'; when NULL keeps method stated in model}
 }
 \value{
 \link{TxpResult} or \link{TxpResultList} object
@@ -62,5 +94,5 @@ resLst <- txpCalculateScores(model = list(m1 = txp_example_model,
 
 }
 \seealso{
-\link{TxpModel}, \link{TxpResult}
+\link{TxpModel}, \link{TxpResult}, \link{TxpResultParam}
 }
