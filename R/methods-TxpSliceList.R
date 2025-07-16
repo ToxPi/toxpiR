@@ -83,6 +83,7 @@ setMethod("txpValueNames", "TxpSliceList", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
   nms <- lapply(x, txpValueNames)
   if (simplify) nms <- unlist(nms)
+  if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
 
@@ -107,6 +108,7 @@ setMethod("txpLowerNames", "TxpSliceList", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
   nms <- lapply(x, txpLowerNames)
   if (simplify) nms <- unlist(nms)
+  if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
 
@@ -131,6 +133,7 @@ setMethod("txpUpperNames", "TxpSliceList", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
   nms <- lapply(x, txpUpperNames)
   if (simplify) nms <- unlist(nms)
+  if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
 

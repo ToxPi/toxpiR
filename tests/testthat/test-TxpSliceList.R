@@ -37,6 +37,10 @@ test_that("We can access TxpSlice slots from TxpSliceList", {
   expect_length(txpTransFuncs(sl, simplify = TRUE), 3)
   expect_length(txpLowerFuncs(sl, simplify = TRUE), 0)
   expect_length(txpUpperFuncs(sl, simplify = TRUE), 0)
+  expect_null(txpUpperNames(sl))
+  expect_null(txpLowerNames(sl))
+  sl <- TxpSliceList(S1 = TxpSlice(txpLowerNames = "inpt1"), S2 = TxpSlice(txpUpperNames = c("inpt2", "inpt3")))
+  expect_null(txpValueNames(sl))
 })
 
 ##----------------------------------------------------------------------------##
