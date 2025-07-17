@@ -201,6 +201,9 @@ test_that("TxpResult calculations are accurate", {
     res_df2  <- res_df2[, sort(names(res_df2))]
   })
   expect_equal(res_df, res_df2)
+  expect_equal(txpMissing(res), c(ExampleA = 0.083333333,	
+                                  ExampleB = 0.50,	
+                                  ExampleC = 0.75))
 })
 
 ##----------------------------------------------------------------------------##

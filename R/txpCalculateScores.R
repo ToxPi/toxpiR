@@ -52,7 +52,7 @@ NULL
   (x - min(x, na.rm = TRUE))/diff(range(x, na.rm = TRUE))
 }
 
-.sumSlice <- function(slice, input, negative.value.handling) {
+.sumSlice <- function(slice, input, model, negative.value.handling) {
   # Applies input-level transformation functions and averages the values to give
   # a raw slice score
   .avgLevel <- function(nms, input, negative.value.handling, level){
@@ -68,20 +68,26 @@ NULL
     max_cols <- sapply(dat, function(col) if (all(is.na(col))) NA_real_ else max(col, na.rm = TRUE))
     x <- apply(dat, MARGIN = 1, .sumNA, level, max_cols)
     x <- x/length(nms)
-
     dat <- unlist(dat)
     y <- sum(!is.finite(dat)) 
     return(list(x = x,y = y))
   }
   
+  num_cols <- 0
+                                     
   #main score
   nms <- txpValueNames(slice)
   if(!is.null(nms)){
     sum <- .avgLevel(nms, input, negative.value.handling, "mid")$x
     mis <- .avgLevel(nms, input, negative.value.handling, "mid")$y
+    num_cols <- num_cols + length(nms)
   } else {
     sum <- NULL
-    mis <- NULL
+    if(!is.null(txpValueNames(model))){
+      mis <- nrow(input)
+      num_cols <- num_cols + 1
+    }
+    else{mis <- NULL}
   }
   
   #lower confidence interval
@@ -89,9 +95,14 @@ NULL
   if(!is.null(low_nms)){
     low_sum <- .avgLevel(low_nms, input, negative.value.handling, "low")$x
     low_mis <- .avgLevel(low_nms, input, negative.value.handling, "low")$y
+    num_cols <- num_cols + length(low_nms)
   } else {
     low_sum <- NULL
-    low_mis <- NULL
+    if(!is.null(txpLowerNames(model))){
+      low_mis <- nrow(input)
+      num_cols <- num_cols + 1
+    }
+    else{low_mis <- NULL}
   }
   
   #upper confidence interval
@@ -99,13 +110,19 @@ NULL
   if(!is.null(up_nms)){
     up_sum <- .avgLevel(up_nms, input, negative.value.handling, "up")$x
     up_mis <- .avgLevel(up_nms, input, negative.value.handling, "up")$y
+    num_cols <- num_cols + length(up_nms)
   } else {
     up_sum <- NULL
-    up_mis <- NULL
+    if(!is.null(txpUpperNames(model))){
+      up_mis <- nrow(input)
+      num_cols <- num_cols + 1
+    }
+    else{up_mis <- NULL}
   }
   
+  data_size <- num_cols*nrow(input)
   #missing data between all levels
-  total_mis <- sum(mis, low_mis, up_mis)/length(unlist(input[,c(nms, low_nms, up_nms)]))
+  total_mis <- sum(mis, low_mis, up_mis)/data_size
   list(sum = sum, mis = total_mis, low_sum = low_sum, up_sum = up_sum)
 }
 
@@ -116,7 +133,7 @@ NULL
   
   ## Calculate raw slice scores and missingness
   x <- lapply(
-    txpSlices(model), .sumSlice, input = input,
+    txpSlices(model), .sumSlice, model = model, input = input,
     negative.value.handling = slot(model, "negativeHandling"))
 
   mis <- sapply(x, "[[", "mis")
@@ -199,11 +216,16 @@ NULL
     }
   }
 
-  ## Make NA 0/1
-  if(!is.null(slc_main)){slc_main[is.na(slc_main)] <- 0}
+  ## Make low NA 0, main NA lower bound or 0, upper NA 1
   if(!is.null(slc_low)){slc_low[is.na(slc_low)] <- 0}
+  if (!is.null(slc_main)) {
+    if (!is.null(slc_low)) {
+      slc_main[is.na(slc_main)] <- slc_low[is.na(slc_main)]
+    } else {
+      slc_main[is.na(slc_main)] <- 0
+    }
+  }
   if(!is.null(slc_up)){slc_up[is.na(slc_up)] <- 1}
-  
   list(slc_main = slc_main, mis = mis, slc_low = slc_low, slc_up = slc_up)
 }
 
