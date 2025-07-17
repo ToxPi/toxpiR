@@ -93,7 +93,10 @@ NULL
     sliceValueColor = NULL,
     sliceLineColor = "white",
     showMissing = TRUE,
-    showCenter = TRUE) {
+    showCenter = TRUE,
+    showLower = TRUE,
+    showMain = TRUE,
+    showUpper = TRUE) {
 
   if(is.null(txpIDs(x))){
     warning("txpIDs(<txpResult>) is NULL; using indices as IDs. txpIDs(<txpResult>) can be assigned prior to plotting if desired")
@@ -104,7 +107,7 @@ NULL
     .TxpResult.toxpiGGPlot(
       x, fills, showScore, ncol, bgColor, borderColor,
       sliceBorderColor, sliceValueColor, sliceLineColor, showMissing, 
-      showCenter
+      showCenter, showLower, showMain, showUpper
     )
   } else {
     .TxpResult.toxpiGridPlot(
@@ -215,7 +218,10 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     sliceValueColor = NULL,
     sliceLineColor = NULL,
     showMissing = TRUE,
-    showCenter = TRUE
+    showCenter = TRUE,
+    showLower = TRUE,
+    showMain = TRUE,
+    showUpper = TRUE
     ) {
 
   # Set to NULL to prevent note from devtools::check()
@@ -231,7 +237,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
   nms <- names(txpModel(x))
   low_nms <- paste0(nms, "_low")
   up_nms <- paste0(nms, "_up")
-  missing_cols <- setdiff(c(low_nms, up_nms), colnames(toxResultDF))
+  missing_cols <- setdiff(c(nms, low_nms, up_nms), colnames(toxResultDF))
   for (col in missing_cols) {
     toxResultDF[[col]] <- NA
   }
@@ -250,7 +256,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     ggplot2::ylim(0, ifelse(is.null(sliceValueColor), 1, yText)) +
     ggplot2::theme(plot.margin = ggplot2::margin(2, 2, 2, 2, unit = "mm"))
 
-  if (showScore) {
+  if (showScore) { #text score above plot
     plot <- plot + ggplot2::facet_wrap(
       ~factor(NameScore, levels = unique(profileDF$NameScore)),
       ncol = ncol
@@ -262,7 +268,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     )
   }
 
-  if (!is.null(sliceLineColor)) {
+  if (!is.null(sliceLineColor)) { #slice angle guidelines
     nSlices <- length(unique(profileDF$Slices))
     x1 <- profileDF$left
     y1 <- rep(innerRad, length(x1))
@@ -275,7 +281,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     )
   }
   
-  if(showCenter){
+  if(showCenter){ #center missing data circle
     if (showMissing) {
       missingData <- txpMissing(x)
     } else {
@@ -285,44 +291,102 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       ggplot2::aes(xmin = left, xmax = right, ymin = 0, ymax = innerRad),
       fill = rep(grDevices::gray(1 - missingData), length(x))
     )
-  }
-
-  if (!is.null(sliceBorderColor)) {
-    plot <- plot + ggplot2::geom_rect(
-      ggplot2::aes(
-        xmin = left,
-        xmax = right,
-        ymin = innerRad,
-        ymax = innerRad + radii * (1 - innerRad),
-        fill = Slices
-      ),
-      color = sliceBorderColor,
-      linewidth = 0.5
-    )
-  } else {
-    plot <- plot + ggplot2::geom_rect(
-      ggplot2::aes(
-        xmin = left,
-        xmax = right,
-        ymin = innerRad,
-        ymax = innerRad + radii * (1 - innerRad),
-        fill = Slices
-      )
+    plot <- plot + ggplot2::geom_hline(
+      yintercept = innerRad, color = borderColor, linewidth = 0.5
     )
   }
 
-  plot <- plot + ggplot2::scale_fill_manual(
-    breaks = unique(profileDF$Slices),
-    values = fills
-  )
-  
-  if (!is.null(borderColor)) {
+  if (!is.null(borderColor)) { #slice outer ring
     plot <- plot + ggplot2::geom_hline(
       yintercept = 1, color = borderColor, linewidth = 0.5
     )
   }
+  
+  if(showUpper && !is.null(x@txpSliceUps) && !is.null(sliceBorderColor)){ #slice upper bound solid slice guide line
+    up_df <- profileDF[!is.na(profileDF$radii_up),]
+    plot <- plot + 
+      geom_segment(data = up_df, aes(x = left, y = innerRad, yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = sliceBorderColor) +
+      geom_segment(data = up_df, aes(x = right, y = innerRad, yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = sliceBorderColor)
+  }
+  
+  if(showMain){
+    if(!is.null(x@txpSliceScores)){
+      main_df <- profileDF[!is.na(profileDF$radii),]
+      #main_df <- subset(main_df, radii != 0)
+      if(is.null(x@txpSliceLows) || is.null(x@txpSliceUps)){linetype <- NULL} else {linetype <- "Main"}
+      if (!is.null(sliceBorderColor)) { #slice outlines w/interior fills
+        plot <- plot + ggplot2::geom_rect(data = main_df,
+                                          ggplot2::aes(
+                                            xmin = left,
+                                            xmax = right,
+                                            ymin = innerRad,
+                                            ymax = innerRad + radii * (1 - innerRad),
+                                            fill = Slices,
+                                            linetype = linetype
+                                          ),
+                                          color = sliceBorderColor,
+                                          linewidth = 0.5
+        )
+      } else { #interior fills
+        plot <- plot + ggplot2::geom_rect(data = main_df,
+                                          ggplot2::aes(
+                                            xmin = left,
+                                            xmax = right,
+                                            ymin = innerRad,
+                                            ymax = innerRad + radii * (1 - innerRad),
+                                            fill = Slices,
+                                            linetype = linetype
+                                          )
+        )
+      }
+      
+      plot <- plot + ggplot2::scale_fill_manual( #set interior fills to proper
+        breaks = unique(profileDF$Slices),
+        values = fills,
+        guide = guide_legend(order = 1)
+      )
+    }
+  }
 
-  if (!is.null(sliceValueColor)) {
+  if(showLower && !is.null(x@txpSliceLows)){ #slice lower bound dotted line
+    low_df <- profileDF[!is.na(profileDF$radii_low),]
+    if(!is.null(x@txpSliceScores)){
+      plot <- plot + 
+        geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad), linetype = "Lower"), colour = "black")
+    } else {
+      plot <- plot + 
+        geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad), colour = Slices, linetype = "Lower"))
+    }
+  }
+
+  if(showUpper && !is.null(x@txpSliceUps)){ #slice upper bound dashed line
+    up_df <- profileDF[!is.na(profileDF$radii_up),]
+    if(!is.null(x@txpSliceScores)){
+      plot <- plot + 
+        geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad),  linetype = "Upper"), colour = "black")
+    } else {
+      plot <- plot + 
+        geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad), colour = Slices, linetype = "Upper"))
+    }  
+  }
+  
+  if(is.null(x@txpSliceScores)){
+    plot <- plot + ggplot2::scale_colour_manual( #color bounds when main is NULL
+      breaks = unique(profileDF$Slices),
+      values = fills,
+      guide = guide_legend(order = 1)
+    )
+  }
+  
+  if(!is.null(x@txpSliceLows) || !is.null(x@txpSliceUps)){
+    plot <- plot + scale_linetype_manual(
+      name = "Bound Type",
+      values = c("Lower" = "21", "Main" = "solid", "Upper" = "62"),
+      guide = guide_legend(order = 2)
+    )
+  }
+  
+  if (!is.null(sliceValueColor)) { #slice score text visual
     plot <- plot + ggplot2::geom_text(
       ggplot2::aes(
         x = mid,
@@ -333,93 +397,18 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       size = 3
     )
   }
-# 
-#   plot <- plot + ggplot2::geom_hline(
-#     yintercept = innerRad, color = sliceLineColor, linewidth = 0.4
-#   )
-
-  # if (!is.null(x@txpSliceLows){
-  #   low_df <- profileDF
-  #   low_scores <- x@txpSliceLows
-  #   row.names(low_scores) <- txpIDs(x)
-  #   lookup_colnames <- paste0(low_df$Slices, "_low")
-  #   lookup_rownames <- low_df$Name
-  #   low_df$radiiLow <- mapply(function(rn, cn) {
-  #     if (rn %in% rownames(lows) && cn %in% colnames(lows)) {
-  #       lows[rn, cn]
-  #     } else {
-  #       NA  
-  #     }
-  #   }, rn = lookup_rownames, cn = lookup_colnames)
-  #   
-  # } || !is.null(x@txpSliceUps)){
-  #   CI_df <- profileDF
-  #   lows <- x@txpSliceLows
-  #   # if(is.null(lows)){
-  #   #   lows <- x@txpSliceScores
-  #   #   lows[,] <- NA
-  #   #   colnames(lows) <- paste0(colnames(lows), "_low")
-  #   # } 
-  #   row.names(lows) <- txpIDs(x)
-  #   lookup_colnames <- paste0(CI_df$Slices, "_low")
-  #   lookup_rownames <- CI_df$Name
-  #   CI_df$radiiLow <- mapply(function(rn, cn) {
-  #     if (rn %in% rownames(lows) && cn %in% colnames(lows)) {
-  #       lows[rn, cn]
-  #     } else {
-  #       NA  
-  #     }
-  #   }, rn = lookup_rownames, cn = lookup_colnames)
-  #   
-  #   ups <- x@txpSliceUps
-  #   if(is.null(ups)){
-  #     ups <- x@txpSliceScores
-  #     ups[,] <- NA
-  #     colnames(ups) <- paste0(colnames(ups), "_up")
-  #   } 
-  #   row.names(ups) <- txpIDs(x)
-  #   lookup_colnames <- paste0(CI_df$Slices, "_up")
-  #   lookup_rownames <- CI_df$Name
-  #   CI_df$radiiUp <- mapply(function(rn, cn) {
-  #     if (rn %in% rownames(ups) && cn %in% colnames(ups)) {
-  #       ups[rn, cn]
-  #     } else {
-  #       NA  
-  #     }
-  #   }, rn = lookup_rownames, cn = lookup_colnames)
-  #   
-    # CI_df <- CI_df[!is.na(CI_df$radiiLow) | !is.na(CI_df$radiiUp),]
-    # print(CI_df)
-    #CI_df$radiiLow[is.na(CI_df$radiiLow)] <- CI_df$radii[is.na(CI_df$radiiLow)]
-    #CI_df$radiiUp[is.na(CI_df$radiiUp)]   <- CI_df$radii[is.na(CI_df$radiiUp)]
-    
-  if(!is.null(x@txpSliceLows)){
-    low_df <- profileDF[!is.na(profileDF$radii_low),]
-    plot <- plot + 
-      geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad)), linetype = "2121", colour = "black")
-  }
   
-  if(!is.null(x@txpSliceUps)){
-    up_df <- profileDF[!is.na(profileDF$radii_up),]
-    plot <- plot + 
-      #geom_segment(data = up_df, aes(x = as.numeric(mid), y = innerRad + radii * (1 - innerRad), yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = "black") +
-      geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad)), linetype = "9393", colour = "black")
-  }
-  
-  # if(!is.null(x@txpSliceUps)){
-  #   plot <- plot + 
-  #     geom_segment(data = low_df, aes(x = as.numeric(mid), y = innerRad + radii_low * (1 - innerRad), yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = "black")
-  # } else {
-  #   plot <- plot +
-  #     geom_segment(data = low_df, aes(x = as.numeric(mid), y = innerRad + radii_low * (1 - innerRad), yend = innerRad + radii * (1 - innerRad)), linetype = "solid", colour = "black")
-  # }
-  # 
-  if (!is.null(bgColor)) {
+  if (!is.null(bgColor)) { #plot background color
     plot <- plot + ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = bgColor, color = bgColor)
     )
   }
 
+  plot <- plot +
+    theme(
+      legend.key = element_rect(fill = "transparent")#, colour = NA)
+    )
+  
   plot + ggplot2::coord_polar(start = 3 * pi / 2, direction = -1)
 
 }
@@ -431,7 +420,13 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 }
 
 # Generate dataframe for plotting a profile
-.generateProfileDF <- function(startWts, endWts, radii, sliceNames, radii_low, radii_up, id, score) {
+.generateProfileDF <- function(startWts, endWts, radii, sliceNames, radii_low, radii_up, id, score, score_low, score_up) {
+  scores <- c(
+    if (!is.null(score_low)) round(score_low, 4),
+    if (!is.null(score))     round(score, 4),
+    if (!is.null(score_up))  round(score_up, 4)
+  )
+
   df <- data.frame(
     left = startWts,
     right = endWts,
@@ -441,7 +436,10 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     radii_low = radii_low,
     radii_up = radii_up,
     Name = id,
-    Score = round(score, 4)
+    Score = paste0("{", 
+                  paste(scores, collapse = ","),
+                  "}"
+    )
   )
   df$NameScore <- paste(df$Name, df$Score, sep = "\n")
   df
@@ -457,7 +455,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       pos$start, pos$end, 
       unlist(data[x, sliceNames]), sliceNames, 
       unlist(data[x, low_nms]), unlist(data[x, up_nms]), 
-      data[x, "id"], data[x, "score"]
+      data[x, "id"], data[x, "score"], data[x, "score_low"], data[x, "score_up"]
     )
   }))
 }
