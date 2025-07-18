@@ -241,7 +241,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
   for (col in missing_cols) {
     toxResultDF[[col]] <- NA
   }
-  profileDF <- .getPlotList(txpWeights(x), nms, toxResultDF)
+  profileDF <- .getPlotList(txpWeights(x), nms, toxResultDF, showLower, showMain, showUpper)
 
   #make plot
   if(showCenter){
@@ -302,17 +302,9 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     )
   }
   
-  if(showUpper && !is.null(x@txpSliceUps) && !is.null(sliceBorderColor)){ #slice upper bound solid slice guide line
-    up_df <- profileDF[!is.na(profileDF$radii_up),]
-    plot <- plot + 
-      geom_segment(data = up_df, aes(x = left, y = innerRad, yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = sliceBorderColor) +
-      geom_segment(data = up_df, aes(x = right, y = innerRad, yend = innerRad + radii_up * (1 - innerRad)), linetype = "solid", colour = sliceBorderColor)
-  }
-  
   if(showMain){
     if(!is.null(x@txpSliceScores)){
       main_df <- profileDF[!is.na(profileDF$radii),]
-      #main_df <- subset(main_df, radii != 0)
       if(is.null(x@txpSliceLows) || is.null(x@txpSliceUps)){linetype <- NULL} else {linetype <- "Main"}
       if (!is.null(sliceBorderColor)) { #slice outlines w/interior fills
         plot <- plot + ggplot2::geom_rect(data = main_df,
@@ -350,7 +342,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 
   if(showLower && !is.null(x@txpSliceLows)){ #slice lower bound dotted line
     low_df <- profileDF[!is.na(profileDF$radii_low),]
-    if(!is.null(x@txpSliceScores)){
+    if(!is.null(x@txpSliceScores) && showMain){
       plot <- plot + 
         geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad), linetype = "Lower"), colour = "black")
     } else {
@@ -361,7 +353,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 
   if(showUpper && !is.null(x@txpSliceUps)){ #slice upper bound dashed line
     up_df <- profileDF[!is.na(profileDF$radii_up),]
-    if(!is.null(x@txpSliceScores)){
+    if(!is.null(x@txpSliceScores) && showMain){
       plot <- plot + 
         geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad),  linetype = "Upper"), colour = "black")
     } else {
@@ -370,7 +362,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     }  
   }
   
-  if(is.null(x@txpSliceScores)){
+  if(is.null(x@txpSliceScores) || !showMain){
     plot <- plot + ggplot2::scale_colour_manual( #color bounds when main is NULL
       breaks = unique(profileDF$Slices),
       values = fills,
@@ -378,7 +370,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     )
   }
   
-  if(!is.null(x@txpSliceLows) || !is.null(x@txpSliceUps)){
+  if(!is.null(x@txpSliceLows) || !is.null(x@txpSliceUps)){ #order legend
     plot <- plot + scale_linetype_manual(
       name = "Bound Type",
       values = c("Lower" = "21", "Main" = "solid", "Upper" = "62"),
@@ -446,16 +438,20 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 }
 
 #get dataframe containing all necessary info for selected samples
-.getPlotList <- function(wts, sliceNames, data) {
+.getPlotList <- function(wts, sliceNames, data, showLower, showMain, showUpper) {
   pos <- .getSlicePositions(wts)
   low_nms <- paste0(sliceNames, "_low")
   up_nms <- paste0(sliceNames, "_up")
+  
   do.call(rbind, lapply(1:nrow(data), function(x) {
+    if(!showMain){score <- NULL} else {score <- data[x, "score"]}
+    if(!showLower){score_low <- NULL} else {score_low <- data[x, "score_low"]}
+    if(!showUpper){score_up <- NULL} else {score_up <- data[x, "score_up"]}
     .generateProfileDF(
       pos$start, pos$end, 
       unlist(data[x, sliceNames]), sliceNames, 
       unlist(data[x, low_nms]), unlist(data[x, up_nms]), 
-      data[x, "id"], data[x, "score"], data[x, "score_low"], data[x, "score_up"]
+      data[x, "id"], score, score_low, score_up
     )
   }))
 }

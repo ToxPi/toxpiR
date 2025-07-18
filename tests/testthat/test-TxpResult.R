@@ -274,9 +274,12 @@ test_that("We can make and edit ToxPi diagrams", {
   expect_silent(plot(res, package = "gg",showCenter = FALSE))
   expect_silent({
     res <- txp_example_results_CI
-    txpIDs(txp_example_results_CI) <- paste0(1:10)
     plot(txp_example_results_CI, package = "gg")
   })
+  expect_silent(plot(txp_example_results_CI, package = "gg", showLower = FALSE))
+  expect_silent(plot(txp_example_results_CI, package = "gg", showMain = FALSE))
+  expect_silent(plot(txp_example_results_CI, package = "gg", showUpper = FALSE))
+  
 })
 
 ##----------------------------------------------------------------------------##
