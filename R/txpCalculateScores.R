@@ -52,7 +52,7 @@ NULL
   (x - min(x, na.rm = TRUE))/diff(range(x, na.rm = TRUE))
 }
 
-.sumSlice <- function(slice, input, model, negative.value.handling) {
+.sumSlice <- function(slice, input, model, negative.value.handling, slc_name) {
   # Applies input-level transformation functions and averages the values to give
   # a raw slice score
   .avgLevel <- function(nms, input, negative.value.handling, level){
@@ -65,6 +65,8 @@ NULL
       if (is.null(tfs[[i]])) next
       dat[[i]] <- tfs[[i]](dat[[i]])
     }
+
+    .chkNonFiniteMetrics(dat, slc_name)
     max_cols <- sapply(dat, function(col) if (all(is.na(col))) NA_real_ else max(col, na.rm = TRUE))
     x <- apply(dat, MARGIN = 1, .sumNA, level, max_cols)
     x <- x/length(nms)
@@ -132,9 +134,19 @@ NULL
   input <- .rmInfinite(model = model, input = input)
   
   ## Calculate raw slice scores and missingness
-  x <- lapply(
-    txpSlices(model), .sumSlice, model = model, input = input,
-    negative.value.handling = slot(model, "negativeHandling"))
+  x <- Map(
+    function(slice, slc_name) {
+      .sumSlice(
+        slice,
+        model = model,
+        input = input,
+        negative.value.handling = slot(model, "negativeHandling"),
+        slc_name = slc_name
+      )
+    },
+    txpSlices(model),
+    names(model)
+  )
 
   mis <- sapply(x, "[[", "mis")
   

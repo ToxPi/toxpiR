@@ -100,5 +100,19 @@
   
   return(NULL)
 }
+
+.chkNonFiniteMetrics <- function(dat, slc_name) {
+  df <- as.data.frame(dat)
+  bad_cols <- colnames(df)[sapply(df, function(col) all(!is.finite(col)))]
+
+  if (length(bad_cols) > 0) {
+    msg <- sprintf(
+      paste("The following metrics in slice", slc_name, "contain only non-finite values after metric transformations:\n  %s"),
+            paste(unique(bad_cols), collapse = ", ")
+      )
+      stop(msg, call. = FALSE)
+  }
+  return(NULL)
+}
 ##----------------------------------------------------------------------------##
 

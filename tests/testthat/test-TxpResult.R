@@ -240,6 +240,13 @@ test_that("Improper txpCalculateScores throw proper error", {
   expect_error({
     suppressWarnings(txpCalculateScores(mod, txp_example_input_CI, id.var = 1))
   }, "ExampleA, ExampleA_low, ExampleA_up")
+  expect_silent({
+    mod <- txp_example_model_CI
+    txpTransFuncs(txpSlices(mod)$ExampleA)[[1]] <- function(x) log(-x)
+  })
+  expect_error({
+    suppressWarnings(txpCalculateScores(mod, txp_example_input_CI, id.var = 1))
+  }, "Slice1_M1")
 })
 
 ##----------------------------------------------------------------------------##
