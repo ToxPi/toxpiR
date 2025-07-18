@@ -279,7 +279,11 @@ test_that("We can make and edit ToxPi diagrams", {
   expect_silent(plot(txp_example_results_CI, package = "gg", showLower = FALSE))
   expect_silent(plot(txp_example_results_CI, package = "gg", showMain = FALSE))
   expect_silent(plot(txp_example_results_CI, package = "gg", showUpper = FALSE))
-  
+  expect_silent(plot(txp_example_results_CI, package = "gg", sliceBoundColor = "magenta"))
+  expect_warning({plot(txp_example_results_CI, package = "gg", sliceBorderColor = "black")},
+                 "<sliceBorderColor> == <sliceBoundColor>")
+  expect_warning({plot(txp_example_results_CI, package = "gg", borderColor = "black")},
+                 "<borderColor> == <sliceBoundColor>")
 })
 
 ##----------------------------------------------------------------------------##

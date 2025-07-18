@@ -96,7 +96,8 @@ NULL
     showCenter = TRUE,
     showLower = TRUE,
     showMain = TRUE,
-    showUpper = TRUE) {
+    showUpper = TRUE,
+    sliceBoundColor= "black") {
 
   if(is.null(txpIDs(x))){
     warning("txpIDs(<txpResult>) is NULL; using indices as IDs. txpIDs(<txpResult>) can be assigned prior to plotting if desired")
@@ -107,14 +108,13 @@ NULL
     .TxpResult.toxpiGGPlot(
       x, fills, showScore, ncol, bgColor, borderColor,
       sliceBorderColor, sliceValueColor, sliceLineColor, showMissing, 
-      showCenter, showLower, showMain, showUpper
+      showCenter, showLower, showMain, showUpper, sliceBoundColor
     )
   } else {
     .TxpResult.toxpiGridPlot(
       x, fills, showScore, gp, vp, name, newpage, ...
     )
   }
-
 }
 
 #' @describeIn TxpResult-plot Plot ToxPi diagrams
@@ -221,7 +221,8 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     showCenter = TRUE,
     showLower = TRUE,
     showMain = TRUE,
-    showUpper = TRUE
+    showUpper = TRUE,
+    sliceBoundColor = "black"
     ) {
 
   # Set to NULL to prevent note from devtools::check()
@@ -291,7 +292,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       ggplot2::aes(xmin = left, xmax = right, ymin = 0, ymax = innerRad),
       fill = rep(grDevices::gray(1 - missingData), length(x))
     )
-    plot <- plot + ggplot2::geom_hline(
+    plot <- plot + ggplot2::geom_hline( #slice inner ring
       yintercept = innerRad, color = borderColor, linewidth = 0.5
     )
   }
@@ -305,7 +306,15 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
   if(showMain){
     if(!is.null(x@txpSliceScores)){
       main_df <- profileDF[!is.na(profileDF$radii),]
-      if(is.null(x@txpSliceLows) || is.null(x@txpSliceUps)){linetype <- NULL} else {linetype <- "Main"}
+      if(is.null(x@txpSliceLows) && is.null(x@txpSliceUps)){
+        linetype <- NULL
+      } else {
+        lowerShown <- !is.null(x@txpSliceLows) && showLower
+        upperShown <- !is.null(x@txpSliceUps) && showUpper
+        if((sliceBorderColor == sliceBoundColor) && (lowerShown || upperShown)){warning("<sliceBorderColor> == <sliceBoundColor>, thus bounds of 0 or equivalent to the main slice score cannot be seen.")}
+        if((borderColor == sliceBoundColor) && (lowerShown || upperShown)){warning("<borderColor> == <sliceBoundColor>, thus bounds of 1 cannot be seen.")}
+        linetype <- "Main"
+      }
       if (!is.null(sliceBorderColor)) { #slice outlines w/interior fills
         plot <- plot + ggplot2::geom_rect(data = main_df,
                                           ggplot2::aes(
@@ -344,7 +353,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     low_df <- profileDF[!is.na(profileDF$radii_low),]
     if(!is.null(x@txpSliceScores) && showMain){
       plot <- plot + 
-        geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad), linetype = "Lower"), colour = "black")
+        geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad), linetype = "Lower"), colour = sliceBoundColor)
     } else {
       plot <- plot + 
         geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad), colour = Slices, linetype = "Lower"))
@@ -355,7 +364,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     up_df <- profileDF[!is.na(profileDF$radii_up),]
     if(!is.null(x@txpSliceScores) && showMain){
       plot <- plot + 
-        geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad),  linetype = "Upper"), colour = "black")
+        geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad),  linetype = "Upper"), colour = sliceBoundColor)
     } else {
       plot <- plot + 
         geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad), colour = Slices, linetype = "Upper"))
@@ -395,11 +404,6 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       panel.background = ggplot2::element_rect(fill = bgColor, color = bgColor)
     )
   }
-
-  plot <- plot +
-    theme(
-      legend.key = element_rect(fill = "transparent")#, colour = NA)
-    )
   
   plot + ggplot2::coord_polar(start = 3 * pi / 2, direction = -1)
 
