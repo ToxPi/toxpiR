@@ -303,50 +303,48 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     )
   }
   
-  if(showMain){
-    if(!is.null(x@txpSliceScores)){
-      main_df <- profileDF[!is.na(profileDF$radii),]
-      if(is.null(x@txpSliceLows) && is.null(x@txpSliceUps)){
-        linetype <- NULL
-      } else {
-        lowerShown <- !is.null(x@txpSliceLows) && showLower
-        upperShown <- !is.null(x@txpSliceUps) && showUpper
-        if((sliceBorderColor == sliceBoundColor) && (lowerShown || upperShown)){warning("<sliceBorderColor> == <sliceBoundColor>, thus bounds of 0 or equivalent to the main slice score cannot be seen.")}
-        if((borderColor == sliceBoundColor) && (lowerShown || upperShown)){warning("<borderColor> == <sliceBoundColor>, thus bounds of 1 cannot be seen.")}
-        linetype <- "Main"
-      }
-      if (!is.null(sliceBorderColor)) { #slice outlines w/interior fills
-        plot <- plot + ggplot2::geom_rect(data = main_df,
-                                          ggplot2::aes(
-                                            xmin = left,
-                                            xmax = right,
-                                            ymin = innerRad,
-                                            ymax = innerRad + radii * (1 - innerRad),
-                                            fill = Slices,
-                                            linetype = linetype
-                                          ),
-                                          color = sliceBorderColor,
-                                          linewidth = 0.5
-        )
-      } else { #interior fills
-        plot <- plot + ggplot2::geom_rect(data = main_df,
-                                          ggplot2::aes(
-                                            xmin = left,
-                                            xmax = right,
-                                            ymin = innerRad,
-                                            ymax = innerRad + radii * (1 - innerRad),
-                                            fill = Slices,
-                                            linetype = linetype
-                                          )
-        )
-      }
-      
-      plot <- plot + ggplot2::scale_fill_manual( #set interior fills to proper
-        breaks = unique(profileDF$Slices),
-        values = fills,
-        guide = guide_legend(order = 1)
+  if(showMain && !is.null(x@txpSliceScores)){
+    main_df <- profileDF[!is.na(profileDF$radii),]
+    if(is.null(x@txpSliceLows) && is.null(x@txpSliceUps)){
+      linetype <- NULL
+    } else {
+      lowerShown <- !is.null(x@txpSliceLows) && showLower
+      upperShown <- !is.null(x@txpSliceUps) && showUpper
+      if((sliceBorderColor == sliceBoundColor) && (lowerShown || upperShown)){warning("<sliceBorderColor> == <sliceBoundColor>, thus bounds of 0 or equivalent to the main slice score cannot be seen.")}
+      if((borderColor == sliceBoundColor) && (lowerShown || upperShown)){warning("<borderColor> == <sliceBoundColor>, thus bounds of 1 cannot be seen.")}
+      linetype <- "Main"
+    }
+    if (!is.null(sliceBorderColor)) { #slice outlines w/interior fills
+      plot <- plot + ggplot2::geom_rect(data = main_df,
+                                        ggplot2::aes(
+                                          xmin = left,
+                                          xmax = right,
+                                          ymin = innerRad,
+                                          ymax = innerRad + radii * (1 - innerRad),
+                                          fill = Slices,
+                                          linetype = linetype
+                                        ),
+                                        color = sliceBorderColor,
+                                        linewidth = 0.5
+      )
+    } else { #interior fills
+      plot <- plot + ggplot2::geom_rect(data = main_df,
+                                        ggplot2::aes(
+                                          xmin = left,
+                                          xmax = right,
+                                          ymin = innerRad,
+                                          ymax = innerRad + radii * (1 - innerRad),
+                                          fill = Slices,
+                                          linetype = linetype
+                                        )
       )
     }
+    
+    plot <- plot + ggplot2::scale_fill_manual( #set interior fills to proper
+      breaks = unique(profileDF$Slices),
+      values = fills,
+      guide = guide_legend(order = 1)
+    )
   }
 
   if(showLower && !is.null(x@txpSliceLows)){ #slice lower bound dotted line
@@ -371,6 +369,22 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     }  
   }
   
+  if(showMain && !is.null(x@txpSliceScores)){
+    if (!is.null(sliceValueColor)) { #slice score text visual
+      plot <- plot + ggplot2::geom_text(
+        ggplot2::aes(
+          x = mid,
+          y = yText,
+          label = as.character(radii)
+        ),
+        colour = sliceValueColor,
+        size = 3
+      )
+    } 
+  } else {
+    if(!is.null(sliceValueColor)){warning("<sliceValueColor> cannot be shown when is.null(txpSliceScores(<txpResult>)) or showMain = FALSE")}
+  }
+  
   if(is.null(x@txpSliceScores) || !showMain){
     plot <- plot + ggplot2::scale_colour_manual( #color bounds when main is NULL
       breaks = unique(profileDF$Slices),
@@ -384,18 +398,6 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       name = "Bound Type",
       values = c("Lower" = "21", "Main" = "solid", "Upper" = "62"),
       guide = guide_legend(order = 2)
-    )
-  }
-  
-  if (!is.null(sliceValueColor)) { #slice score text visual
-    plot <- plot + ggplot2::geom_text(
-      ggplot2::aes(
-        x = mid,
-        y = yText,
-        label = as.character(radii)
-      ),
-      colour = sliceValueColor,
-      size = 3
     )
   }
   

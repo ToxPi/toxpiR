@@ -284,6 +284,8 @@ test_that("We can make and edit ToxPi diagrams", {
                  "<sliceBorderColor> == <sliceBoundColor>")
   expect_warning({plot(txp_example_results_CI, package = "gg", borderColor = "black")},
                  "<borderColor> == <sliceBoundColor>")
+  expect_warning({plot(txp_example_results_CI, package = "gg", sliceValueColor = "black", showMain = FALSE)},
+                 "<sliceValueColor> cannot be shown")
 })
 
 ##----------------------------------------------------------------------------##
