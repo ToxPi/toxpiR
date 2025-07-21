@@ -292,9 +292,11 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       ggplot2::aes(xmin = left, xmax = right, ymin = 0, ymax = innerRad),
       fill = rep(grDevices::gray(1 - missingData), length(x))
     )
-    plot <- plot + ggplot2::geom_hline( #slice inner ring
-      yintercept = innerRad, color = borderColor, linewidth = 0.5
-    )
+    if(!is.null(borderColor)){
+      plot <- plot + ggplot2::geom_hline( #slice inner ring
+        yintercept = innerRad, color = borderColor, linewidth = 0.5
+      )
+    }
   }
 
   if (!is.null(borderColor)) { #slice outer ring
@@ -310,8 +312,12 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     } else {
       lowerShown <- !is.null(x@txpSliceLows) && showLower
       upperShown <- !is.null(x@txpSliceUps) && showUpper
-      if((sliceBorderColor == sliceBoundColor) && (lowerShown || upperShown)){warning("<sliceBorderColor> == <sliceBoundColor>, thus bounds of 0 or equivalent to the main slice score cannot be seen.")}
-      if((borderColor == sliceBoundColor) && (lowerShown || upperShown)){warning("<borderColor> == <sliceBoundColor>, thus bounds of 1 cannot be seen.")}
+      if((!is.null(sliceBorderColor) && !is.null(sliceBoundColor)) &&
+         (sliceBorderColor == sliceBoundColor) && 
+         (lowerShown || upperShown)){warning("<sliceBorderColor> == <sliceBoundColor>, thus bounds of 0 or equivalent to the main slice score cannot be seen.")}
+      if((!is.null(borderColor) && !is.null(sliceBoundColor)) &&
+         (borderColor == sliceBoundColor) && 
+         (lowerShown || upperShown)){warning("<borderColor> == <sliceBoundColor>, thus bounds of 1 cannot be seen.")}
       linetype <- "Main"
     }
     if (!is.null(sliceBorderColor)) { #slice outlines w/interior fills
@@ -347,7 +353,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     )
   }
 
-  if(showLower && !is.null(x@txpSliceLows)){ #slice lower bound dotted line
+  if(showLower && !is.null(x@txpSliceLows) && !is.null(sliceBoundColor)){ #slice lower bound dotted line
     low_df <- profileDF[!is.na(profileDF$radii_low),]
     if(!is.null(x@txpSliceScores) && showMain){
       plot <- plot + 
@@ -358,7 +364,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     }
   }
 
-  if(showUpper && !is.null(x@txpSliceUps)){ #slice upper bound dashed line
+  if(showUpper && !is.null(x@txpSliceUps) && !is.null(sliceBoundColor)){ #slice upper bound dashed line
     up_df <- profileDF[!is.na(profileDF$radii_up),]
     if(!is.null(x@txpSliceScores) && showMain){
       plot <- plot + 
