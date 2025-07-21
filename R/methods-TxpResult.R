@@ -494,14 +494,14 @@ setValidity2("TxpResult", .TxpResult.validity)
     outCols <- c(outCols, score.name, rank.name, colnames(txpSliceScores(x)))
   }
   
-  if(!is.null(txpSliceLows(x, adjusted = adjusted))){
+  if(!is.null(txpScoreLows(x))){
     df[[paste0(score.name, "_low")]] <- txpScoreLows(x)
     df[[paste0(rank.name, "_low")]] <- txpRankLows(x)
     df <- cbind(df, txpSliceLows(x, adjusted = adjusted))
     outCols <- c(outCols, paste0(score.name, "_low"), paste0(rank.name, "_low"), colnames(txpSliceLows(x)))
   }
   
-  if(!is.null(txpSliceUps(x, adjusted = adjusted))){
+  if(!is.null(txpScoreUps(x))){
     df[[paste0(score.name, "_up")]] <- txpScoreUps(x)
     df[[paste0(rank.name, "_up")]] <- txpRankUps(x)
     df <- cbind(df, txpSliceUps(x, adjusted = adjusted))
