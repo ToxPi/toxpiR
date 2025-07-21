@@ -1,0 +1,96 @@
+---
+title: "Import ToxPi CSV Files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Import ToxPi CSV Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette will show how to load a data model file that was saved using either the ToxPi Java GUI or the built-in txpExportCSV() function in toxpiR and replicate the results. While both files use different formats, the function txpImportCSV() can automatically assess which format the file is in and read in the corresponding data and model appropriately. The following steps will utilize a built in csv file created using toxpiR's txpExportCSV() function; however, a toxpi GUI file can be used in its place, and steps to download an example toxpi GUI file to use in its place will be shown.
+
+```{r setup}
+library(toxpiR)
+# Get the path to the example toxpiR data model csv file
+toxpiR_path <- system.file("data", "txp_example_input_CI.csv", package = "toxpiR")
+
+# Optionally download the 'format_C.csv' data model csv file from the toxpi gui github for use in place of toxpiR
+fmtc <- tempfile()
+ghuc <- "https://raw.githubusercontent.com"
+fmtcUrl <- file.path(ghuc, "ToxPi", "ToxPi-example-files", "main", "format_C.csv")
+download.file(url = fmtcUrl, destfile = fmtc, quiet = TRUE)
+```
+
+
+```{r}
+## Import files into R
+toxpiR <- txpImportCSV(toxpiR_path)
+gui <- txpImportCSV(fmtc)
+```
+
+The resulting `list` object contains: `$model`, a `TxpModel` object with the model specifications; `$input`, a `data.frame` containing the data for calculating ToxPi scores; and `$fills`, an array of slice colors for plotting. The toxpi GUI "format_C.csv" model specification reuses metrics across different slices. In general, we do not recommend duplicating inputs across slices, so the user gets a warning when creating a model with duplicate inputs. Feel free to use either the toxpiR or gui variable for the rest of this tutorial.
+
+```{r}
+toxpiR$model
+toxpiR$input
+toxpiR$fills
+```
+
+We calculate ToxPi scores using the `txpCalculateScores` function, which takes a model and input `data.frame`.  
+
+```{r}
+## Calculate ToxPi scores; Note: if using gui, id.var is under the column "Name", thus use id.var = "Name"
+res <- txpCalculateScores(model = toxpiR$model, input = toxpiR$input, id.var = 1)
+#res <- txpCalculateScores(model = gui$model, input = gui$input, id.var = "Name")
+
+## Overall ToxPi scores
+txpScores(res)
+
+## Slice scores
+txpSliceScores(res, adjusted = FALSE)
+```
+
+A results output similar to that given by the Java GUI can be obtained by combining score components.
+
+```{r}
+out <- as.data.frame(res, adjusted = FALSE)
+out <- out[order(out$score, decreasing = TRUE), ]
+out
+```
+
+ToxPi images and overall score rank plot can also be produced.
+
+```{r fig.width = 7}
+plot(sort(res), package = "gg", fills = toxpiR$fills)
+#plot(sort(res), package = "gg", fills = gui$fills)
+```
+
+```{r fig.width = 7, fig.height = 4}
+plot(res, txpRanks(res))
+plot(res, txpRanks(res), labels = 1:10, pch = 16, size = grid::unit(0.75, "char"))
+```
+
+The basic clustering methods offered in the Java GUI can also be recreated.
+
+```{r fig.width = 7, fig.height = 5}
+## Hierarchical Clustering
+hc <- hclust(dist(txpSliceScores(res)), method = 'complete')
+plot(hc, hang = -1, labels = txpIDs(res), xlab = 'Name', sub = '')
+```
+
+```{r fig.width = 7, fig.height = 5}
+## K-Means Clustering, plotted using principal components
+nClusters <- 3
+km <- kmeans(txpSliceScores(res), nClusters)
+pc <- prcomp(txpSliceScores(res))
+coord <- predict(pc) * -sum(txpWeights(res))
+plot(coord[,1], coord[,2], col = km$cluster, 
+     xlab = 'PC1', ylab = 'PC2', pch = 16)
+```
