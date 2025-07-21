@@ -245,8 +245,6 @@ The txpModel object can be exported along with the data that it is intended to b
 
 **Arguments**
 
-> *fileName* : text string to name the output csv file. Default is "txpModel.csv".
-
 > *model* : ToxPi model object created using TxpModel() function.
 
 > *input* : dataframe containing input data for ToxPi model. 
@@ -256,6 +254,8 @@ The txpModel object can be exported along with the data that it is intended to b
 > *fills* : Vector containing slice colors as either hex codes or R recognized colors. Defaults to a color scheme matching the ToxPi GUI.
 
 > *format* : text string specifying whether to format the file for toxpiR or the Java GUI. Options are "toxpiR" and "gui". Default is "toxpiR".
+
+> *fileName* : text string to name the output csv file. Default is "txpModel.csv".
 
 ```{r, eval=FALSE}
 # Export the data model

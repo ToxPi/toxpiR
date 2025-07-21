@@ -40,12 +40,12 @@
 #' @importFrom utils write.table
 #' @export
 
-txpExportCSV <- function(fileName = "txpModel.csv", 
-                         input, 
+txpExportCSV <- function(input, 
                          model, 
                          id.var = NULL,
                          fills = NULL,
-                         format = "toxpiR") {
+                         format = "toxpiR",
+                         fileName = "txpModel.csv") {
   
   stopifnot(is_scalar_character(fileName))
   stopifnot(is_scalar_character(format))
