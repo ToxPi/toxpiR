@@ -19,7 +19,7 @@ This vignette will show how to load a data model file that was saved using eithe
 ```{r setup}
 library(toxpiR)
 # Get the path to the example toxpiR data model csv file
-toxpiR_path <- system.file("data", "txp_example_input_CI.csv", package = "toxpiR")
+toxpiR_path <- system.file("extdata", "txp_example_input_CI.csv", package = "toxpiR")
 
 # Optionally download the 'format_C.csv' data model csv file from the toxpi gui github for use in place of toxpiR
 fmtc <- tempfile()

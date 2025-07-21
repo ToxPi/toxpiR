@@ -73,7 +73,8 @@ The first column in the header rows still represent slices from the model, but e
 ```{r, echo=FALSE, out.width="100%"}
 knitr::include_graphics("embeddedFigures/gui_format.JPG")
 ```
-### Key differences between Java GUI and toxpiR Summary
+
+### Java GUI vs toxpiR Summary
 
 #### Slice Weights
 The Java GUI only allows weights that are either integers or a ratio of integers whereas the toxpiR package has no restrictions and can use non-integer values, thus format = "gui" will not work for non-integer numerics.
