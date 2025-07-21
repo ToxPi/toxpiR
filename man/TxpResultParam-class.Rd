@@ -11,7 +11,7 @@
 \item{negative.value.handling}{Passed to \code{negative.value.handling} slot}
 }
 \description{
-This function is deprecated. Please use  instead.
+This function is deprecated. Please use \verb{txpModel(<txpResult>)} instead.
 }
 \details{
 If more than one value is passed to \code{TxpResultParam} scalar options, e.g.

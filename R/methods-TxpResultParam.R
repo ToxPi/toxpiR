@@ -5,7 +5,7 @@
 #' @name TxpResultParam-class
 #' @aliases TxpResultParam
 #' @title ToxPi Result Parameters (Deprecated)
-#' @description This function is deprecated. Please use [txpModel(<txpResult>)] instead.
+#' @description This function is deprecated. Please use `txpModel(<txpResult>)` instead.
 #' 
 #' @slot rank.ties.method Character scalar, method used to calculate score 
 #' ranks passed to [base::rank]

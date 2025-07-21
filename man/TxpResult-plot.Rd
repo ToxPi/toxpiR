@@ -24,7 +24,11 @@
   sliceValueColor = NULL,
   sliceLineColor = "white",
   showMissing = TRUE,
-  showCenter = TRUE
+  showCenter = TRUE,
+  showLower = TRUE,
+  showMain = TRUE,
+  showUpper = TRUE,
+  sliceBoundColor = "black"
 )
 
 \S4method{plot}{TxpResult,numeric}(

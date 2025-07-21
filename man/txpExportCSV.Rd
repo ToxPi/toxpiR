@@ -5,17 +5,15 @@
 \title{Export comma-separated file containing txpModel and raw data}
 \usage{
 txpExportCSV(
-  fileName = "txpModel.csv",
   input,
   model,
   id.var = NULL,
   fills = NULL,
-  format = "toxpiR"
+  format = "toxpiR",
+  fileName = "txpModel.csv"
 )
 }
 \arguments{
-\item{fileName}{Character scalar, the path to the output file}
-
 \item{input}{data.frame. The input dataframe to be analyzed that corresponds to the txpModel object provided}
 
 \item{model}{S4 \link{TxpModel} object or \link{TxpModelList} object. The txpModel object to be used in the calculation}
@@ -28,6 +26,8 @@ unique names for identification}
 
 \item{format}{Character scalar, export format for csv file. Options are
 'toxpiR' and 'gui'. Defaults to 'toxpiR'.}
+
+\item{fileName}{Character scalar, the path to the output file}
 }
 \description{
 Export comma-separated file containing txpModel and raw data
