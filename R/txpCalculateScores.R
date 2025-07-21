@@ -63,7 +63,13 @@ NULL
     else {tfs <- txpTransFuncs(slice)}
     for (i in seq_along(nms)) {
       if (is.null(tfs[[i]])) next
-      dat[[i]] <- tfs[[i]](dat[[i]])
+      dat[[i]] <- withCallingHandlers(
+        tfs[[i]](dat[[i]]),
+        warning = function(w) {
+          message(sprintf("Warning in transformation for metric '%s' in slice '%s': %s", nms[[i]], slc_name, conditionMessage(w)))
+          invokeRestart("muffleWarning")
+        }
+      )
     }
 
     .chkNonFiniteMetrics(dat, slc_name)
@@ -80,8 +86,9 @@ NULL
   #main score
   nms <- txpValueNames(slice)
   if(!is.null(nms)){
-    sum <- .avgLevel(nms, input, negative.value.handling, "mid")$x
-    mis <- .avgLevel(nms, input, negative.value.handling, "mid")$y
+    sumMis <- .avgLevel(nms, input, negative.value.handling, "mid")
+    sum <- sumMis$x
+    mis <- sumMis$y
     num_cols <- num_cols + length(nms)
   } else {
     sum <- NULL
@@ -95,8 +102,9 @@ NULL
   #lower confidence interval
   low_nms <- txpLowerNames(slice)
   if(!is.null(low_nms)){
-    low_sum <- .avgLevel(low_nms, input, negative.value.handling, "low")$x
-    low_mis <- .avgLevel(low_nms, input, negative.value.handling, "low")$y
+    low_sumMis <- .avgLevel(low_nms, input, negative.value.handling, "low")
+    low_sum <- low_sumMis$x
+    low_mis <- low_sumMis$y
     num_cols <- num_cols + length(low_nms)
   } else {
     low_sum <- NULL
@@ -110,8 +118,9 @@ NULL
   #upper confidence interval
   up_nms <- txpUpperNames(slice)
   if(!is.null(up_nms)){
-    up_sum <- .avgLevel(up_nms, input, negative.value.handling, "up")$x
-    up_mis <- .avgLevel(up_nms, input, negative.value.handling, "up")$y
+    up_sumMis <- .avgLevel(up_nms, input, negative.value.handling, "up")
+    up_sum <- up_sumMis$x
+    up_mis <- up_sumMis$y
     num_cols <- num_cols + length(up_nms)
   } else {
     up_sum <- NULL
