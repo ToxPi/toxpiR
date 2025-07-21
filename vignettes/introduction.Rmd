@@ -59,7 +59,7 @@ There are three main steps in using this package:
 
 - **Loading data**: Calculating scores requires a data frame in which the data is formatted where column names are the feature/metric names and raw sample data are rows. An id column with unique features names is also suggested to be included in the data frame. Users often obtain this data frame by reading in a csv file with read.csv(file, header = TRUE). Alternatively, if a user has exported a data model to a csv from either toxpiR or the ToxPi Java GUI, both the data and model can be read in from the file using txpImportCSV(file), which returns a list where the data is contained under input. This is highly recommended if the data is planned to be shared with the model for recreation. For more info about csv data models, see [vignette("importFromCSV", package = "mypackage")].
 
-- **Creating ToxPi Model**: ToxPi models can be created by first building TxpSlice objects, which are fed into TxpModel() to create a TxpModel object. Each slice can be made up of one or more, optionally transformed, features from the input data and can contain lower and upper bound feature data as well. When creating TxpModel objects, you should also name the slices, provide their weights, optionally provide any slice transformations, and specify how the model should handle negative data and rank ties. Alternatively, if a user has exported a data model to a csv from either toxpiR or the ToxPi Java GUI, both the data and model can be read in using txpImportCSV(), which returns a list where the model is contained under model. For more info about csv data models, see [vignette("importFromCSV", package = "mypackage")].
+- **Creating ToxPi Model**: ToxPi models can be created by first building TxpSlice objects, which are fed into TxpModel() to create a TxpModel object. Each slice can be made up of one or more, optionally transformed, features from the input data and can contain lower and upper bound feature data as well. When creating TxpModel objects, you should also name the slices, provide their weights, optionally provide any slice transformations, and specify how the model should handle negative data and rank ties. Alternatively, if a user has exported a data model to a csv either from toxpiR using txpExportCSV() or from the ToxPi Java GUI, both the data and model can be read in using txpImportCSV(), which returns a list where the model is contained under model. For more info about importing csv data models, see [vignette("importFromCSV", package = "toxpiR")].
 
 - **Computing ToxPi Scores**: Sample scores can be computed per slice as well as overall using txpCalculateScores(). The S4 object resulting from this step will combine and store the ToxPi model and scores all in one place. This final object will contain all the information needed for plotting. 
 
@@ -235,6 +235,31 @@ f.model <- TxpModel(txpSlices = f.slices,
                     rankTies = "average",
                     negativeHandling = "keep")
 
+```
+
+### Export toxpiR data model (recommended)
+
+The txpModel object can be exported along with the data that it is intended to be used on in a specially formatted csv file using *txpExportCSV()*. This is an important step, as it allows easy recreation of both models and results. Here we will provide a quick overview on how to export data models for later use with the toxpiR package, but models can also be exported for use with the Java GUI if they are compatible. For more info about importing csv data models, see [vignette("exportToCSV", package = "toxpiR")].
+
+#### txpExportCSV()
+
+**Arguments**
+
+> *fileName* : text string to name the output csv file. Default is "txpModel.csv".
+
+> *model* : ToxPi model object created using TxpModel() function.
+
+> *input* : dataframe containing input data for ToxPi model. 
+
+> *id.var* : Character scalar or integer, column name or index in 'input' that stores unique sample id. Deafults to NULL.
+
+> *fills* : Vector containing slice colors as either hex codes or R recognized colors. Defaults to a color scheme matching the ToxPi GUI.
+
+> *format* : text string specifying whether to format the file for toxpiR or the Java GUI. Options are "toxpiR" and "gui". Default is "toxpiR".
+
+```{r, eval=FALSE}
+# Export the data model
+txpExportCSV(fileName = "txp_vignette_model.csv", model = f.model, input = txp_example_input_CI)
 ```
 
 ### Calculate ToxPi scores
