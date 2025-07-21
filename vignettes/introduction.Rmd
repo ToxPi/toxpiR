@@ -46,7 +46,7 @@ This document introduces ToxPi and describes how to use the `toxpiR` package to 
 
 ## What is ToxPi?
 
-The Toxicological Prioritization Index (ToxPi) is a statistical modeling framework that allows transparent integration and visualization of data across disparate sources (i.e. multimodal or multiscale information). This framework aggregates related features into scored ‘slices’, rescales individual slice scores to range 0–1, and then develops an overall score for each sample using a weighted model. The slice weights can be interpreted as the "importance" of categorized features when predicting sample scores and associated ranks. The resulting scores for each sample are visualized as ToxPi profiles (see image below). Slice weights are represented as the arc-width, slice scores are represented as the radius, and the overall sample scores are represented by the combination of slice weights and radii. These visualizations allow for quick comparison of overall feature importance, feature impacts driving a specific sample, relative impact ranking of common features between samples, and overall ranking between samples. As a flexible method capable of integrating data from any source, it has been applied to problems in several different fields. Additional information is linked from [toxpi.org](https://toxpi.org).   
+The Toxicological Prioritization Index (ToxPi) is a statistical modeling framework that allows transparent integration and visualization of data across disparate sources (i.e. multimodal or multiscale information). This framework aggregates related features into scored ‘slices’, rescales individual slice scores to range 0–1, and then develops an overall score for each sample using a weighted model. The slice weights can be interpreted as the "importance" of categorized features when predicting sample scores and associated ranks. The resulting scores for each sample are visualized as ToxPi profiles (see image below). Slice weights are represented as the angle of the slice, slice scores are represented as the radius, and the overall sample scores are represented by the combination of slice angles and radii (arc-length). These visualizations allow for quick comparison of overall feature importance, feature impacts driving a specific sample, relative impact ranking of common features between samples, and overall ranking between samples. As a flexible method capable of integrating data from any source, it has been applied to problems in several different fields. Additional information is linked from [toxpi.org](https://toxpi.org).   
 
 <center>
 ![](embeddedFigures/txp_explain1.png){width=700px}
@@ -57,22 +57,34 @@ The Toxicological Prioritization Index (ToxPi) is a statistical modeling framewo
 
 There are three main steps in using this package: 
 
-- **Loading data**: Users can load comma-separated value (csv) formatted data where data features that will make up the slices are stored as columns and attributes are rows. If you are more famililar with the GUI data format, the package also has a function to load data that is formatted in any one of the GUI layouts where slice information is presented in rows beginning with a hash tag(#). However, new users should use a simple .csv file with the row and column layout.  
+- **Loading data**: Calculating scores requires a data frame in which the data is formatted where column names are the feature/metric names and raw sample data are rows. An id column with unique features names is also suggested to be included in the data frame. Users often obtain this data frame by reading in a csv file with read.csv(file, header = TRUE). Alternatively, if a user has exported a data model to a csv from either toxpiR or the ToxPi Java GUI, both the data and model can be read in from the file using txpImportCSV(file), which returns a list where the data is contained under input. This is highly recommended if the data is planned to be shared with the model for recreation. For more info about csv data models, see [vignette("importFromCSV", package = "mypackage")].
 
-- **Creating ToxPi Model**: ToxPi model can be created by specifying information about each slice and its corresponding weights. Each slice can be made up of one or more features from the input data. You should also name the slices and provide their weights in this step.
+- **Creating ToxPi Model**: ToxPi models can be created by first building TxpSlice objects, which are fed into TxpModel() to create a TxpModel object. Each slice can be made up of one or more, optionally transformed, features from the input data and can contain lower and upper bound feature data as well. When creating TxpModel objects, you should also name the slices, provide their weights, optionally provide any slice transformations, and specify how the model should handle negative data and rank ties. Alternatively, if a user has exported a data model to a csv from either toxpiR or the ToxPi Java GUI, both the data and model can be read in using txpImportCSV(), which returns a list where the model is contained under model. For more info about csv data models, see [vignette("importFromCSV", package = "mypackage")].
 
-- **Computing ToxPi Scores**: Scores can be computed per attribute as well as for each slice. The S4 object resulting from this step will combine and store the ToxPi model and scores all in one place. This final object will contain all the information needed for plotting. 
+- **Computing ToxPi Scores**: Sample scores can be computed per slice as well as overall using txpCalculateScores(). The S4 object resulting from this step will combine and store the ToxPi model and scores all in one place. This final object will contain all the information needed for plotting. 
 
-Data contained within different slots of the S4 objects created using this package can be obtained using *accessor functions*. More details on how this can be done is present later in the document. 
+Information contained within different slots of the S4 objects created using this package can be obtained using *accessor functions*. More details on how this can be done is present later in the document. 
 
 
 ## Installation
 
 ### **Standard installation**
 
-You can install `toxpiR` from [CRAN](https://cran.r-project.org/web/packages/available_packages_by_name.html) with:
+You can install `toxpiR` from [CRAN](https://cran.r-project.org/web/packages/available_packages_by_name.html). Some dependencies located on [Bioconductor](https://www.bioconductor.org/packages/release/BiocViews.html#___Software) must be installed separately from toxpiR as well.
 
 ```{r, eval = FALSE}
+# Manually install bioconductor packages if not already installed
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+if (!requireNamespace("S4Vectors", quietly = TRUE)) {
+  BiocManager::install("S4Vectors")
+}
+if (!requireNamespace("BiocGenerics", quietly = TRUE)) {
+  BiocManager::install("BiocGenerics")
+}
+
+# Install toxpiR
 install.packages("toxpiR")
 ```
 
@@ -82,6 +94,23 @@ Any new features will be first added to the GitHub version of the package. Howev
 Note, Windows users will need Rtools to install directly from GitHub. 
  
 ```{r, eval = FALSE}
+# Manually install bioconductor packages if not already installed
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+if (!requireNamespace("S4Vectors", quietly = TRUE)) {
+  BiocManager::install("S4Vectors")
+}
+if (!requireNamespace("BiocGenerics", quietly = TRUE)) {
+  BiocManager::install("BiocGenerics")
+}
+
+# Install remotes package if not already installed
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+
+# Install toxpiR from github
 remotes::install_github("ToxPi/toxpiR")
 ```
 
@@ -97,30 +126,30 @@ library(toxpiR)
 ![](embeddedFigures/toxpiR-flowchart.svg){height=100% width=100%}
 </center>
 
-This flowchart details the basic steps necessary to analyze data using `toxpiR`. A separate vignette describes how to load and work with the GUI data file using txpImportGui() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:  
+This flowchart details the basic steps necessary to analyze data using `toxpiR`. A separate vignette describes how to load and work with the CSV data file using txpImportCSV() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:  
   
 > lsf.str("package:toxpiR")   
 
 ## Example usage
 
-Data can either be entered as a regular csv file without the header lines specifying slice information, or in one of the GUI input formats. If you are using the GUI format, please refer to the [Import ToxPi GUI files](https://cran.r-project.org/package=toxpiR/vignettes/importFromGui.html) vignette. 
+Data must be entered as a data frame where column names are features. This is usually obtained from read.csv() if a model has not been previously created, or txpImportCSV() if the csv file has header lines specifying model information. If you are using the GUI header format, please refer to the [Import ToxPi GUI files](https://cran.r-project.org/package=toxpiR/vignettes/importFromGui.html) vignette. 
 
-The standard data input is a standard R dataframe with rows as your datapoints and columns as features that may be turned into ToxPi slices. A simple example data set called *txp_example_input* is available within the package. We will use this 10 x 8 toy data to walk through a simple analysis and explain the functions available in this package. These metrics that we have specified can be in completely different scales and data type, but first we will show a simple example of the package usage.
+The standard data input is a standard R dataframe with rows as your datapoints and columns as features that may be turned into ToxPi slices. Two simple example data sets called *txp_example_input* and *txp_example_input_CI* are available within the package. We will use the CI (confidence interval) toy data to walk through a simple analysis and explain the functions available in this package. These metrics that we have specified can be in completely different scales and data type, but first we will show a simple example of the package usage.
 
 
 ### Load the dataset
 
 ```{r}
-data(txp_example_input, package = "toxpiR")
-head(txp_example_input)
+data(txp_example_input_CI, package = "toxpiR")
+head(txp_example_input_CI)
 ```
 
 ### Specify slice information 
 
-The first step is to specify information about each slice before creating a Toxpi model. This can be done using the **TxpSliceList()** and **TxpSlice()** functions. These slices can be made up of one or more features from the input dataset and are specified by listing the features that go into each slice in the **TxpSlice()** function. We can also specify how we want to transform the slices with the  **TxpTransFuncList()** function. This means we can do a different transformation per slice instead of having to transform the entire input dataset. 
+The first step is to specify information about each slice before creating a Toxpi model. This can be done using the **TxpSliceList()** and **TxpSlice()** functions. These slices can be made up of one or more features from the input dataset and are specified by listing the features that go into each slice in the **TxpSlice()** function. We can also specify how we want to transform the features with the  **TxpTransFuncList()** function. This means we can do a different transformation per feature instead of having to transform the entire input dataset within a slice. Upper and lower confidence interval features can also be provided with the slice. Features must not intersect between the main slice, its lower interval, and its upper interval, and at least one of the three levels must be provided.
 
 
-#### TxpSlice(txpValueNames, txpTransFuncs)
+#### TxpSlice(txpValueNames, txpTransFuncs, txpLowerNames, txpLowerFuncs, txpUpperNames, txpUpperFuncs)
 
 >Store individual slice objects. 
 
@@ -130,31 +159,46 @@ The first step is to specify information about each slice before creating a Toxp
 
 > *txpTransFuncs* : List of transformation functions to use with one function per entry in txpValueNames. Can be created using TxpTransFuncList() method. Defaults to NULL. 
 
+> *txpLowerNames* : character vector indicating which data to include in the lower CI of the slice. Can just be the name of a single column if that is all the slice contains.
+
+> *txpLowerFuncs* : List of transformation functions to use with one function per entry in txpLowerNames. Can be created using TxpTransFuncList() method. Defaults to NULL. 
+
+> *txpUpperNames* : character vector indicating which data to include in the upper CI of the slice. Can just be the name of a single column if that is all the slice contains.
+
+> *txpUpperFuncs* : List of transformation functions to use with one function per entry in txpUpperNames. Can be created using TxpTransFuncList() method. Defaults to NULL. 
+
 #### TxpSliceList()
 
 >Method to merge all individuals slices together and assign slice names.
 
 **Basic Usage**
 
-
-
 ```{r}
 
-## Goal - Create two slices with transformation functions 
-# Slice 1: Metric 1, No transformation 
-# Slice 2: Metric 2 (square) and Metric 3 (no transformation)
+## Goal - Create three slices with transformation functions and increasing complexity
+# Slice 1 (No bounds): Slice1_M1 (no transformation)
+# Slice 2 (No bounds): Slice2_M1 (square) 
+# Slice 3: Slice3_M1 and Slice3_M2 (no transformation)
+# Slice 3 Lower CI: Slice3_L1 and Slice3_L2 (no transformation)
+# Slice 3 Upper CI: Slice3_U1 (square) and Slice3_U2 (no transformation)
 
-slice2.trans <- TxpTransFuncList(func1 = function(x) x^2, func2 = NULL)
+slice2.trans <- TxpTransFuncList(func1 = function(x) x^2)
+slice3.upper.trans <- TxpTransFuncList(func1 = function(x) x^2, func2 = NULL)
 
-f.slices <- TxpSliceList(Slice1 = TxpSlice("metric1"), 
-                         Slice2 = TxpSlice(c("metric2", "metric3"), 
-                                           txpTransFuncs = slice2.trans ))
+f.slices <- TxpSliceList(Slice1 = TxpSlice(txpValueNames = "Slice1_M1"), 
+                         Slice2 = TxpSlice(txpValueNames = "Slice2_M1", 
+                                           txpTransFuncs = slice2.trans),
+                         Slice3 = TxpSlice(txpValueNames = c("Slice3_M1", "Slice3_M2"),
+                                           txpLowerNames = c("Slice3_L1", "Slice3_L2"),
+                                           txpUpperNames = c("Slice3_U1", "Slice3_U2"),
+                                           txpUpperFuncs = slice3.upper.trans))
 
 ```
 
 ### Create ToxPi model
 
-The ToxPi model object is core for specifying how the created slices should behave when the scores are calculated. In this step, we need to specify what the slices we created above are and assign those slices weights. We can also assign transformation functions at this step. However, it is not necessary if you have already done so when creating the slices. The model is a core component of the analysis because it is going to specify how our calculations are performed. 
+The ToxPi model object is core for specifying how the created slices should behave when the scores are calculated. In this step, we need to specify what the slices we created above are and assign those slices weights. We can also assign transformation functions to overall slices after feature aggregation.
+The model should also specify how both negative data and rank ties should be handled. The model is essential to the analysis because it is going to specify how our calculations are performed and allow for recreation of results. 
 
 #### TxpModel()
 
@@ -162,9 +206,13 @@ The ToxPi model object is core for specifying how the created slices should beha
 
 > *txpSlices* : TxpSliceList() object.
 
-> *txpWeights* : numeric vector specifying weight of each slice. By default, all slices are weighted equally (1). 
+> *txpWeights* : numeric vector specifying weight of each slice in the same order as txpSlices. By default, all slices are weighted equally (1).
 
 > *txpTransFuncs* : TxpTransFuncList object. Defaults to NULL, if a list is provided, its length must be equal to the number of slices present.
+
+> *rankTies* : character string specifying how ties are treated. Available options "average", "first", "last", "random", "max" and "min". Pased to base::rank function.
+
+> *negativeHandling* : character string specifying how negative values are treated. Available options are "keep" and "missing". Defaults to keep. 
 
 > adjusted : Scalar logical to adjust returned weights such that they sum to 1. 
 
@@ -174,21 +222,24 @@ The ToxPi model object is core for specifying how the created slices should beha
 ```{r}
 
 ## Goal - Create ToxPi model.
-# Slice 1, weight = 2
+# Slice 1, weight = 2, no transformation
 # Slice 2, weight = 1, apply log transform to final value. 
+# Slice 3, weight = 1, no transformation
 
 # Object storing list of transformation functions.
-final.trans <- TxpTransFuncList(f1 = NULL, f2 = function(x) log10(x)) 
+final.trans <- TxpTransFuncList(f1 = NULL, f2 = function(x) log10(x), f3 = NULL) 
 
 f.model <- TxpModel(txpSlices = f.slices, 
-                    txpWeights = c(2,1),
-                    txpTransFuncs = final.trans)
+                    txpWeights = c(2,1,1),
+                    txpTransFuncs = final.trans,
+                    rankTies = "average",
+                    negativeHandling = "keep")
 
 ```
 
 ### Calculate ToxPi scores
 
-Calculate ToxPi Scores for the given ToxPi model and input data. This input data is what we read in previously from either a standard .csv file or a GUI compatible one. This step uses the model we have created to specify how the ToxPi scores should be calculated. The results object that is created also stores the model used, allowing for easy reference when you are dealing with many models and results.
+Calculate ToxPi Scores for the given ToxPi model and input data. This input data is what we loaded in previously as a data frame, which can be obtained in several ways including *read.csv()* on a basic csv or the input obtained from a compatible data model csv and *txpImportCSV()*. This step uses the model we have created or read in to specify how the ToxPi scores should be calculated. The results object that is created also stores the model used, allowing for easy reference when you are dealing with many models and results. 
 
 #### txpCalculateScores()
 
@@ -198,22 +249,27 @@ Calculate ToxPi Scores for the given ToxPi model and input data. This input data
 
 > *input* : dataframe containing input data for ToxPi model. 
 
-> *id.var* : Character scalar, column in 'input' to store in. Deafults to NULL.
+> *id.var* : Character scalar or integer, column name or index in 'input' that stores unique sample id. Deafults to NULL.
 
-> *rank.ties.method* : character string specifying how ties are treated. Available options "average", "first", "last", "random", "max" and "min". Pased to base::rank function.
+> *rank.ties.method* : deprecated, and now should be provided in the TxpModel object. Providing here will overwrite the TxpModel slots for now, but please alter code to follow the new format.
 
-> *negative.value.handling* : character string specifying how negative values are treated. Available options are "keep" and "missing". Defaults to keep. 
+> *negative.value.handling* : deprecated, and now should be provided in the TxpModel object. Providing here will overwrite the TxpModel slots for now, but please alter code to follow the new format.
 
 **Usage**
 
 
 ```{r}
-f.model <- txp_example_model #Load a more complex 4 slice model
-f.results <- txpCalculateScores(model = f.model,
-                                input = txp_example_input,
-                                id.var = 'name' ) 
+f.model <- txp_example_model_CI #Load a more complex model than we created previously
 
-txpSliceScores(f.results) #ToxPi scores
+#Calculate results, integer 1 is provided for id.var specifying the first column is the id column in the input
+f.results <- txpCalculateScores(model = f.model,
+                                input = txp_example_input_CI,
+                                id.var = 1) 
+
+txpSliceScores(f.results) #ToxPi slice scores
+txpScores(f.results) #Overall ToxPi scores
+txpSliceLows(f.results) #ToxPi lower CI slice scores
+txpSliceUps(f.results) #ToxPi upper CI slice scores
 txpWeights(f.results) #Print weights
 txpMissing(f.results) #Proportion of missing data within each slice
 ```
@@ -221,7 +277,7 @@ txpMissing(f.results) #Proportion of missing data within each slice
 
 ### Visualization
 
-Two paths exist for visualization, **ggplot** methods and **grid** methods. The ggplot method uses the `ggplot2` package and allows for highly customizable profiles allowing for several visualization experiences. The grid method uses advanced `grid` graphics and can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preferred. 
+Two paths exist for visualization, **ggplot** methods and **grid** methods. The ggplot method uses the `ggplot2` package and allows for highly customizable profiles allowing for several visualization experiences, as well as the ability to visualize confidence intervals. The grid method uses advanced `grid` graphics and can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preferred. 
 
 <br>
 **Summary**: The ggPlot graphics path will be the best option for users wanting to create ToxPi profiles, with many options for customization. The grid graphics path is for users wanting to modify very specific, basic elements of ToxPi profiles and/or recombine profiles with other graphics. The `ggplot2` package (high-level) is built atop `grid` graphics (low-level), so the two systems interact well.
@@ -233,6 +289,7 @@ Two paths exist for visualization, **ggplot** methods and **grid** methods. The 
 * Examples shown in this vignette produce a "look-and-feel" that is closer to the graphics output of the familiar [ToxPi GUI](https://toxpi.org)
 * Aesthetics are easy to customize 
 * Includes missing data visuals (center circle à la ToxPi GUI output)
+* Includes ability to visualize confidence intervals
 </div>
 
 <div >
@@ -246,12 +303,12 @@ Two paths exist for visualization, **ggplot** methods and **grid** methods. The 
 
 #### ggplot Method
 
-This method uses the `ggplot2` package to draw highly customizable ToxPi profiles with multiple different aesthetics and information options. The most notable aesthetic addition is the inclusion of information regarding the amount of missing data each slice has, which is represented by the a small circle of interior slices as is shown in profiles generated by the ToxPi GUI. Each interior slice is colored on a grey scale, with black representing all missing data and white representing no missing data. Each new customization option, along with some other notable differences, are described below. 
+This method uses the `ggplot2` package to draw highly customizable ToxPi profiles with multiple different aesthetics and information options. The most notable aesthetic addition is the inclusion of information regarding the amount of missing data each slice has, which is represented by the a small circle of interior slices as is shown in profiles generated by the ToxPi GUI. Each interior slice is colored on a grey scale, with black representing all missing data and white representing no missing data. Each new customization option, along with some other notable differences, are described below. Note: Setting any of parameters that take text colors to NULL will cause that parameter not to be plotted.
 
 <br>
 **Customization Options (Arguments)**
 
-> *fills* : Vector containing slice colors. Defaults to a color scheme matching the ToxPi GUI.
+> *fills* : Vector containing slice colors as either hex codes or R recognized colors. Defaults to a color scheme matching the ToxPi GUI.
 
 > *showMissing* : Boolean to show missing data information. Defaults to TRUE. 
 
@@ -261,15 +318,23 @@ This method uses the `ggplot2` package to draw highly customizable ToxPi profile
 
 > *ncol* : Integer specifying number of columns in plot. Default is an automatic calculation by ggplot. 
 
-> *bgColor* : Text specifying background color for profiles as either hex codes or R recognized colors. Defaults to "gray80".
+> *bgColor* : Text specifying background color for profiles as either a hex code or R recognized color. Defaults to "gray80".
 
-> *borderColor* : Text specifying color of max radius ring as either hex codes or R recognized colors. Defaults to "white".  
+> *borderColor* : Text specifying color of max radius ring as either a hex code or R recognized color. Defaults to "white".  
 
-> *sliceBorderColor* : Text specifying color of slice borders as either hex codes or R recognized colors. Defaults to "white".  
+> *sliceBorderColor* : Text specifying color of slice borders as either a hex code or R recognized color. Defaults to "white".  
 
-> *sliceValueColor* : Text specifying color of slice scores as either hex codes or R recognized colors. Defaults to NULL.  
+> *sliceLineColor* : Text specifying color of slice guidelines as either a hex code or R recognized color. Defaults to "white". 
 
-> *sliceLineColor* : Text specifying color of slice guidelines as either hex codes or R recognized colors. Defaults to NULL.  
+> *sliceValueColor* : Text specifying color of slice scores as either a hex code or R recognized color. Defaults to NULL. Only capable of showing scores for the main slice, not CI scores.   
+
+> *sliceBoundColor* : Text specifying color of slice scores as either a hex codes or R recognized color. Defaults to "black". When a main level is not provided anyhwere in the model or showMain is set to FALSE, bounds are automatically colored based on fills.
+
+> *showMain* : Boolean to plot main slices, which are represented as color filled areas. Defaults to TRUE.
+
+> *showLower* : Boolean to plot lower confidence intervals, which are represented as dotted lines. Defaults to TRUE.
+
+> *showUpper* : Boolean to plot upper confidence intervals, which are represented as dashed lines. Defaults to TRUE.
 
 <br>
 **Usage**
@@ -277,6 +342,8 @@ This method uses the `ggplot2` package to draw highly customizable ToxPi profile
 Depending on export method, plot resolution may end up poor. SVG and PDF images tend to produce better results than PNG. Usage and example plot output are shown below.
 ```{r, eval=FALSE}
 library("ggplot2")
+#If you skipped the model building tutorial section
+f.results <- txp_example_results_CI
 
 # Default plot
 plot(f.results, package = "gg") # Using ggplot package
@@ -290,13 +357,13 @@ plot(f.results, package = "gg") # Using ggplot package
 ```
 </center>
 
-Sometimes the inner circle of the ToxPi figure can show plotting artifacts. A possible workaround for this is to create a wrapper function around `ggplot2:::coord_munch` as shown below.
+Sometimes the inner circle of the ToxPi figure can show plotting artifacts. A possible workaround for this is to create a wrapper function around `ggplot2:::coord_munch` as shown below. The ggplot package is working on fixing this and will push their own patch in a new update.
 
 ```{r, fig.show = "hide"}
 ## Optional code to make smoother lines
 
 # Plot before updating coord_munch
-plot(f.results["chem01"], package = "gg") 
+plot(f.results["1"], package = "gg") 
 
 # Save the original version of coord_munch
 coord_munch_orig <- ggplot2:::coord_munch
@@ -320,10 +387,10 @@ if (length(formals(coord_munch_orig)) == 5) {
 assignInNamespace("coord_munch", coord_munch_new, ns = "ggplot2")
 
 # Plot after updating coord_munch
-plot(f.results["chem01"], package = "gg") 
+plot(f.results["1"], package = "gg") 
 
 # Revert to original coord_munch ater plotting if desired 
-#assignInNamespace("coord_munch", coord_munch_orig, ns = "ggplot2")
+assignInNamespace("coord_munch", coord_munch_orig, ns = "ggplot2")
 ```
 
 <center>
@@ -339,122 +406,149 @@ plot(f.results["chem01"], package = "gg")
 ```{r, eval=FALSE}
 # Changing the slice colors
 colors <- c("orange", "green", "magenta", "lightblue")
-plot(f.results["chem02"], package = "gg", fills = colors)
-plot(f.results["chem02"], package = "gg", fills = NULL)
+plot(f.results["2"], package = "gg", fills = colors)
+plot(f.results["2"], package = "gg", fills = NULL)
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 # Changing the slice colors
 colors <- c("orange", "green", "magenta", "lightblue")
-plot(f.results["chem02"], package = "gg", fills = colors)
-plot(f.results["chem02"], package = "gg", fills = NULL)
+plot(f.results["2"], package = "gg", fills = colors)
+plot(f.results["2"], package = "gg", fills = NULL)
 ```
 </center>
 
 ```{r, eval=FALSE}
 # Changing the background color
-plot(f.results["chem02"], package = "gg", bgColor = "lightskyblue")
-plot(f.results["chem02"], package = "gg", bgColor = NULL)
+plot(f.results["2"], package = "gg", bgColor = "lightskyblue")
+plot(f.results["2"], package = "gg", bgColor = NULL)
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 # Changing the background color
-plot(f.results["chem02"], package = "gg", bgColor = "lightskyblue")
-plot(f.results["chem02"], package = "gg", bgColor = NULL)
+plot(f.results["2"], package = "gg", bgColor = "lightskyblue")
+plot(f.results["2"], package = "gg", bgColor = NULL)
 ```
 </center>
 
 ```{r, eval=FALSE}
 # Changing the max radius ring color
-plot(f.results["chem02"], package = "gg", borderColor = "black")
-plot(f.results["chem02"], package = "gg", borderColor = NULL)
+plot(f.results["2"], package = "gg", borderColor = "black")
+plot(f.results["2"], package = "gg", borderColor = NULL)
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 # Changing the max radius ring color
-plot(f.results["chem02"], package = "gg", borderColor = "black")
-plot(f.results["chem02"], package = "gg", borderColor = NULL)
+plot(f.results["2"], package = "gg", borderColor = "black")
+plot(f.results["2"], package = "gg", borderColor = NULL)
 ```
 </center>
 
 ```{r, eval=FALSE}
 # Changing the slice border color
-plot(f.results["chem02"], package = "gg", sliceBorderColor = "magenta")
-plot(f.results["chem02"], package = "gg", sliceBorderColor = NULL)
+plot(f.results["2"], package = "gg", sliceBorderColor = "magenta")
+plot(f.results["2"], package = "gg", sliceBorderColor = NULL)
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 # Changing the slice border color
-plot(f.results["chem02"], package = "gg", sliceBorderColor = "magenta")
-plot(f.results["chem02"], package = "gg", sliceBorderColor = NULL)
+plot(f.results["2"], package = "gg", sliceBorderColor = "magenta")
+plot(f.results["2"], package = "gg", sliceBorderColor = NULL)
 ```
 </center>
 
 ```{r, eval=FALSE}
 # Adding slice guidelines 
-plot(f.results["chem02"], package = "gg", sliceLineColor = "red")
-plot(f.results["chem02"], package = "gg", sliceLineColor = NULL) 
+plot(f.results["2"], package = "gg", sliceLineColor = "red")
+plot(f.results["2"], package = "gg", sliceLineColor = NULL) 
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 # Adding slice guidelines 
-plot(f.results["chem02"], package = "gg", sliceLineColor = "red")
-plot(f.results["chem02"], package = "gg", sliceLineColor = NULL) 
+plot(f.results["2"], package = "gg", sliceLineColor = "red")
+plot(f.results["2"], package = "gg", sliceLineColor = NULL) 
 ```
 </center>
 
 ```{r, eval=FALSE}
 # Adding visible slice scores
-plot(f.results["chem02"], package = "gg", sliceValueColor = "brown")
-plot(f.results["chem02"], package = "gg", sliceValueColor = NULL)
+plot(f.results["2"], package = "gg", sliceValueColor = "brown")
+plot(f.results["2"], package = "gg", sliceValueColor = NULL)
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 # Adding visible slice scores
-plot(f.results["chem02"], package = "gg", sliceValueColor = "brown")
-plot(f.results["chem02"], package = "gg", sliceValueColor = NULL)
+plot(f.results["2"], package = "gg", sliceValueColor = "brown")
+plot(f.results["2"], package = "gg", sliceValueColor = NULL)
 ```
 </center>
 
 #### Binary Options
 ```{r, eval=FALSE}
 # Hiding inner circle
-plot(f.results["chem02"], package = "gg", showCenter = TRUE)
-plot(f.results["chem02"], package = "gg", showCenter = FALSE)
+plot(f.results["2"], package = "gg", showCenter = TRUE)
+plot(f.results["2"], package = "gg", showCenter = FALSE)
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 # Hiding inner circle
-plot(f.results["chem02"], package = "gg", showCenter = TRUE)
-plot(f.results["chem02"], package = "gg", showCenter = FALSE)
+plot(f.results["2"], package = "gg", showCenter = TRUE)
+plot(f.results["2"], package = "gg", showCenter = FALSE)
 ```
 </center>
 
 ```{r, eval=FALSE}
 # Hiding missing data information (pure white inner circle)
-plot(f.results["chem02"], package = "gg", showMissing = TRUE)
-plot(f.results["chem02"], package = "gg", showMissing = FALSE)
+plot(f.results["2"], package = "gg", showMissing = TRUE)
+plot(f.results["2"], package = "gg", showMissing = FALSE)
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 # Hiding missing data information (pure white inner circle)
-plot(f.results["chem02"], package = "gg", showMissing = TRUE)
-plot(f.results["chem02"], package = "gg", showMissing = FALSE)
+plot(f.results["2"], package = "gg", showMissing = TRUE)
+plot(f.results["2"], package = "gg", showMissing = FALSE)
 ```
 </center>
 
 ```{r, eval=FALSE}
 # Hiding the overall profile scores
-plot(f.results["chem02"], package = "gg", showScore = TRUE)
-plot(f.results["chem02"], package = "gg", showScore = FALSE) 
+plot(f.results["2"], package = "gg", showScore = TRUE)
+plot(f.results["2"], package = "gg", showScore = FALSE) 
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 # Hiding the overall profile scores
-plot(f.results["chem02"], package = "gg", showScore = TRUE)
-plot(f.results["chem02"], package = "gg", showScore = FALSE) 
+plot(f.results["2"], package = "gg", showScore = TRUE)
+plot(f.results["2"], package = "gg", showScore = FALSE) 
+```
+```{r, eval=FALSE}
+#Hiding the lower and upper bounds
+plot(f.results["2"], package = "gg", showLower = FALSE, showUpper = FALSE) 
+
+# Hiding the main slice
+plot(f.results["2"], package = "gg", showMain = FALSE)
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+#Hiding the lower and upper bounds
+plot(f.results["2"], package = "gg", showLower = FALSE, showUpper = FALSE) 
+
+# Hiding the main slice
+plot(f.results["2"], package = "gg", showMain = FALSE)
 ```
 </center>
+
+```{r, eval=FALSE}
+# Coloring the bounds
+plot(f.results["2"], package = "gg", sliceBoundColor = "black")
+plot(f.results["2"], package = "gg", sliceBoundColor = NULL) 
+```
+<center>
+```{r, fig.show="hold", echo=FALSE}
+# Coloring the bounds
+plot(f.results["2"], package = "gg", sliceBoundColor = "white")
+plot(f.results["2"], package = "gg", sliceBoundColor = NULL) 
+```
 
 #### Format/Theme Options
 
@@ -496,22 +590,23 @@ plot(f.results[order(txpRanks(f.results)[1:9])], package = "gg") +
 **Missing Data Examples**
 ```{r, fig.align='center'}
 ## Creating an example with more variable missing data amounts
-f.input <- txp_example_input
+f.input <- txp_example_input_CI
 
-# Add more missing data to slice 2 via metric3 in the raw data
-f.input[3:10, "metric3"] <- NA
+# Add more missing data to slice 2 via metrics named Slice2_M1 and Slice2_M2 in the raw data
+f.input[2:8, "Slice2_M1"] <- NA
+f.input[3:10, "Slice2_M2"] <- NA
 
-# Modify transformation function for slice 4
-txpSlices(f.model)[[4]] <- TxpSlice("metric8", c(fn = \(x) sqrt(x - 30)))
+# Modify metric transformation functions for slice 3
+txpTransFuncs(txpSlices(f.model)[[3]]) <- TxpTransFuncList(f1 = \(x) sqrt(x - 1.5), f2 = \(x) x)
 
 # Calculate new ToxPi results
-f.results_missing <- txpCalculateScores(f.model, f.input, id.var = "name")
+f.results_missing <- txpCalculateScores(f.model, f.input, id.var = 1)
 
 # View missing data proportions
 txpMissing(f.results_missing)
 
 # View new result profile
-plot(f.results_missing["chem02"], package = "gg")
+plot(f.results_missing["2"], package = "gg")
 ```
 
 
@@ -526,21 +621,21 @@ plot(f.results) # ToxPi visuals
 grid.edit("pie-1", fills = c("red", "blue", "black", "brown"))
 
 # Or just one slice in a figure
-grid.edit("pie-10::slice1", gp = gpar(fill = "#FC0FC0"))
+grid.edit("pie-10::slice3", gp = gpar(fill = "#FC0FC0"))
 ```
 
 #### ggplot vs grid Comparison
 
 ```{r, eval=FALSE}
 #Single sample
-plot(f.results["chem02"])
-plot(f.results["chem02"], package = "gg") 
+plot(f.results["2"])
+plot(f.results["2"], package = "gg") 
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
 #Single sample
-plot(f.results["chem02"])
-plot(f.results["chem02"], package = "gg") 
+plot(f.results["2"])
+plot(f.results["2"], package = "gg") 
 ```
 </center>
 
@@ -566,7 +661,7 @@ txpIDs(f.results)[1] <- "I am a long sample name"
 plot(f.results) #grid plot for all samples
 plot(f.results, package = "gg") #ggplot for all samples
 
-txpIDs(f.results)[1] <- "chem01" # Change the sample name back
+txpIDs(f.results)[1] <- "1" # Change the sample name back
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
@@ -578,7 +673,7 @@ txpIDs(f.results)[1] <- "I am a long sample name"
 plot(f.results) #grid plot for all samples
 plot(f.results, package = "gg") #ggplot for all samples
 
-txpIDs(f.results)[1] <- "chem01" # Change the sample name back
+txpIDs(f.results)[1] <- "1" # Change the sample name back
 ```
 </center>
 
@@ -610,12 +705,11 @@ names(f.results@txpMissing)[1] <- "s1"
 ```{r, fig.show="hold", echo=FALSE}
 ## Long slice names for cramped plots
 
-#change first slice name in model slot
+#change first slice name. Note: changing models/results is not recommended for actual results objects. Please create a new model with real data
 names(f.results@txpModel)[1] <- "long slice name"
-#change first slice name in scores slot
 colnames(f.results@txpSliceScores)[1] <- "long slice name"
-#change first slice name in missing data slot
-names(f.results@txpMissing)[1] <- "long slice name"
+colnames(f.results@txpSliceLows)[1] <- "long slice name_low"
+colnames(f.results@txpSliceUps)[1] <- "long slice name_up"
 
 #plot results using grid
 plot(f.results)
@@ -627,9 +721,11 @@ plot(f.results, package = "gg") + theme(
 )
 
 #change slice name back
-names(f.results@txpModel)[1] <- "s1"
-colnames(f.results@txpSliceScores)[1] <- "s1"
-names(f.results@txpMissing)[1] <- "s1"
+names(f.results@txpModel)[1] <- "ExampleA"
+colnames(f.results@txpSliceScores)[1] <- "ExampleA"
+colnames(f.results@txpSliceLows)[1] <- "ExampleA_low"
+colnames(f.results@txpSliceUps)[1] <- "ExampleA_up"
+
 ```
 </center>
 
@@ -637,13 +733,19 @@ names(f.results@txpMissing)[1] <- "s1"
 ```{r fig.width=5, fig.height=4, fig.align='center'}
 # Rank plot
 plot(f.results, y = txpRanks(f.results), labels = 1:10)
-
+plot(f.results, y = txpRankLows(f.results), labels = 1:10)
+plot(f.results, y = txpRankUps(f.results), labels = 1:10)
+```
+```{r fig.width=5, fig.height=4, fig.align='center'}
 # Hierarchical Clustering
 f.hc <- hclust(dist(txpSliceScores(f.results)))
+f.hc.low <- hclust(dist(txpSliceLows(f.results)))
+f.hc.up <- hclust(dist(txpSliceUps(f.results)))
 
 plot(f.hc, hang = -1, labels = txpIDs(f.results), xlab = '', sub = '')
+plot(f.hc.low, hang = -1, labels = txpIDs(f.results), xlab = '', sub = '')
+plot(f.hc.up, hang = -1, labels = txpIDs(f.results), xlab = '', sub = '')
 ```
-
 
 ## Citation
 
