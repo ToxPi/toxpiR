@@ -163,7 +163,7 @@ NULL
   # Extract each component into a named list
   slc <- lapply(names(x), function(name) {
     val <- x[[name]]
-    val <- setNames(lapply(cols, function(col) val[[col]]), paste0(name, c("", "_low", "_up")))
+    val <- stats::setNames(lapply(cols, function(col) val[[col]]), paste0(name, c("", "_low", "_up")))
     val <- Filter(Negate(is.null), val)
     val <- as.matrix(as.data.frame(do.call(cbind, val)))
   })

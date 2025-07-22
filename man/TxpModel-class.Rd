@@ -156,7 +156,8 @@ s1 <- list(S1 = TxpSlice("inpt1"), S2 = TxpSlice("inpt2"))
 tf <- list(NULL, sqrt = function(x) sqrt(x))
 
 ## Create TxpModel object
-m1 <- TxpModel(txpSlices = s1, txpWeights = 2:1, txpTransFuncs = tf, negativeHandling = 'keep', rankTies = 'average')
+m1 <- TxpModel(txpSlices = s1, txpWeights = 2:1, txpTransFuncs = tf, 
+negativeHandling = 'keep', rankTies = 'average')
 m1
 
 ## Access TxpModel slots

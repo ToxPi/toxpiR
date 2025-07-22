@@ -76,7 +76,9 @@ before applying slice-level transformations.
 ## Load example dataset & model; see ?TxpModel for building model objects
 data(txp_example_input, package = "toxpiR")
 data(txp_example_model, package = "toxpiR")
-
+data(txp_example_input_CI, package = "toxpiR")
+data(txp_example_model_CI, package = "toxpiR")
+data(txp_example_results_CI, package = "toxpiR")
 ## Calculate scores for single model; returns TxpResult object
 res <- txpCalculateScores(model = txp_example_model, 
                           input = txp_example_input, 

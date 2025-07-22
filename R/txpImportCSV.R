@@ -29,7 +29,7 @@ txpImportCSV <- function(csvDataFile) {
   stopifnot(file.exists(csvDataFile))
   
   csv <- read.csv(csvDataFile, stringsAsFactors = FALSE, header = FALSE)
-  if(class(csv[1,1]) == "character") {indicator <- csv[1,1]} else {indicator <- NULL}
+  if(inherits(csv[1,1],"character")) {indicator <- csv[1,1]} else {indicator <- NULL}
   if(!is.null(indicator) && indicator != "" && strsplit(indicator, "!")[[1]][1] == "# Generated From toxpiR"){
     res <- try(.fromToxpiR(csv), silent = TRUE)
   } else {

@@ -4,6 +4,9 @@
 \alias{toxpiR-datasets}
 \alias{txp_example_input}
 \alias{txp_example_model}
+\alias{txp_example_input_CI}
+\alias{txp_example_model_CI}
+\alias{txp_example_results_CI}
 \title{toxpiR data objects}
 \source{
 \url{https://github.com/ToxPi/ToxPi-example-files}
@@ -12,6 +15,12 @@
 data(txp_example_input, package = "toxpiR")
 
 data(txp_example_model, package = "toxpiR")
+
+data(txp_example_input_CI, package = "toxpiR")
+
+data(txp_example_model_CI, package = "toxpiR")
+
+data(txp_example_results_CI, package = "toxpiR")
 }
 \description{
 Objects included in the toxpiR package, loaded with
@@ -35,11 +44,37 @@ Example \link{TxpModel} object intended for \code{txp_example_data}; model with 
 slices.
 }
 
+\section{txp_example_input_CI}{
+
+
+Small example input data to be used with \link{txpCalculateScores} in creating
+\link{TxpResult} objects with confidence intervals. A \link[base:data.frame]{base::data.frame}
+}
+
+\section{txp_example_model_CI}{
+
+
+Example \link{TxpModel} object intended for \code{txp_example_data_CI}; model with 3
+slices.
+}
+
+\section{txp_example_results_CI}{
+
+
+Example results for visualization obtained with \link{txpCalculateScores} on \code{txp_example_data_CI} and \code{txp_example_model_CI}
+}
+
 \examples{
 data(txp_example_input, package = "toxpiR")
 data(txp_example_model, package = "toxpiR")
+data(txp_example_input_CI, package = "toxpiR")
+data(txp_example_model_CI, package = "toxpiR")
+data(txp_example_results_CI, package = "toxpiR")
 txp_example_input
 txp_example_model
+txp_example_input_CI
+txp_example_model_CI
+txp_example_results_CI
 
 ## Code to create txp_example_model
 tf1 <- TxpTransFuncList(linear = function(x) x)

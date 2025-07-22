@@ -24,14 +24,17 @@
 #' @param ... Passed to [pieGridGrob] when plotting ToxPi and to pointsGrob
 #' when plotting ranks
 #' @param ncol Number of columns for ggplot2 ToxPi profiles
-#' @param bgColor,borderColor,sliceBorderColor,sliceValueColor,sliceLineColor
+#' @param bgColor,borderColor,sliceBorderColor,sliceValueColor,sliceLineColor,sliceBoundColor
 #' Various color options when creating ggplot2 ToxPi profiles. Set to NULL
 #' for no color
 #' @param showMissing Boolean for coloring data missingness in ggplot2
 #' ToxPi profiles
 #' @param showCenter Boolean for showing inner circle in ggplot2 ToxPi 
 #' profiles. When set to False overrides showMissing
-#'
+#' @param showLower Boolean for showing lower confidence interval dotted arcs if they are in the results
+#' @param showMain Boolean for showing main color filled slices if they are in the results
+#' @param showUpper Boolean for showing upper confidence interval dashed arcs if they are in the results
+#' 
 #' @details
 #' It is strongly recommended to use a specific device (e.g., [grDevices::png],
 #' [grDevices::pdf]) when creating rank plots.
@@ -226,7 +229,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     ) {
 
   # Set to NULL to prevent note from devtools::check()
-  left <- right <- mid <- radii <- Slices <- NULL
+  left <- right <- mid <- radii <- radii_low <- radii_up <- Slices <- NULL
 
   if (is.null(fills)) {
     fills <- getOption("txp.fills", TXP_FILLS)

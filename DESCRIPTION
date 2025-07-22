@@ -47,7 +47,6 @@ Imports:
     tidyr,
     utils,
     ggplot2,
-    sortable, 
     lifecycle
 Encoding: UTF-8
 LazyData: true

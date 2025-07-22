@@ -186,9 +186,13 @@ with IDs, scores, ranks, and slice scores
 \section{Slots}{
 
 \describe{
-\item{\code{txpScores}}{\verb{vector(<numeric>)} of model scores}
+\item{\code{txpScores}}{\verb{vector(<numeric>)} of model scores or NULL}
 
-\item{\code{txpSliceScores}}{\verb{matrix(<numeric>)}, sample by slice \code{matrix} with
+\item{\code{txpScoreLows}}{\verb{vector(<numeric>)} of model lower interval scores or NULL}
+
+\item{\code{txpScoreUps}}{\verb{vector(<numeric>)} of model upper interval scores or NULL}
+
+\item{\code{txpSliceScores}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
 individual slice scores}
 
 \item{\code{txpSliceLows}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
@@ -197,7 +201,11 @@ individual slice lower confidence interval scores}
 \item{\code{txpSliceUps}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
 individual slice upper confidence interval scores}
 
-\item{\code{txpRanks}}{\verb{vector(<numeric>)} with rank of scores}
+\item{\code{txpRanks}}{\verb{vector(<numeric>)} with rank of scores or NULL}
+
+\item{\code{txpRankLows}}{\verb{vector(<numeric>)} with rank of lower interval scores or NULL}
+
+\item{\code{txpRankUps}}{\verb{vector(<numeric>)} with rank of upper interval scores or NULL}
 
 \item{\code{txpMissing}}{\verb{vector(<numeric>)} with data missingness}
 
@@ -212,7 +220,9 @@ individual slice upper confidence interval scores}
 ## Load example dataset & model; see ?TxpModel for building model objects
 data(txp_example_input, package = "toxpiR")
 data(txp_example_model, package = "toxpiR")
-
+data(txp_example_input_CI, package = "toxpiR")
+data(txp_example_model_CI, package = "toxpiR")
+data(txp_example_results_CI, package = "toxpiR")
 ## Calculate scores for single model; returns TxpResult object
 res <- txpCalculateScores(model = txp_example_model, 
                           input = txp_example_input, 

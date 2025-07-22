@@ -27,7 +27,9 @@ objects.
 ## Load example dataset & model; see ?TxpModel for building model objects
 data(txp_example_input, package = "toxpiR")
 data(txp_example_model, package = "toxpiR")
-
+data(txp_example_input_CI, package = "toxpiR")
+data(txp_example_model_CI, package = "toxpiR")
+data(txp_example_results_CI, package = "toxpiR")
 ## Calculate scores for list of models; returns TxpResultList object
 txpCalculateScores(model = TxpModelList(m1 = txp_example_model, 
                                         m2 = txp_example_model), 

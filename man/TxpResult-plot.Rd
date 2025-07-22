@@ -65,7 +65,7 @@ when plotting ranks}
 
 \item{ncol}{Number of columns for ggplot2 ToxPi profiles}
 
-\item{bgColor, borderColor, sliceBorderColor, sliceValueColor, sliceLineColor}{Various color options when creating ggplot2 ToxPi profiles. Set to NULL
+\item{bgColor, borderColor, sliceBorderColor, sliceValueColor, sliceLineColor, sliceBoundColor}{Various color options when creating ggplot2 ToxPi profiles. Set to NULL
 for no color}
 
 \item{showMissing}{Boolean for coloring data missingness in ggplot2
@@ -73,6 +73,12 @@ ToxPi profiles}
 
 \item{showCenter}{Boolean for showing inner circle in ggplot2 ToxPi
 profiles. When set to False overrides showMissing}
+
+\item{showLower}{Boolean for showing lower confidence interval dotted arcs if they are in the results}
+
+\item{showMain}{Boolean for showing main color filled slices if they are in the results}
+
+\item{showUpper}{Boolean for showing upper confidence interval dashed arcs if they are in the results}
 
 \item{y}{Rank vector, i.e. \code{txpRanks(x)}}
 
@@ -113,7 +119,9 @@ ToxPi profiles can also be plotted using the ggplot2 package.
 ## Load example dataset & model; see ?TxpModel for building model objects
 data(txp_example_input, package = "toxpiR")
 data(txp_example_model, package = "toxpiR")
-
+data(txp_example_input_CI, package = "toxpiR")
+data(txp_example_model_CI, package = "toxpiR")
+data(txp_example_results_CI, package = "toxpiR")
 ## Calculate scores for single model; returns TxpResult object
 res <- txpCalculateScores(model = txp_example_model, 
                           input = txp_example_input, 

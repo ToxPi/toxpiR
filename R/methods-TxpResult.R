@@ -7,14 +7,18 @@
 #' @title ToxPi Result
 #' @description S4 class to store ToxPi results
 #'
-#' @slot txpScores `vector(<numeric>)` of model scores
-#' @slot txpSliceScores `matrix(<numeric>)`, sample by slice `matrix` with
+#' @slot txpScores `vector(<numeric>)` of model scores or NULL
+#' @slot txpScoreLows `vector(<numeric>)` of model lower interval scores or NULL
+#' @slot txpScoreUps `vector(<numeric>)` of model upper interval scores or NULL
+#' @slot txpSliceScores `matrix(<numeric>)` or NULL, sample by slice `matrix` with
 #' individual slice scores
 #' @slot txpSliceLows `matrix(<numeric>)` or NULL, sample by slice `matrix` with
 #' individual slice lower confidence interval scores
 #' @slot txpSliceUps `matrix(<numeric>)` or NULL, sample by slice `matrix` with
 #' individual slice upper confidence interval scores
-#' @slot txpRanks `vector(<numeric>)` with rank of scores
+#' @slot txpRanks `vector(<numeric>)` with rank of scores or NULL
+#' @slot txpRankLows `vector(<numeric>)` with rank of lower interval scores or NULL
+#' @slot txpRankUps `vector(<numeric>)` with rank of upper interval scores or NULL
 #' @slot txpMissing `vector(<numeric>)` with data missingness
 #' @slot txpModel [TxpModel] object
 #' @slot txpIDs `vector(<character>)` of observation IDs

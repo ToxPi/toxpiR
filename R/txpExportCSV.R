@@ -310,12 +310,12 @@ txpExportCSV <- function(input,
 .setFuncArg <- function(func, arg_name) {
   if (is.null(func)) {
     arg_sym <- as.name(arg_name)
-    return(eval(call("function", setNames(as.pairlist(alist(x = )), arg_name), arg_sym)))
+    return(eval(call("function", stats::setNames(as.pairlist(alist(x = )), arg_name), arg_sym)))
   }
   
   orig_arg <- names(formals(func))[1]
-  new_formals <- setNames(as.pairlist(alist(x = )), arg_name)
-  new_body <- do.call(substitute, list(body(func), setNames(list(as.name(arg_name)), orig_arg)))
+  new_formals <- stats::setNames(as.pairlist(alist(x = )), arg_name)
+  new_body <- do.call(substitute, list(body(func), stats::setNames(list(as.name(arg_name)), orig_arg)))
   eval(call("function", new_formals, new_body))
 }
 
