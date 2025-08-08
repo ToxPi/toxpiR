@@ -2,9 +2,9 @@
 
 ## New Features
 #### Major update for allowing user defined confidence intervals for slices. 
-* `TxpSlice` now contains slots `txpLowerNames`, `txpLowerFuncs`, `txpUpperNames`, `txpUpperFuncs` 
+* `TxpSlice` now contains slots `txpValueNamesLower`, `txpTransFuncsLower`, `txpValueNamesUpper`, `txpTransFuncsUpper` 
 * `TxpSlice` now allows `txpValueNames` to be NULL as long as at least one other names slot is provided 
-* `TxpModel` now has accessor functions `txpLowerNames()` and `txpUpperNames()` for viewing defined slice metrics in confidence intervals 
+* `TxpModel` now has accessor functions `txpValueNamesLower()` and `txpValueNamesUpper()` for viewing defined slice metrics in confidence intervals 
 * `txpCalculateScores` now aggregates individual slices by averaging instead of summing 
 This change mathematically does not effect slice scores of existing models without bounds, 
 while also allowing confidence level scores within a slice to be accurately compared when they 
@@ -16,8 +16,8 @@ have differing number of features in their definition
 Missing data after aggregation and rescaling is set to 1.
   * Confidence interval levels provided in one slice but not another are treated as a missing column of data per missing level.
   * Confidence interval levels not provided anywhere in the model are not considered missing and skip calculations, being assigned NULL.
-* `TxpResult` now contains slots `txpScoreLows`, `txpScoreUps` for overall confidence level scores, 
-`txpSliceLows`, `txpSliceUps` for slice confidence level scores, and `txpRankLows`, `txpRankUps` for confidence level rankings
+* `TxpResult` now contains slots `txpScoresLower`, `txpScoresUpper` for overall confidence level scores, 
+`txpSliceScoresLower`, `txpSliceScoresUpper` for slice confidence level scores, and `txpRanksLower`, `txpRanksUpper` for confidence level rankings
 * `sort()` now has an optional parameter `level` specifying whether to sort TxpResult objects by "low", "main", or "up" confidence levels
 * `plot(package = "gg")` now provides functionality for plotting confidence intervals and has new and altered parameters:
   * `showLower` - a boolean for showing dotted lower confidence interval arcs if they exist in the model that defaults to TRUE
