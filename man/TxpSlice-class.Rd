@@ -8,14 +8,14 @@
 \alias{txpValueNames<-,TxpSlice-method}
 \alias{txpTransFuncs,TxpSlice-method}
 \alias{txpTransFuncs<-,TxpSlice-method}
-\alias{txpLowerNames,TxpSlice-method}
-\alias{txpLowerNames<-,TxpSlice-method}
-\alias{txpLowerFuncs,TxpSlice-method}
-\alias{txpLowerFuncs<-,TxpSlice-method}
-\alias{txpUpperNames,TxpSlice-method}
-\alias{txpUpperNames<-,TxpSlice-method}
-\alias{txpUpperFuncs,TxpSlice-method}
-\alias{txpUpperFuncs<-,TxpSlice-method}
+\alias{txpValueNamesLower,TxpSlice-method}
+\alias{txpValueNamesLower<-,TxpSlice-method}
+\alias{txpTransFuncsLower,TxpSlice-method}
+\alias{txpTransFuncsLower<-,TxpSlice-method}
+\alias{txpValueNamesUpper,TxpSlice-method}
+\alias{txpValueNamesUpper<-,TxpSlice-method}
+\alias{txpTransFuncsUpper,TxpSlice-method}
+\alias{txpTransFuncsUpper<-,TxpSlice-method}
 \alias{length,TxpSlice-method}
 \alias{merge,TxpSlice,TxpSlice-method}
 \title{ToxPi Slice}
@@ -23,10 +23,10 @@
 TxpSlice(
   txpValueNames = NULL,
   txpTransFuncs = NULL,
-  txpLowerNames = NULL,
-  txpLowerFuncs = NULL,
-  txpUpperNames = NULL,
-  txpUpperFuncs = NULL
+  txpValueNamesLower = NULL,
+  txpTransFuncsLower = NULL,
+  txpValueNamesUpper = NULL,
+  txpTransFuncsUpper = NULL
 )
 
 \S4method{txpValueNames}{TxpSlice}(x)
@@ -37,21 +37,21 @@ TxpSlice(
 
 \S4method{txpTransFuncs}{TxpSlice}(x) <- value
 
-\S4method{txpLowerNames}{TxpSlice}(x)
+\S4method{txpValueNamesLower}{TxpSlice}(x)
 
-\S4method{txpLowerNames}{TxpSlice}(x) <- value
+\S4method{txpValueNamesLower}{TxpSlice}(x) <- value
 
-\S4method{txpLowerFuncs}{TxpSlice}(x)
+\S4method{txpTransFuncsLower}{TxpSlice}(x)
 
-\S4method{txpLowerFuncs}{TxpSlice}(x) <- value
+\S4method{txpTransFuncsLower}{TxpSlice}(x) <- value
 
-\S4method{txpUpperNames}{TxpSlice}(x)
+\S4method{txpValueNamesUpper}{TxpSlice}(x)
 
-\S4method{txpUpperNames}{TxpSlice}(x) <- value
+\S4method{txpValueNamesUpper}{TxpSlice}(x) <- value
 
-\S4method{txpUpperFuncs}{TxpSlice}(x)
+\S4method{txpTransFuncsUpper}{TxpSlice}(x)
 
-\S4method{txpUpperFuncs}{TxpSlice}(x) <- value
+\S4method{txpTransFuncsUpper}{TxpSlice}(x) <- value
 
 \S4method{length}{TxpSlice}(x)
 
@@ -62,13 +62,13 @@ TxpSlice(
 
 \item{txpTransFuncs}{Passed to \code{txpTransFuncs} slot}
 
-\item{txpLowerNames}{Passed to \code{txpLowerNames} slot}
+\item{txpValueNamesLower}{Passed to \code{txpValueNamesLower} slot}
 
-\item{txpLowerFuncs}{Passed to \code{txpLowerFuncs} slot}
+\item{txpTransFuncsLower}{Passed to \code{txpTransFuncsLower} slot}
 
-\item{txpUpperNames}{Passed to \code{txpUpperNames} slot}
+\item{txpValueNamesUpper}{Passed to \code{txpValueNamesUpper} slot}
 
-\item{txpUpperFuncs}{Passed to \code{txpUpperFuncs} slot}
+\item{txpTransFuncsUpper}{Passed to \code{txpTransFuncsUpper} slot}
 
 \item{x, y}{\code{TxpSlice} object}
 
@@ -87,13 +87,13 @@ the given function will be recycled for each input with a warning.
 
 \item \code{txpTransFuncs(TxpSlice)}: Return \code{txpTransFuncs} slot
 
-\item \code{txpLowerNames(TxpSlice)}: Return \code{txpLowerNames} slot
+\item \code{txpValueNamesLower(TxpSlice)}: Return \code{txpValueNamesLower} slot
 
-\item \code{txpLowerFuncs(TxpSlice)}: Return \code{txpLowerFuncs} slot
+\item \code{txpTransFuncsLower(TxpSlice)}: Return \code{txpTransFuncsLower} slot
 
-\item \code{txpUpperNames(TxpSlice)}: Return \code{txpUpperNames} slot
+\item \code{txpValueNamesUpper(TxpSlice)}: Return \code{txpValueNamesUpper} slot
 
-\item \code{txpUpperFuncs(TxpSlice)}: Return \code{txpUpperFuncs} slot
+\item \code{txpTransFuncsUpper(TxpSlice)}: Return \code{txpTransFuncsUpper} slot
 
 \item \code{length(TxpSlice)}: Return number of inputs in slice; shortcut for
 \code{length(txpValueNames(x))}
@@ -113,20 +113,20 @@ case either/both of lower and upper bounds must be provided}
 \code{txpValueNames} or an object that can be coerced to \code{TxpTransFuncList};
 when \code{NULL}, no transformation function applied}
 
-\item{\code{txpLowerNames}}{\verb{vector(<character>)} specifying the input columns to
+\item{\code{txpValueNamesLower}}{\verb{vector(<character>)} specifying the input columns to
 include in the slice lower confidence interval; when \code{NULL}, no lower bounds
 will be calculated}
 
-\item{\code{txpLowerFuncs}}{\link{TxpTransFuncList} with one function per entry in
-\code{txpLowerNames} or an object that can be coerced to \code{TxpTransFuncList};
+\item{\code{txpTransFuncsLower}}{\link{TxpTransFuncList} with one function per entry in
+\code{txpValueNamesLower} or an object that can be coerced to \code{TxpTransFuncList};
 when \code{NULL}, no transformation function applied to lower metrics}
 
-\item{\code{txpUpperNames}}{\verb{vector(<character>)} specifying the input columns to
+\item{\code{txpValueNamesUpper}}{\verb{vector(<character>)} specifying the input columns to
 include in the slice upper confidence interval; when \code{NULL}, no upper bounds
 will be calculated}
 
-\item{\code{txpUpperFuncs}}{\link{TxpTransFuncList} with one function per entry in
-\code{txpUpperNames} or an object that can be coerced to \code{TxpTransFuncList};
+\item{\code{txpTransFuncsUpper}}{\link{TxpTransFuncList} with one function per entry in
+\code{txpValueNamesUpper} or an object that can be coerced to \code{TxpTransFuncList};
 when \code{NULL}, no transformation function applied to upper metrics}
 }}
 

@@ -32,8 +32,8 @@
   stopifnot(is(model, "TxpModel"))
   stopifnot(is.data.frame(input))
   valNms <- txpValueNames(model, simplify = TRUE)
-  lowNms <- txpLowerNames(model, simplify = TRUE)
-  upNms <- txpUpperNames(model, simplify = TRUE)
+  lowNms <- txpValueNamesLower(model, simplify = TRUE)
+  upNms <- txpValueNamesUpper(model, simplify = TRUE)
   valNms <- c(valNms, lowNms, upNms)
   inptNms <- names(input)
   if (!all(valNms %in% inptNms)) {

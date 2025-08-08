@@ -62,7 +62,7 @@ txpExportGui <- function(fileName = "txpModel.csv",
   if (slot(model, "negativeHandling") != "missing") {
     stop("ToxPi GUI only compatible with models containing negativeHandling of 'missing'.")
   }
-  if (any(!sapply(txpLowerNames(model), is.null)) || any(!sapply(txpUpperNames(model), is.null))) {
+  if (any(!sapply(txpValueNamesLower(model), is.null)) || any(!sapply(txpValueNamesUpper(model), is.null))) {
     stop("ToxPi GUI not compatible for models containing slices with confidence intervals.")
   }
   ## Check for slice-level transformations 

@@ -149,7 +149,7 @@ head(txp_example_input_CI)
 The first step is to specify information about each slice before creating a Toxpi model. This can be done using the **TxpSliceList()** and **TxpSlice()** functions. These slices can be made up of one or more features from the input dataset and are specified by listing the features that go into each slice in the **TxpSlice()** function. We can also specify how we want to transform the features with the  **TxpTransFuncList()** function. This means we can do a different transformation per feature instead of having to transform the entire input dataset within a slice. Upper and lower confidence interval features can also be provided with the slice. Features must not intersect between the main slice, its lower interval, and its upper interval, and at least one of the three levels must be provided.
 
 
-#### TxpSlice(txpValueNames, txpTransFuncs, txpLowerNames, txpLowerFuncs, txpUpperNames, txpUpperFuncs)
+#### TxpSlice(txpValueNames, txpTransFuncs, txpValueNamesLower, txpTransFuncsLower, txpValueNamesUpper, txpTransFuncsUpper)
 
 >Store individual slice objects. 
 
@@ -159,13 +159,13 @@ The first step is to specify information about each slice before creating a Toxp
 
 > *txpTransFuncs* : List of transformation functions to use with one function per entry in txpValueNames. Can be created using TxpTransFuncList() method. Defaults to NULL. 
 
-> *txpLowerNames* : character vector indicating which data to include in the lower CI of the slice. Can just be the name of a single column if that is all the slice contains.
+> *txpValueNamesLower* : character vector indicating which data to include in the lower CI of the slice. Can just be the name of a single column if that is all the slice contains.
 
-> *txpLowerFuncs* : List of transformation functions to use with one function per entry in txpLowerNames. Can be created using TxpTransFuncList() method. Defaults to NULL. 
+> *txpTransFuncsLower* : List of transformation functions to use with one function per entry in txpValueNamesLower. Can be created using TxpTransFuncList() method. Defaults to NULL. 
 
-> *txpUpperNames* : character vector indicating which data to include in the upper CI of the slice. Can just be the name of a single column if that is all the slice contains.
+> *txpValueNamesUpper* : character vector indicating which data to include in the upper CI of the slice. Can just be the name of a single column if that is all the slice contains.
 
-> *txpUpperFuncs* : List of transformation functions to use with one function per entry in txpUpperNames. Can be created using TxpTransFuncList() method. Defaults to NULL. 
+> *txpTransFuncsUpper* : List of transformation functions to use with one function per entry in txpValueNamesUpper. Can be created using TxpTransFuncList() method. Defaults to NULL. 
 
 #### TxpSliceList()
 
@@ -189,9 +189,9 @@ f.slices <- TxpSliceList(Slice1 = TxpSlice(txpValueNames = "Slice1_M1"),
                          Slice2 = TxpSlice(txpValueNames = "Slice2_M1", 
                                            txpTransFuncs = slice2.trans),
                          Slice3 = TxpSlice(txpValueNames = c("Slice3_M1", "Slice3_M2"),
-                                           txpLowerNames = c("Slice3_L1", "Slice3_L2"),
-                                           txpUpperNames = c("Slice3_U1", "Slice3_U2"),
-                                           txpUpperFuncs = slice3.upper.trans))
+                                           txpValueNamesLower = c("Slice3_L1", "Slice3_L2"),
+                                           txpValueNamesUpper = c("Slice3_U1", "Slice3_U2"),
+                                           txpTransFuncsUpper = slice3.upper.trans))
 
 ```
 
@@ -293,8 +293,8 @@ f.results <- txpCalculateScores(model = f.model,
 
 txpSliceScores(f.results) #ToxPi slice scores
 txpScores(f.results) #Overall ToxPi scores
-txpSliceLows(f.results) #ToxPi lower CI slice scores
-txpSliceUps(f.results) #ToxPi upper CI slice scores
+txpSliceScoresLower(f.results) #ToxPi lower CI slice scores
+txpSliceScoresUpper(f.results) #ToxPi upper CI slice scores
 txpWeights(f.results) #Print weights
 txpMissing(f.results) #Proportion of missing data within each slice
 ```
@@ -733,8 +733,8 @@ names(f.results@txpMissing)[1] <- "s1"
 #change first slice name. Note: changing models/results is not recommended for actual results objects. Please create a new model with real data
 names(f.results@txpModel)[1] <- "long slice name"
 colnames(f.results@txpSliceScores)[1] <- "long slice name"
-colnames(f.results@txpSliceLows)[1] <- "long slice name_low"
-colnames(f.results@txpSliceUps)[1] <- "long slice name_up"
+colnames(f.results@txpSliceScoresLower)[1] <- "long slice name_low"
+colnames(f.results@txpSliceScoresUpper)[1] <- "long slice name_up"
 
 #plot results using grid
 plot(f.results)
@@ -748,8 +748,8 @@ plot(f.results, package = "gg") + theme(
 #change slice name back
 names(f.results@txpModel)[1] <- "ExampleA"
 colnames(f.results@txpSliceScores)[1] <- "ExampleA"
-colnames(f.results@txpSliceLows)[1] <- "ExampleA_low"
-colnames(f.results@txpSliceUps)[1] <- "ExampleA_up"
+colnames(f.results@txpSliceScoresLower)[1] <- "ExampleA_low"
+colnames(f.results@txpSliceScoresUpper)[1] <- "ExampleA_up"
 
 ```
 </center>
@@ -758,14 +758,14 @@ colnames(f.results@txpSliceUps)[1] <- "ExampleA_up"
 ```{r fig.width=5, fig.height=4, fig.align='center'}
 # Rank plot
 plot(f.results, y = txpRanks(f.results), labels = 1:10)
-plot(f.results, y = txpRankLows(f.results), labels = 1:10)
-plot(f.results, y = txpRankUps(f.results), labels = 1:10)
+plot(f.results, y = txpRanksLower(f.results), labels = 1:10)
+plot(f.results, y = txpRanksUpper(f.results), labels = 1:10)
 ```
 ```{r fig.width=5, fig.height=4, fig.align='center'}
 # Hierarchical Clustering
 f.hc <- hclust(dist(txpSliceScores(f.results)))
-f.hc.low <- hclust(dist(txpSliceLows(f.results)))
-f.hc.up <- hclust(dist(txpSliceUps(f.results)))
+f.hc.low <- hclust(dist(txpSliceScoresLower(f.results)))
+f.hc.up <- hclust(dist(txpSliceScoresUpper(f.results)))
 
 plot(f.hc, hang = -1, labels = txpIDs(f.results), xlab = '', sub = '')
 plot(f.hc.low, hang = -1, labels = txpIDs(f.results), xlab = '', sub = '')

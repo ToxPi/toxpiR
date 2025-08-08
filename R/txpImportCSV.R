@@ -200,8 +200,8 @@ txpImportCSV <- function(csvDataFile) {
 
     #return slice
     TxpSlice(txpValueNames = nmsMain, txpTransFuncs = tfsMain,
-             txpLowerNames = nmsLower, txpLowerFuncs = tfsLower,
-             txpUpperNames = nmsUpper, txpUpperFuncs = tfsUpper)
+             txpValueNamesLower = nmsLower, txpTransFuncsLower = tfsLower,
+             txpValueNamesUpper = nmsUpper, txpTransFuncsUpper = tfsUpper)
   }
 
   sliceLst <- lapply(seq(nrow(sliceInfo)), mkSl)
@@ -229,8 +229,8 @@ txpImportCSV <- function(csvDataFile) {
                     rankTies = rankHandling)
   
   vnms <- unique(c(txpValueNames(txpSlices(model), simplify = TRUE),
-                   txpLowerNames(txpSlices(model), simplify = TRUE),
-                   txpUpperNames(txpSlices(model), simplify = TRUE))
+                   txpValueNamesLower(txpSlices(model), simplify = TRUE),
+                   txpValueNamesUpper(txpSlices(model), simplify = TRUE))
   )
   numCols <- sapply(input[vnms], is.numeric)
   if (!all(numCols)) {

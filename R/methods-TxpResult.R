@@ -8,17 +8,17 @@
 #' @description S4 class to store ToxPi results
 #'
 #' @slot txpScores `vector(<numeric>)` of model scores or NULL
-#' @slot txpScoreLows `vector(<numeric>)` of model lower interval scores or NULL
-#' @slot txpScoreUps `vector(<numeric>)` of model upper interval scores or NULL
+#' @slot txpScoresLower `vector(<numeric>)` of model lower interval scores or NULL
+#' @slot txpScoresUpper `vector(<numeric>)` of model upper interval scores or NULL
 #' @slot txpSliceScores `matrix(<numeric>)` or NULL, sample by slice `matrix` with
 #' individual slice scores
-#' @slot txpSliceLows `matrix(<numeric>)` or NULL, sample by slice `matrix` with
+#' @slot txpSliceScoresLower `matrix(<numeric>)` or NULL, sample by slice `matrix` with
 #' individual slice lower confidence interval scores
-#' @slot txpSliceUps `matrix(<numeric>)` or NULL, sample by slice `matrix` with
+#' @slot txpSliceScoresUpper `matrix(<numeric>)` or NULL, sample by slice `matrix` with
 #' individual slice upper confidence interval scores
 #' @slot txpRanks `vector(<numeric>)` with rank of scores or NULL
-#' @slot txpRankLows `vector(<numeric>)` with rank of lower interval scores or NULL
-#' @slot txpRankUps `vector(<numeric>)` with rank of upper interval scores or NULL
+#' @slot txpRanksLower `vector(<numeric>)` with rank of lower interval scores or NULL
+#' @slot txpRanksUpper `vector(<numeric>)` with rank of upper interval scores or NULL
 #' @slot txpMissing `vector(<numeric>)` with data missingness
 #' @slot txpModel [TxpModel] object
 #' @slot txpIDs `vector(<character>)` of observation IDs
@@ -111,18 +111,18 @@ NULL
 ##----------------------------------------------------------------------------##
 ## constructor -- NOT exported
 
-TxpResult <- function(txpScores, txpScoreLows, txpScoreUps, txpSliceScores, txpSliceLows, txpSliceUps, txpRanks, txpRankLows, txpRankUps, txpMissing,
+TxpResult <- function(txpScores, txpScoresLower, txpScoresUpper, txpSliceScores, txpSliceScoresLower, txpSliceScoresUpper, txpRanks, txpRanksLower, txpRanksUpper, txpMissing,
                       txpModel, txpIDs = NULL, txpResultParam) {
   new2("TxpResult",
        txpScores = txpScores,
-       txpScoreLows = txpScoreLows,
-       txpScoreUps = txpScoreUps,
+       txpScoresLower = txpScoresLower,
+       txpScoresUpper = txpScoresUpper,
        txpSliceScores = txpSliceScores,
-       txpSliceLows = txpSliceLows,
-       txpSliceUps = txpSliceUps,
+       txpSliceScoresLower = txpSliceScoresLower,
+       txpSliceScoresUpper = txpSliceScoresUpper,
        txpRanks = txpRanks,
-       txpRankLows = txpRankLows,
-       txpRankUps = txpRankUps,
+       txpRanksLower = txpRanksLower,
+       txpRanksUpper = txpRanksUpper,
        txpMissing = txpMissing,
        txpModel = txpModel,
        txpIDs = txpIDs,
@@ -137,15 +137,15 @@ TxpResult <- function(txpScores, txpScoreLows, txpScoreUps, txpSliceScores, txpS
 
 setMethod("txpScores", "TxpResult", function(x) { x@txpScores })
 
-#' @describeIn TxpResult-class Return `txpScoreLows` slot
+#' @describeIn TxpResult-class Return `txpScoresLower` slot
 #' @export
 
-setMethod("txpScoreLows", "TxpResult", function(x) { x@txpScoreLows })
+setMethod("txpScoresLower", "TxpResult", function(x) { x@txpScoresLower })
 
-#' @describeIn TxpResult-class Return `txpScoreUps` slot
+#' @describeIn TxpResult-class Return `txpScoresUpper` slot
 #' @export
 
-setMethod("txpScoreUps", "TxpResult", function(x) { x@txpScoreUps })
+setMethod("txpScoresUpper", "TxpResult", function(x) { x@txpScoresUpper })
 
 #' @describeIn TxpResult-class Return `txpSliceScores` slot; default
 #' `adjusted = TRUE`, i.e. return slice scores adjusted for weight
@@ -165,14 +165,14 @@ setMethod("txpSliceScores", "TxpResult", function(x, adjusted = TRUE) {
   scr
 })
 
-#' @describeIn TxpResult-class Return `txpSliceUps` slot; default
+#' @describeIn TxpResult-class Return `txpSliceScoresUpper` slot; default
 #' `adjusted = TRUE`, i.e. return slice upper confidence scores adjusted for weight
 #' @importFrom rlang is_scalar_logical
 #' @export
 
-setMethod("txpSliceUps", "TxpResult", function(x, adjusted = TRUE) {
+setMethod("txpSliceScoresUpper", "TxpResult", function(x, adjusted = TRUE) {
   stopifnot(is_scalar_logical(adjusted))
-  scr <- x@txpSliceUps
+  scr <- x@txpSliceScoresUpper
   if(is.null(scr)){return(NULL)}
   if (adjusted) {
     nms <- names(txpSlices(x))
@@ -184,14 +184,14 @@ setMethod("txpSliceUps", "TxpResult", function(x, adjusted = TRUE) {
   scr
 })
 
-#' @describeIn TxpResult-class Return `txpSliceLows` slot; default
+#' @describeIn TxpResult-class Return `txpSliceScoresLower` slot; default
 #' `adjusted = TRUE`, i.e. return slice lower confidence scores adjusted for weight
 #' @importFrom rlang is_scalar_logical
 #' @export
 
-setMethod("txpSliceLows", "TxpResult", function(x, adjusted = TRUE) {
+setMethod("txpSliceScoresLower", "TxpResult", function(x, adjusted = TRUE) {
   stopifnot(is_scalar_logical(adjusted))
-  scr <- x@txpSliceLows
+  scr <- x@txpSliceScoresLower
   if(is.null(scr)){return(NULL)}
   if (adjusted) {
     nms <- names(txpSlices(x))
@@ -208,15 +208,15 @@ setMethod("txpSliceLows", "TxpResult", function(x, adjusted = TRUE) {
 
 setMethod("txpRanks", "TxpResult", function(x) { x@txpRanks })
 
-#' @describeIn TxpResult-class Return `txpRankLows` slot
+#' @describeIn TxpResult-class Return `txpRanksLower` slot
 #' @export
 
-setMethod("txpRankLows", "TxpResult", function(x) { x@txpRankLows })
+setMethod("txpRanksLower", "TxpResult", function(x) { x@txpRanksLower })
 
 #' @describeIn TxpResult-class Return `txpRanks` slot
 #' @export
 
-setMethod("txpRankUps", "TxpResult", function(x) { x@txpRankUps })
+setMethod("txpRanksUpper", "TxpResult", function(x) { x@txpRanksUpper })
 
 #' @describeIn TxpResult-class Return `txpMissing` slot
 #' @export
@@ -301,18 +301,18 @@ setMethod("txpValueNames", "TxpResult", function(x, simplify = FALSE) {
 
 .TxpResult.squareBracket <- function(x, i, j, ..., drop = FALSE) {
   ss <- txpSliceScores(x, adjusted = FALSE)[i, , drop = FALSE]
-  ls <- txpSliceLows(x, adjusted = FALSE)[i, , drop = FALSE]
-  us <- txpSliceUps(x, adjusted = FALSE)[i, , drop = FALSE]
+  ls <- txpSliceScoresLower(x, adjusted = FALSE)[i, , drop = FALSE]
+  us <- txpSliceScoresUpper(x, adjusted = FALSE)[i, , drop = FALSE]
   
   TxpResult(txpScores = txpScores(x)[i],
-            txpScoreLows = txpScoreLows(x)[i],
-            txpScoreUps = txpScoreUps(x)[i],
+            txpScoresLower = txpScoresLower(x)[i],
+            txpScoresUpper = txpScoresUpper(x)[i],
             txpSliceScores = ss,
-            txpSliceLows = ls,
-            txpSliceUps = us,
+            txpSliceScoresLower = ls,
+            txpSliceScoresUpper = us,
             txpRanks = txpRanks(x)[i],
-            txpRankLows = txpRankLows(x)[i],
-            txpRankUps = txpRankUps(x)[i],
+            txpRanksLower = txpRanksLower(x)[i],
+            txpRanksUpper = txpRanksUpper(x)[i],
             txpMissing = txpMissing(x),
             txpModel = txpModel(x),
             txpIDs = txpIDs(x)[i],
@@ -364,7 +364,7 @@ setMethod("[",
 #' @export
 
 setMethod("length", "TxpResult", function(x) { 
-  length(txpScores(x) %||% txpScoreLows(x) %||% txpScoreUps(x))
+  length(txpScores(x) %||% txpScoresLower(x) %||% txpScoresUpper(x))
 })
   
 #' @describeIn TxpResult-class Sort the ``TxpResult` object by their ranks
@@ -375,9 +375,9 @@ setMethod("sort", "TxpResult", function(x, decreasing = TRUE, level = "main",
   if(level == "main"){
     ind <- order(txpScores(x), decreasing = decreasing, na.last = na.last, ...)
   } else if(level == "low"){
-    ind <- order(txpScoreLows(x), decreasing = decreasing, na.last = na.last, ...)
+    ind <- order(txpScoresLower(x), decreasing = decreasing, na.last = na.last, ...)
   } else if(level == "up"){
-    ind <- order(txpScoreUps(x), decreasing = decreasing, na.last = na.last, ...)
+    ind <- order(txpScoresUpper(x), decreasing = decreasing, na.last = na.last, ...)
   } else {
     stop("Invalid level parameter for sort function. Options are 'main', 'low', or 'up'")
   }
@@ -400,20 +400,20 @@ setReplaceMethod("names", "TxpResult", .TxpResult.replaceIDs)
 .TxpResult.validity <- function(object) {
   msg <- NULL
   scores <- txpScores(object)
-  scoreLows <- txpScoreLows(object)
-  scoreUps <- txpScoreUps(object)
+  scoreLows <- txpScoresLower(object)
+  scoreUps <- txpScoresUpper(object)
   
   if(all(is.null(list(scores, scoreLows, scoreUps)))){
     msg <- c(msg, "At least one scoring level must be non-NULL")
   }
   
   sliceScores <- txpSliceScores(object, adjusted = FALSE)
-  sliceLows <- txpSliceLows(object, adjusted = FALSE)
-  sliceUps <- txpSliceUps(object, adjusted = FALSE)
+  sliceLows <- txpSliceScoresLower(object, adjusted = FALSE)
+  sliceUps <- txpSliceScoresUpper(object, adjusted = FALSE)
   
   ranks <- txpRanks(object)
-  rankLows <- txpRankLows(object)
-  rankUps <- txpRankUps(object)
+  rankLows <- txpRanksLower(object)
+  rankUps <- txpRanksUpper(object)
   
   model <- txpModel(object)
   ids <- txpIDs(object)
@@ -433,33 +433,33 @@ setReplaceMethod("names", "TxpResult", .TxpResult.replaceIDs)
   
   if(!is.null(scoreLows)){
     if (!is(rankLows[1], "numeric")) {
-      msg <- c(msg, "Entries in txpRankLows must be \"numeric\"")
+      msg <- c(msg, "Entries in txpRanksLower must be \"numeric\"")
     } 
     if (!is(sliceLows[1], "numeric")) {
-      msg <- c(msg, "Entries in txpSliceLows must be \"numeric\"")
+      msg <- c(msg, "Entries in txpSliceScoresLower must be \"numeric\"")
     }
     if (length(scoreLows) != nrow(sliceLows)) {
-      msg <- c(msg, "length(txpScoreLows) != nrow(txpSliceLows)")
+      msg <- c(msg, "length(txpScoresLower) != nrow(txpSliceScoresLower)")
     }
     lengths <- c(lengths, length(scoreLows))
   }
   
   if(!is.null(scoreUps)){
     if (!is(rankUps[1], "numeric")) {
-      msg <- c(msg, "Entries in txpRankUps must be \"numeric\"")
+      msg <- c(msg, "Entries in txpRanksUpper must be \"numeric\"")
     } 
     if (!is(sliceUps[1], "numeric")) {
-      msg <- c(msg, "Entries in txpSliceUps must be \"numeric\"")
+      msg <- c(msg, "Entries in txpSliceScoresUpper must be \"numeric\"")
     }
     if (length(scoreUps) != nrow(sliceUps)) {
-      msg <- c(msg, "length(txpScoreUps) != nrow(txpSliceUps)")
+      msg <- c(msg, "length(txpScoresUpper) != nrow(txpSliceScoresUpper)")
     }
     lengths <- c(lengths, length(scoreUps))
   }
   
   length <- unique(lengths)
   if(length(length) != 1) { 
-    msg <- c(msg, "non-NULL txpScores, txpScoreLows, txpScoreUps must have same length")
+    msg <- c(msg, "non-NULL txpScores, txpScoresLower, txpScoresUpper must have same length")
   } else if (length(ids) != length(scores %||% scoreLows %||% scoreUps)) {
     msg <- c(msg, "length(txpIDs) != length(object)")
   }
@@ -488,7 +488,7 @@ setValidity2("TxpResult", .TxpResult.validity)
   stopifnot(is_scalar_logical(adjusted))
   
   outCols <- c()
-  n <- length(txpScores(x) %||% txpScoreLows(x) %||% txpScoreUps(x))
+  n <- length(txpScores(x) %||% txpScoresLower(x) %||% txpScoresUpper(x))
   df <- data.frame(row = seq_len(n))
   
   if(!is.null(txpScores(x))){
@@ -498,18 +498,18 @@ setValidity2("TxpResult", .TxpResult.validity)
     outCols <- c(outCols, score.name, rank.name, colnames(txpSliceScores(x)))
   }
   
-  if(!is.null(txpScoreLows(x))){
-    df[[paste0(score.name, "_low")]] <- txpScoreLows(x)
-    df[[paste0(rank.name, "_low")]] <- txpRankLows(x)
-    df <- cbind(df, txpSliceLows(x, adjusted = adjusted))
-    outCols <- c(outCols, paste0(score.name, "_low"), paste0(rank.name, "_low"), colnames(txpSliceLows(x)))
+  if(!is.null(txpScoresLower(x))){
+    df[[paste0(score.name, "_low")]] <- txpScoresLower(x)
+    df[[paste0(rank.name, "_low")]] <- txpRanksLower(x)
+    df <- cbind(df, txpSliceScoresLower(x, adjusted = adjusted))
+    outCols <- c(outCols, paste0(score.name, "_low"), paste0(rank.name, "_low"), colnames(txpSliceScoresLower(x)))
   }
   
-  if(!is.null(txpScoreUps(x))){
-    df[[paste0(score.name, "_up")]] <- txpScoreUps(x)
-    df[[paste0(rank.name, "_up")]] <- txpRankUps(x)
-    df <- cbind(df, txpSliceUps(x, adjusted = adjusted))
-    outCols <- c(outCols, paste0(score.name, "_up"), paste0(rank.name, "_up"), colnames(txpSliceUps(x)))
+  if(!is.null(txpScoresUpper(x))){
+    df[[paste0(score.name, "_up")]] <- txpScoresUpper(x)
+    df[[paste0(rank.name, "_up")]] <- txpRanksUpper(x)
+    df <- cbind(df, txpSliceScoresUpper(x, adjusted = adjusted))
+    outCols <- c(outCols, paste0(score.name, "_up"), paste0(rank.name, "_up"), colnames(txpSliceScoresUpper(x)))
   }
 
   if (!is.null(txpIDs(x))) {

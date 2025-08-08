@@ -13,8 +13,8 @@ test_that("We can create TxpSlice objects", {
   tfuncs <- TxpTransFuncList(f1 = TxpTransFunc(), f2 = NULL, f3 = NULL)
   expect_s4_class(TxpSlice(txpValueNames = vnames), "TxpSlice")
   expect_s4_class(TxpSlice(txpValueNames = vnames, txpTransFuncs = tfuncs,
-                           txpLowerNames = lnames, txpLowerFuncs = tfuncs,
-                           txpUpperNames = unames, txpUpperFuncs = tfuncs), 
+                           txpValueNamesLower = lnames, txpTransFuncsLower = tfuncs,
+                           txpValueNamesUpper = unames, txpTransFuncsUpper = tfuncs), 
                   "TxpSlice")
   expect_warning(recycle <- TxpSlice(c("a", "b", "c"), function(x) x))
   expect_s4_class(recycle, "TxpSlice")
@@ -26,16 +26,16 @@ test_that("We can create TxpSlice objects", {
   expect_error(TxpSlice(invalnames))
   expect_error(TxpSlice(vnames, tfuncs[1:2]))
   expect_error(TxpSlice(txpValueNames = vnames, txpTransFuncs = tfuncs,
-                        txpLowerNames = invalnames, txpLowerFuncs = tfuncs), 
+                        txpValueNamesLower = invalnames, txpTransFuncsLower = tfuncs), 
                "TxpSlice")
   expect_error(TxpSlice(txpValueNames = vnames, txpTransFuncs = tfuncs,
-                        txpLowerNames = invalnames, txpLowerFuncs = tfuncs[1:2]), 
+                        txpValueNamesLower = invalnames, txpTransFuncsLower = tfuncs[1:2]), 
                "TxpSlice")
   expect_error(TxpSlice(txpValueNames = vnames, txpTransFuncs = tfuncs,
-                        txpUpperNames = invalnames, txpUpperFuncs = tfuncs[1:2]), 
+                        txpValueNamesUpper = invalnames, txpTransFuncsUpper = tfuncs[1:2]), 
                "TxpSlice")
   expect_error(TxpSlice(txpValueNames = vnames, txpTransFuncs = tfuncs,
-                        txpUpperNames = vnames, txpUpperFuncs = tfuncs[1:2]), 
+                        txpValueNamesUpper = vnames, txpTransFuncsUpper = tfuncs[1:2]), 
                "TxpSlice")
   
 })
@@ -67,21 +67,21 @@ test_that("We can replace TxpSlice slots", {
   expect_s4_class({names(txpTransFuncs(sl)) <- "linear"; sl}, "TxpSlice")
   expect_equal(txpTransFuncs(sl)[[1]](10), 10)
   expect_named(txpTransFuncs(sl), "linear")
-  expect_warning(txpLowerNames(sl) <- c("input3", "input4"), "Length of new <txpLowerNames> greater than old length. Assuming extra have txpLowerFuncs NULL. Please check txpLowerFuncs<TxpSlice>.")
-  expect_warning(txpLowerNames(sl) <- "input3", "Length of new <txpLowerNames> less than old length. Removing excess txpLowerFuncs. Please check txpLowerFuncs<TxpSlice>.")
-  expect_s4_class({txpLowerFuncs(sl) <- function(x) x; sl}, "TxpSlice")
-  expect_s4_class({names(txpLowerFuncs(sl)) <- "linear"; sl}, "TxpSlice")
-  expect_equal(txpLowerFuncs(sl)[[1]](10), 10)
-  expect_named(txpLowerFuncs(sl), "linear")
-  expect_warning(txpLowerNames(sl) <- NULL, "Setting <txpLowerFuncs> to NULL to match <txpLowerNames>")
-  expect_warning(txpUpperNames(sl) <- c("input3", "input4"), "Length of new <txpUpperNames> greater than old length. Assuming extra have txpUpperFuncs NULL. Please check txpUpperFuncs<TxpSlice>.")
-  expect_warning(txpUpperNames(sl) <- "input3", "Length of new <txpUpperNames> less than old length. Removing excess txpUpperFuncs. Please check txpUpperFuncs<TxpSlice>.")
-  expect_s4_class({txpUpperFuncs(sl) <- function(x) x; sl}, "TxpSlice")
-  expect_s4_class({names(txpUpperFuncs(sl)) <- "linear"; sl}, "TxpSlice")
-  expect_equal(txpUpperFuncs(sl)[[1]](10), 10)
-  expect_named(txpUpperFuncs(sl), "linear")
-  expect_warning(txpUpperNames(sl) <- NULL, "Setting <txpUpperFuncs> to NULL to match <txpUpperNames>")
-  expect_warning(txpUpperNames(sl) <- c("input3"), "Length of new <txpUpperNames> greater than old length. Assuming extra have txpUpperFuncs NULL. Please check txpUpperFuncs<TxpSlice>.")
+  expect_warning(txpValueNamesLower(sl) <- c("input3", "input4"), "Length of new <txpValueNamesLower> greater than old length. Assuming extra have txpTransFuncsLower NULL. Please check txpTransFuncsLower<TxpSlice>.")
+  expect_warning(txpValueNamesLower(sl) <- "input3", "Length of new <txpValueNamesLower> less than old length. Removing excess txpTransFuncsLower. Please check txpTransFuncsLower<TxpSlice>.")
+  expect_s4_class({txpTransFuncsLower(sl) <- function(x) x; sl}, "TxpSlice")
+  expect_s4_class({names(txpTransFuncsLower(sl)) <- "linear"; sl}, "TxpSlice")
+  expect_equal(txpTransFuncsLower(sl)[[1]](10), 10)
+  expect_named(txpTransFuncsLower(sl), "linear")
+  expect_warning(txpValueNamesLower(sl) <- NULL, "Setting <txpTransFuncsLower> to NULL to match <txpValueNamesLower>")
+  expect_warning(txpValueNamesUpper(sl) <- c("input3", "input4"), "Length of new <txpValueNamesUpper> greater than old length. Assuming extra have txpTransFuncsUpper NULL. Please check txpTransFuncsUpper<TxpSlice>.")
+  expect_warning(txpValueNamesUpper(sl) <- "input3", "Length of new <txpValueNamesUpper> less than old length. Removing excess txpTransFuncsUpper. Please check txpTransFuncsUpper<TxpSlice>.")
+  expect_s4_class({txpTransFuncsUpper(sl) <- function(x) x; sl}, "TxpSlice")
+  expect_s4_class({names(txpTransFuncsUpper(sl)) <- "linear"; sl}, "TxpSlice")
+  expect_equal(txpTransFuncsUpper(sl)[[1]](10), 10)
+  expect_named(txpTransFuncsUpper(sl), "linear")
+  expect_warning(txpValueNamesUpper(sl) <- NULL, "Setting <txpTransFuncsUpper> to NULL to match <txpValueNamesUpper>")
+  expect_warning(txpValueNamesUpper(sl) <- c("input3"), "Length of new <txpValueNamesUpper> greater than old length. Assuming extra have txpTransFuncsUpper NULL. Please check txpTransFuncsUpper<TxpSlice>.")
   expect_warning(txpValueNames(sl) <- NULL, "Setting <txpTransFuncs> to NULL to match <txpValueNames>")
 })
 
@@ -96,18 +96,18 @@ test_that("TxpSlice shows correct information", {
   expect_output(print(sl), "txpTransFuncs\\(2\\)")
   expect_output(print(sl), "f1 NULL")
   
-  sl <- TxpSlice(txpLowerNames = "input3", txpUpperNames = "input4")
+  sl <- TxpSlice(txpValueNamesLower = "input3", txpValueNamesUpper = "input4")
   expect_output(print(sl), "txpValueNames\\(0\\)")
   expect_output(print(sl), "NULL")
   expect_output(print(sl), "txpTransFuncs\\(0\\)")
   expect_output(print(sl), "NULL")
-  expect_output(print(sl), "txpLowerNames\\(1\\)")
+  expect_output(print(sl), "txpValueNamesLower\\(1\\)")
   expect_output(print(sl), "input3")
-  expect_output(print(sl), "txpLowerFuncs\\(1\\)")
+  expect_output(print(sl), "txpTransFuncsLower\\(1\\)")
   expect_output(print(sl), "NULL")
-  expect_output(print(sl), "txpUpperNames\\(1\\)")
+  expect_output(print(sl), "txpValueNamesUpper\\(1\\)")
   expect_output(print(sl), "input4")
-  expect_output(print(sl), "txpUpperFuncs\\(1\\)")
+  expect_output(print(sl), "txpTransFuncsUpper\\(1\\)")
   expect_output(print(sl), "NULL")
 })
 

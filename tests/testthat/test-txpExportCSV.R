@@ -8,7 +8,7 @@ test_that("We can export toxpiR format csv files accurately", {
   expect_silent({
     data_exported <- tempfile()
     csv <- txpImportCSV(file.path("csvFiles", "txp_example_input_CI.csv"))
-    txpUpperFuncs(txpSlices(csv$model)$ExampleA) <- NULL
+    txpTransFuncsUpper(txpSlices(csv$model)$ExampleA) <- NULL
     txpExportCSV(
       fileName = data_exported,
       input = csv$input,

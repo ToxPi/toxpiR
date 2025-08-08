@@ -99,13 +99,13 @@ txpExportCSV <- function(input,
   
   slcVec <- names(model)
   vnmLst <-  txpValueNames(model)
-  vnmLstLower <- txpLowerNames(model)
-  vnmLstUpper <- txpUpperNames(model)
+  vnmLstLower <- txpValueNamesLower(model)
+  vnmLstUpper <- txpValueNamesUpper(model)
   allVnm <- unique(unlist(c(vnmLst, vnmLstLower, vnmLstUpper)))
   
   itfsLst <- txpTransFuncs(txpSlices(model))
-  itfsLstLower <- txpLowerFuncs(txpSlices(model))
-  itfsLstUpper <- txpUpperFuncs(txpSlices(model))
+  itfsLstLower <- txpTransFuncsLower(txpSlices(model))
+  itfsLstUpper <- txpTransFuncsUpper(txpSlices(model))
 
   #CHANGE THIS LOGIC TO AVOID DOING ANY TRANSFORMATIONS
   mat <- matrix(NA_real_, nrow = NROW(input), ncol = 0)
@@ -208,7 +208,7 @@ txpExportCSV <- function(input,
   if (slot(model, "negativeHandling") != "missing") {
     stop("ToxPi GUI only compatible with models containing negativeHandling of 'missing'.")
   }
-  if (any(!sapply(txpLowerNames(model), is.null)) || any(!sapply(txpUpperNames(model), is.null))) {
+  if (any(!sapply(txpValueNamesLower(model), is.null)) || any(!sapply(txpValueNamesUpper(model), is.null))) {
     stop("ToxPi GUI not compatible for models containing slices with confidence intervals.")
   }
 

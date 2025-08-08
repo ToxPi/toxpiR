@@ -5,14 +5,14 @@
 \alias{TxpResult-class}
 \alias{TxpResult}
 \alias{txpScores,TxpResult-method}
-\alias{txpScoreLows,TxpResult-method}
-\alias{txpScoreUps,TxpResult-method}
+\alias{txpScoresLower,TxpResult-method}
+\alias{txpScoresUpper,TxpResult-method}
 \alias{txpSliceScores,TxpResult-method}
-\alias{txpSliceUps,TxpResult-method}
-\alias{txpSliceLows,TxpResult-method}
+\alias{txpSliceScoresUpper,TxpResult-method}
+\alias{txpSliceScoresLower,TxpResult-method}
 \alias{txpRanks,TxpResult-method}
-\alias{txpRankLows,TxpResult-method}
-\alias{txpRankUps,TxpResult-method}
+\alias{txpRanksLower,TxpResult-method}
+\alias{txpRanksUpper,TxpResult-method}
 \alias{txpMissing,TxpResult-method}
 \alias{txpResultParam,TxpResult-method}
 \alias{txpModel,TxpResult-method}
@@ -35,21 +35,21 @@
 \usage{
 \S4method{txpScores}{TxpResult}(x)
 
-\S4method{txpScoreLows}{TxpResult}(x)
+\S4method{txpScoresLower}{TxpResult}(x)
 
-\S4method{txpScoreUps}{TxpResult}(x)
+\S4method{txpScoresUpper}{TxpResult}(x)
 
 \S4method{txpSliceScores}{TxpResult}(x, adjusted = TRUE)
 
-\S4method{txpSliceUps}{TxpResult}(x, adjusted = TRUE)
+\S4method{txpSliceScoresUpper}{TxpResult}(x, adjusted = TRUE)
 
-\S4method{txpSliceLows}{TxpResult}(x, adjusted = TRUE)
+\S4method{txpSliceScoresLower}{TxpResult}(x, adjusted = TRUE)
 
 \S4method{txpRanks}{TxpResult}(x)
 
-\S4method{txpRankLows}{TxpResult}(x)
+\S4method{txpRanksLower}{TxpResult}(x)
 
-\S4method{txpRankUps}{TxpResult}(x)
+\S4method{txpRanksUpper}{TxpResult}(x)
 
 \S4method{txpMissing}{TxpResult}(x)
 
@@ -132,24 +132,24 @@ S4 class to store ToxPi results
 \itemize{
 \item \code{txpScores(TxpResult)}: Return \code{txpScores} slot
 
-\item \code{txpScoreLows(TxpResult)}: Return \code{txpScoreLows} slot
+\item \code{txpScoresLower(TxpResult)}: Return \code{txpScoresLower} slot
 
-\item \code{txpScoreUps(TxpResult)}: Return \code{txpScoreUps} slot
+\item \code{txpScoresUpper(TxpResult)}: Return \code{txpScoresUpper} slot
 
 \item \code{txpSliceScores(TxpResult)}: Return \code{txpSliceScores} slot; default
 \code{adjusted = TRUE}, i.e. return slice scores adjusted for weight
 
-\item \code{txpSliceUps(TxpResult)}: Return \code{txpSliceUps} slot; default
+\item \code{txpSliceScoresUpper(TxpResult)}: Return \code{txpSliceScoresUpper} slot; default
 \code{adjusted = TRUE}, i.e. return slice upper confidence scores adjusted for weight
 
-\item \code{txpSliceLows(TxpResult)}: Return \code{txpSliceLows} slot; default
+\item \code{txpSliceScoresLower(TxpResult)}: Return \code{txpSliceScoresLower} slot; default
 \code{adjusted = TRUE}, i.e. return slice lower confidence scores adjusted for weight
 
 \item \code{txpRanks(TxpResult)}: Return \code{txpRanks} slot
 
-\item \code{txpRankLows(TxpResult)}: Return \code{txpRankLows} slot
+\item \code{txpRanksLower(TxpResult)}: Return \code{txpRanksLower} slot
 
-\item \code{txpRankUps(TxpResult)}: Return \code{txpRanks} slot
+\item \code{txpRanksUpper(TxpResult)}: Return \code{txpRanks} slot
 
 \item \code{txpMissing(TxpResult)}: Return \code{txpMissing} slot
 
@@ -188,24 +188,24 @@ with IDs, scores, ranks, and slice scores
 \describe{
 \item{\code{txpScores}}{\verb{vector(<numeric>)} of model scores or NULL}
 
-\item{\code{txpScoreLows}}{\verb{vector(<numeric>)} of model lower interval scores or NULL}
+\item{\code{txpScoresLower}}{\verb{vector(<numeric>)} of model lower interval scores or NULL}
 
-\item{\code{txpScoreUps}}{\verb{vector(<numeric>)} of model upper interval scores or NULL}
+\item{\code{txpScoresUpper}}{\verb{vector(<numeric>)} of model upper interval scores or NULL}
 
 \item{\code{txpSliceScores}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
 individual slice scores}
 
-\item{\code{txpSliceLows}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
+\item{\code{txpSliceScoresLower}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
 individual slice lower confidence interval scores}
 
-\item{\code{txpSliceUps}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
+\item{\code{txpSliceScoresUpper}}{\verb{matrix(<numeric>)} or NULL, sample by slice \code{matrix} with
 individual slice upper confidence interval scores}
 
 \item{\code{txpRanks}}{\verb{vector(<numeric>)} with rank of scores or NULL}
 
-\item{\code{txpRankLows}}{\verb{vector(<numeric>)} with rank of lower interval scores or NULL}
+\item{\code{txpRanksLower}}{\verb{vector(<numeric>)} with rank of lower interval scores or NULL}
 
-\item{\code{txpRankUps}}{\verb{vector(<numeric>)} with rank of upper interval scores or NULL}
+\item{\code{txpRanksUpper}}{\verb{vector(<numeric>)} with rank of upper interval scores or NULL}
 
 \item{\code{txpMissing}}{\verb{vector(<numeric>)} with data missingness}
 

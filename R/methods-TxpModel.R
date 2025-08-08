@@ -185,26 +185,26 @@ setMethod("txpValueNames", "TxpModel", function(x, simplify = FALSE) {
   nms
 })
 
-#' @describeIn TxpModel-class Return `list` of `txpLowerNames` slots for the 
+#' @describeIn TxpModel-class Return `list` of `txpValueNamesLower` slots for the 
 #' contained [TxpSliceList] object, or `vector` when `simplify = TRUE`
 #' @importFrom rlang is_scalar_logical
 #' @export
 
-setMethod("txpLowerNames", "TxpModel", function(x, simplify = FALSE) {
+setMethod("txpValueNamesLower", "TxpModel", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
-  nms <- txpLowerNames(txpSlices(x), simplify = simplify)
+  nms <- txpValueNamesLower(txpSlices(x), simplify = simplify)
   if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
 
-#' @describeIn TxpModel-class Return `list` of `txpUpperNames` slots for the 
+#' @describeIn TxpModel-class Return `list` of `txpValueNamesUpper` slots for the 
 #' contained [TxpSliceList] object, or `vector` when `simplify = TRUE`
 #' @importFrom rlang is_scalar_logical
 #' @export
 
-setMethod("txpUpperNames", "TxpModel", function(x, simplify = FALSE) {
+setMethod("txpValueNamesUpper", "TxpModel", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
-  nms <- txpUpperNames(txpSlices(x), simplify = simplify)
+  nms <- txpValueNamesUpper(txpSlices(x), simplify = simplify)
   if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
@@ -325,8 +325,8 @@ setValidity2("TxpModel", .TxpModel.validity)
 
 .checkInputNameDuplicates <- function(txpSlices) {
   nms     <- txpValueNames(txpSlices, simplify = TRUE)
-  nms_low <- txpLowerNames(txpSlices, simplify = TRUE)
-  nms_up  <- txpUpperNames(txpSlices, simplify = TRUE)
+  nms_low <- txpValueNamesLower(txpSlices, simplify = TRUE)
+  nms_up  <- txpValueNamesUpper(txpSlices, simplify = TRUE)
 
   all_nms <- c(nms, nms_low, nms_up)
   dup <- unique(all_nms[duplicated(all_nms)])

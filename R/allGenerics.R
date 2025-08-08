@@ -30,32 +30,32 @@ setGeneric("txpTransFuncs<-",
            function(x, ..., value) standardGeneric("txpTransFuncs<-"))
 
 #' @rdname txpGenerics
-setGeneric("txpLowerNames", function(x, ...) standardGeneric("txpLowerNames"))
+setGeneric("txpValueNamesLower", function(x, ...) standardGeneric("txpValueNamesLower"))
 
 #' @rdname txpGenerics
-setGeneric("txpLowerNames<-",
-           function(x, ..., value) standardGeneric("txpLowerNames<-"))
+setGeneric("txpValueNamesLower<-",
+           function(x, ..., value) standardGeneric("txpValueNamesLower<-"))
 
 #' @rdname txpGenerics
-setGeneric("txpLowerFuncs", function(x, ...) standardGeneric("txpLowerFuncs"))
+setGeneric("txpTransFuncsLower", function(x, ...) standardGeneric("txpTransFuncsLower"))
 
 #' @rdname txpGenerics
-setGeneric("txpLowerFuncs<-",
-           function(x, ..., value) standardGeneric("txpLowerFuncs<-"))
+setGeneric("txpTransFuncsLower<-",
+           function(x, ..., value) standardGeneric("txpTransFuncsLower<-"))
 
 #' @rdname txpGenerics
-setGeneric("txpUpperNames", function(x, ...) standardGeneric("txpUpperNames"))
+setGeneric("txpValueNamesUpper", function(x, ...) standardGeneric("txpValueNamesUpper"))
 
 #' @rdname txpGenerics
-setGeneric("txpUpperNames<-",
-           function(x, ..., value) standardGeneric("txpUpperNames<-"))
+setGeneric("txpValueNamesUpper<-",
+           function(x, ..., value) standardGeneric("txpValueNamesUpper<-"))
 
 #' @rdname txpGenerics
-setGeneric("txpUpperFuncs", function(x, ...) standardGeneric("txpUpperFuncs"))
+setGeneric("txpTransFuncsUpper", function(x, ...) standardGeneric("txpTransFuncsUpper"))
 
 #' @rdname txpGenerics
-setGeneric("txpUpperFuncs<-",
-           function(x, ..., value) standardGeneric("txpUpperFuncs<-"))
+setGeneric("txpTransFuncsUpper<-",
+           function(x, ..., value) standardGeneric("txpTransFuncsUpper<-"))
 
 #' @rdname txpGenerics
 setGeneric("txpSlices", function(x, ...) standardGeneric("txpSlices"))
@@ -101,19 +101,19 @@ setGeneric("txpCalculateScores",
 setGeneric("txpScores", function(x, ...) standardGeneric("txpScores"))
 
 #' @rdname txpGenerics
-setGeneric("txpScoreLows", function(x, ...) standardGeneric("txpScoreLows"))
+setGeneric("txpScoresLower", function(x, ...) standardGeneric("txpScoresLower"))
 
 #' @rdname txpGenerics
-setGeneric("txpScoreUps", function(x, ...) standardGeneric("txpScoreUps"))
+setGeneric("txpScoresUpper", function(x, ...) standardGeneric("txpScoresUpper"))
 
 #' @rdname txpGenerics
 setGeneric("txpSliceScores", function(x, ...) standardGeneric("txpSliceScores"))
 
 #' @rdname txpGenerics
-setGeneric("txpSliceLows", function(x, ...) standardGeneric("txpSliceLows"))
+setGeneric("txpSliceScoresLower", function(x, ...) standardGeneric("txpSliceScoresLower"))
 
 #' @rdname txpGenerics
-setGeneric("txpSliceUps", function(x, ...) standardGeneric("txpSliceUps"))
+setGeneric("txpSliceScoresUpper", function(x, ...) standardGeneric("txpSliceScoresUpper"))
 
 #' @rdname txpGenerics
 setGeneric("txpModel", function(x, ...) standardGeneric("txpModel"))
@@ -128,10 +128,10 @@ setGeneric("txpIDs<-", function(x, ..., value) standardGeneric("txpIDs<-"))
 setGeneric("txpRanks", function(x, ...) standardGeneric("txpRanks"))
 
 #' @rdname txpGenerics
-setGeneric("txpRankLows", function(x, ...) standardGeneric("txpRankLows"))
+setGeneric("txpRanksLower", function(x, ...) standardGeneric("txpRanksLower"))
 
 #' @rdname txpGenerics
-setGeneric("txpRankUps", function(x, ...) standardGeneric("txpRankUps"))
+setGeneric("txpRanksUpper", function(x, ...) standardGeneric("txpRanksUpper"))
 
 #' @rdname txpGenerics
 setGeneric("txpMissing", function(x, ...) standardGeneric("txpMissing"))

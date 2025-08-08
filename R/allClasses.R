@@ -46,10 +46,10 @@ setClass("TxpTransFuncList",
 setClass("TxpSlice",
          slots = c(txpValueNames = "character_OR_NULL",
                    txpTransFuncs = "TxpTransFuncList",
-                   txpLowerNames = "character_OR_NULL",
-                   txpLowerFuncs = "TxpTransFuncList",
-                   txpUpperNames = "character_OR_NULL",
-                   txpUpperFuncs = "TxpTransFuncList"))
+                   txpValueNamesLower = "character_OR_NULL",
+                   txpTransFuncsLower = "TxpTransFuncList",
+                   txpValueNamesUpper = "character_OR_NULL",
+                   txpTransFuncsUpper = "TxpTransFuncList"))
 
 setClassUnion("TxpSlice_OR_NULL", members = c("TxpSlice", "NULL"))
 
@@ -110,14 +110,14 @@ setClassUnion("matrix_OR_NULL", members = c("matrix", "NULL"))
 setClassUnion("numeric_OR_NULL", members = c("numeric", "NULL"))
 setClass("TxpResult",
          slots = c(txpScores = "numeric_OR_NULL",
-                   txpScoreLows = "numeric_OR_NULL",
-                   txpScoreUps = "numeric_OR_NULL",
+                   txpScoresLower = "numeric_OR_NULL",
+                   txpScoresUpper = "numeric_OR_NULL",
                    txpSliceScores = "matrix_OR_NULL",
-                   txpSliceLows = "matrix_OR_NULL",
-                   txpSliceUps = "matrix_OR_NULL",
+                   txpSliceScoresLower = "matrix_OR_NULL",
+                   txpSliceScoresUpper = "matrix_OR_NULL",
                    txpRanks = "numeric_OR_NULL",
-                   txpRankLows = "numeric_OR_NULL",
-                   txpRankUps = "numeric_OR_NULL",
+                   txpRanksLower = "numeric_OR_NULL",
+                   txpRanksUpper = "numeric_OR_NULL",
                    txpMissing = "numeric",
                    txpModel = "TxpModel",
                    txpIDs = "character_OR_NULL",

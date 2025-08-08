@@ -36,14 +36,14 @@ test_that("We can create TxpResult objects through txpCalculateScores", {
                                   input = txp_example_input))
   
   expect_silent({
-    slcLst <- TxpSliceList(S1 = TxpSlice(txpLowerNames = "metric1", txpUpperNames = "metric2"), 
-                           S2 = TxpSlice(txpLowerNames = "metric3", txpUpperNames = "metric4"))
+    slcLst <- TxpSliceList(S1 = TxpSlice(txpValueNamesLower = "metric1", txpValueNamesUpper = "metric2"), 
+                           S2 = TxpSlice(txpValueNamesLower = "metric3", txpValueNamesUpper = "metric4"))
     md <- TxpModel(slcLst)
     txpCalculateScores(md, txp_example_input, id.var = "name")
   })
   expect_silent({
-    slcLst <- TxpSliceList(S1 = TxpSlice(txpLowerNames = "Invalid", txpUpperNames = "Invalid1"), 
-                           S2 = TxpSlice(txpLowerNames = "metric3", txpUpperNames = "metric4"))
+    slcLst <- TxpSliceList(S1 = TxpSlice(txpValueNamesLower = "Invalid", txpValueNamesUpper = "Invalid1"), 
+                           S2 = TxpSlice(txpValueNamesLower = "metric3", txpValueNamesUpper = "metric4"))
     md <- TxpModel(slcLst)
   })
   expect_error({txpCalculateScores(md, txp_example_input, id.var = "name")}, "Invalid, Invalid1")
@@ -211,9 +211,9 @@ test_that("TxpResult calculations are accurate", {
 
 test_that("TxpResult objects can be sorted", {
   expect_equal(unname(txpRanks(sort(txp_example_results_CI))), 1:10)
-  expect_equal(unname(txpRankLows(sort(txp_example_results_CI, level = "low"))), 1:10)
-  expect_equal(unname(txpRankUps(sort(txp_example_results_CI, level = "up"))), 1:10)
-  expect_equal(unname(txpRankLows(sort(txp_example_results_CI, level = "low", decreasing = FALSE))), 10:1)
+  expect_equal(unname(txpRanksLower(sort(txp_example_results_CI, level = "low"))), 1:10)
+  expect_equal(unname(txpRanksUpper(sort(txp_example_results_CI, level = "up"))), 1:10)
+  expect_equal(unname(txpRanksLower(sort(txp_example_results_CI, level = "low", decreasing = FALSE))), 10:1)
   expect_failure(expect_equal(unname(txpRanks(sort(txp_example_results_CI, level = "low"))), 1:10))
   expect_error({txpRanks(sort(txp_example_results_CI, level = "INVALID"))}, "Invalid level parameter")
 })

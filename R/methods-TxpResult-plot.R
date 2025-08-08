@@ -310,11 +310,11 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
   
   if(showMain && !is.null(x@txpSliceScores)){
     main_df <- profileDF[!is.na(profileDF$radii),]
-    if(is.null(x@txpSliceLows) && is.null(x@txpSliceUps)){
+    if(is.null(x@txpSliceScoresLower) && is.null(x@txpSliceScoresUpper)){
       linetype <- NULL
     } else {
-      lowerShown <- !is.null(x@txpSliceLows) && showLower
-      upperShown <- !is.null(x@txpSliceUps) && showUpper
+      lowerShown <- !is.null(x@txpSliceScoresLower) && showLower
+      upperShown <- !is.null(x@txpSliceScoresUpper) && showUpper
       if((!is.null(sliceBorderColor) && !is.null(sliceBoundColor)) &&
          (sliceBorderColor == sliceBoundColor) && 
          (lowerShown || upperShown)){warning("<sliceBorderColor> == <sliceBoundColor>, thus bounds of 0 or equivalent to the main slice score cannot be seen.")}
@@ -356,7 +356,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     )
   }
 
-  if(showLower && !is.null(x@txpSliceLows) && !is.null(sliceBoundColor)){ #slice lower bound dotted line
+  if(showLower && !is.null(x@txpSliceScoresLower) && !is.null(sliceBoundColor)){ #slice lower bound dotted line
     low_df <- profileDF[!is.na(profileDF$radii_low),]
     if(!is.null(x@txpSliceScores) && showMain){
       plot <- plot + 
@@ -367,7 +367,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     }
   }
 
-  if(showUpper && !is.null(x@txpSliceUps) && !is.null(sliceBoundColor)){ #slice upper bound dashed line
+  if(showUpper && !is.null(x@txpSliceScoresUpper) && !is.null(sliceBoundColor)){ #slice upper bound dashed line
     up_df <- profileDF[!is.na(profileDF$radii_up),]
     if(!is.null(x@txpSliceScores) && showMain){
       plot <- plot + 
@@ -402,7 +402,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     )
   }
   
-  if(!is.null(x@txpSliceLows) || !is.null(x@txpSliceUps)){ #order legend
+  if(!is.null(x@txpSliceScoresLower) || !is.null(x@txpSliceScoresUpper)){ #order legend
     plot <- plot + scale_linetype_manual(
       name = "Bound Type",
       values = c("Lower" = "21", "Main" = "solid", "Upper" = "62"),

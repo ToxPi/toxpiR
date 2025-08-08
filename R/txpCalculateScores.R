@@ -58,8 +58,8 @@ NULL
   .avgLevel <- function(nms, input, negative.value.handling, level){
     dat <- input[nms]
     if (negative.value.handling == "missing") dat[dat < 0]  <- NA
-    if(level == "low"){ tfs <- txpLowerFuncs(slice)}
-    else if(level == "up"){tfs <- txpUpperFuncs(slice)}
+    if(level == "low"){ tfs <- txpTransFuncsLower(slice)}
+    else if(level == "up"){tfs <- txpTransFuncsUpper(slice)}
     else {tfs <- txpTransFuncs(slice)}
     for (i in seq_along(nms)) {
       if (is.null(tfs[[i]])) next
@@ -100,7 +100,7 @@ NULL
   }
   
   #lower confidence interval
-  low_nms <- txpLowerNames(slice)
+  low_nms <- txpValueNamesLower(slice)
   if(!is.null(low_nms)){
     low_sumMis <- .avgLevel(low_nms, input, negative.value.handling, "low")
     low_sum <- low_sumMis$x
@@ -108,7 +108,7 @@ NULL
     num_cols <- num_cols + length(low_nms)
   } else {
     low_sum <- NULL
-    if(!is.null(txpLowerNames(model))){
+    if(!is.null(txpValueNamesLower(model))){
       low_mis <- nrow(input)
       num_cols <- num_cols + 1
     }
@@ -116,7 +116,7 @@ NULL
   }
   
   #upper confidence interval
-  up_nms <- txpUpperNames(slice)
+  up_nms <- txpValueNamesUpper(slice)
   if(!is.null(up_nms)){
     up_sumMis <- .avgLevel(up_nms, input, negative.value.handling, "up")
     up_sum <- up_sumMis$x
@@ -124,7 +124,7 @@ NULL
     num_cols <- num_cols + length(up_nms)
   } else {
     up_sum <- NULL
-    if(!is.null(txpUpperNames(model))){
+    if(!is.null(txpValueNamesUpper(model))){
       up_mis <- nrow(input)
       num_cols <- num_cols + 1
     }
@@ -204,14 +204,14 @@ NULL
   } else {
     slc_main <- NULL
   }
-  if(!is.null(txpLowerNames(model))){
+  if(!is.null(txpValueNamesLower(model))){
     slc_low <- matrix(ncol = length(model), nrow = nrow(slc[[1]]))
     colnames(slc_low) <- paste0(names(model), "_low")
     rownames(slc_low) <- id_names
   } else {
     slc_low <- NULL
   }
-  if(!is.null(txpUpperNames(model))){
+  if(!is.null(txpValueNamesUpper(model))){
     slc_up <- matrix(ncol = length(model), nrow = nrow(slc[[1]]))
     colnames(slc_up) <- paste0(names(model), "_up")
     rownames(slc_up) <- id_names
@@ -320,14 +320,14 @@ NULL
   }
   
   TxpResult(txpScores = score,
-            txpScoreLows = score_low,
-            txpScoreUps = score_up,
+            txpScoresLower = score_low,
+            txpScoresUpper = score_up,
             txpSliceScores = slc,
-            txpSliceLows = slc_low,
-            txpSliceUps = slc_up,
+            txpSliceScoresLower = slc_low,
+            txpSliceScoresUpper = slc_up,
             txpRanks = rnks,
-            txpRankLows = rnk_low,
-            txpRankUps = rnk_up,
+            txpRanksLower = rnk_low,
+            txpRanksUpper = rnk_up,
             txpMissing = mis,
             txpModel = model,
             txpIDs = ids, 

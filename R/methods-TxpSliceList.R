@@ -99,52 +99,52 @@ setMethod("txpTransFuncs", "TxpSliceList", function(x, simplify = FALSE) {
   fxs
 })
 
-#' @describeIn TxpSliceList-class Return `list` of `txpLowerNames` slots for the 
+#' @describeIn TxpSliceList-class Return `list` of `txpValueNamesLower` slots for the 
 #' contained [TxpSlice] objects, or `vector` when `simplify = TRUE`
 #' @importFrom rlang is_scalar_logical
 #' @export
 
-setMethod("txpLowerNames", "TxpSliceList", function(x, simplify = FALSE) {
+setMethod("txpValueNamesLower", "TxpSliceList", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
-  nms <- lapply(x, txpLowerNames)
+  nms <- lapply(x, txpValueNamesLower)
   if (simplify) nms <- unlist(nms)
   if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
 
-#' @describeIn TxpSliceList-class Return `list` of `txpLowerFuncs` slots for the 
+#' @describeIn TxpSliceList-class Return `list` of `txpTransFuncsLower` slots for the 
 #' contained [TxpSlice] objects, or [TxpTransFuncList] when `simplify = TRUE`
 #' @importFrom rlang is_scalar_logical
 #' @export
 
-setMethod("txpLowerFuncs", "TxpSliceList", function(x, simplify = FALSE) { 
+setMethod("txpTransFuncsLower", "TxpSliceList", function(x, simplify = FALSE) { 
   stopifnot(is_scalar_logical(simplify))
-  fxs <- lapply(x, txpLowerFuncs)
+  fxs <- lapply(x, txpTransFuncsLower)
   if (simplify) fxs <- Reduce(c, fxs)
   fxs
 })
 
-#' @describeIn TxpSliceList-class Return `list` of `txpUpperNames` slots for the 
+#' @describeIn TxpSliceList-class Return `list` of `txpValueNamesUpper` slots for the 
 #' contained [TxpSlice] objects, or `vector` when `simplify = TRUE`
 #' @importFrom rlang is_scalar_logical
 #' @export
 
-setMethod("txpUpperNames", "TxpSliceList", function(x, simplify = FALSE) {
+setMethod("txpValueNamesUpper", "TxpSliceList", function(x, simplify = FALSE) {
   stopifnot(is_scalar_logical(simplify))
-  nms <- lapply(x, txpUpperNames)
+  nms <- lapply(x, txpValueNamesUpper)
   if (simplify) nms <- unlist(nms)
   if(all(sapply(nms, is.null))){nms <- NULL}
   nms
 })
 
-#' @describeIn TxpSliceList-class Return `list` of `txpUpperFuncs` slots for the 
+#' @describeIn TxpSliceList-class Return `list` of `txpTransFuncsUpper` slots for the 
 #' contained [TxpSlice] objects, or [TxpTransFuncList] when `simplify = TRUE`
 #' @importFrom rlang is_scalar_logical
 #' @export
 
-setMethod("txpUpperFuncs", "TxpSliceList", function(x, simplify = FALSE) { 
+setMethod("txpTransFuncsUpper", "TxpSliceList", function(x, simplify = FALSE) { 
   stopifnot(is_scalar_logical(simplify))
-  fxs <- lapply(x, txpUpperFuncs)
+  fxs <- lapply(x, txpTransFuncsUpper)
   if (simplify) fxs <- Reduce(c, fxs)
   fxs
 })

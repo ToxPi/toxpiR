@@ -6,14 +6,14 @@
 \alias{txpValueNames<-}
 \alias{txpTransFuncs}
 \alias{txpTransFuncs<-}
-\alias{txpLowerNames}
-\alias{txpLowerNames<-}
-\alias{txpLowerFuncs}
-\alias{txpLowerFuncs<-}
-\alias{txpUpperNames}
-\alias{txpUpperNames<-}
-\alias{txpUpperFuncs}
-\alias{txpUpperFuncs<-}
+\alias{txpValueNamesLower}
+\alias{txpValueNamesLower<-}
+\alias{txpTransFuncsLower}
+\alias{txpTransFuncsLower<-}
+\alias{txpValueNamesUpper}
+\alias{txpValueNamesUpper<-}
+\alias{txpTransFuncsUpper}
+\alias{txpTransFuncsUpper<-}
 \alias{txpSlices}
 \alias{txpSlices<-}
 \alias{txpWeights}
@@ -23,17 +23,17 @@
 \alias{rankTies}
 \alias{rankTies<-}
 \alias{txpScores}
-\alias{txpScoreLows}
-\alias{txpScoreUps}
+\alias{txpScoresLower}
+\alias{txpScoresUpper}
 \alias{txpSliceScores}
-\alias{txpSliceLows}
-\alias{txpSliceUps}
+\alias{txpSliceScoresLower}
+\alias{txpSliceScoresUpper}
 \alias{txpModel}
 \alias{txpIDs}
 \alias{txpIDs<-}
 \alias{txpRanks}
-\alias{txpRankLows}
-\alias{txpRankUps}
+\alias{txpRanksLower}
+\alias{txpRanksUpper}
 \alias{txpMissing}
 \alias{txpResultParam}
 \title{toxpiR package generics}
@@ -46,21 +46,21 @@ txpTransFuncs(x, ...)
 
 txpTransFuncs(x, ...) <- value
 
-txpLowerNames(x, ...)
+txpValueNamesLower(x, ...)
 
-txpLowerNames(x, ...) <- value
+txpValueNamesLower(x, ...) <- value
 
-txpLowerFuncs(x, ...)
+txpTransFuncsLower(x, ...)
 
-txpLowerFuncs(x, ...) <- value
+txpTransFuncsLower(x, ...) <- value
 
-txpUpperNames(x, ...)
+txpValueNamesUpper(x, ...)
 
-txpUpperNames(x, ...) <- value
+txpValueNamesUpper(x, ...) <- value
 
-txpUpperFuncs(x, ...)
+txpTransFuncsUpper(x, ...)
 
-txpUpperFuncs(x, ...) <- value
+txpTransFuncsUpper(x, ...) <- value
 
 txpSlices(x, ...)
 
@@ -80,15 +80,15 @@ rankTies(x, ...) <- value
 
 txpScores(x, ...)
 
-txpScoreLows(x, ...)
+txpScoresLower(x, ...)
 
-txpScoreUps(x, ...)
+txpScoresUpper(x, ...)
 
 txpSliceScores(x, ...)
 
-txpSliceLows(x, ...)
+txpSliceScoresLower(x, ...)
 
-txpSliceUps(x, ...)
+txpSliceScoresUpper(x, ...)
 
 txpModel(x, ...)
 
@@ -98,9 +98,9 @@ txpIDs(x, ...) <- value
 
 txpRanks(x, ...)
 
-txpRankLows(x, ...)
+txpRanksLower(x, ...)
 
-txpRankUps(x, ...)
+txpRanksUpper(x, ...)
 
 txpMissing(x, ...)
 

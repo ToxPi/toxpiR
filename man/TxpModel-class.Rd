@@ -12,8 +12,8 @@
 \alias{txpTransFuncs,TxpModel-method}
 \alias{txpTransFuncs<-,TxpModel-method}
 \alias{txpValueNames,TxpModel-method}
-\alias{txpLowerNames,TxpModel-method}
-\alias{txpUpperNames,TxpModel-method}
+\alias{txpValueNamesLower,TxpModel-method}
+\alias{txpValueNamesUpper,TxpModel-method}
 \alias{negativeHandling,TxpModel-method}
 \alias{negativeHandling<-,TxpModel-method}
 \alias{rankTies,TxpModel-method}
@@ -46,9 +46,9 @@ TxpModel(
 
 \S4method{txpValueNames}{TxpModel}(x, simplify = FALSE)
 
-\S4method{txpLowerNames}{TxpModel}(x, simplify = FALSE)
+\S4method{txpValueNamesLower}{TxpModel}(x, simplify = FALSE)
 
-\S4method{txpUpperNames}{TxpModel}(x, simplify = FALSE)
+\S4method{txpValueNamesUpper}{TxpModel}(x, simplify = FALSE)
 
 \S4method{negativeHandling}{TxpModel}(x)
 
@@ -112,10 +112,10 @@ can set \code{negativeHandling = "missing"}.
 \item \code{txpValueNames(TxpModel)}: Return \code{list} of \code{txpValueNames} slots for the
 contained \link{TxpSliceList} object, or \code{vector} when \code{simplify = TRUE}
 
-\item \code{txpLowerNames(TxpModel)}: Return \code{list} of \code{txpLowerNames} slots for the
+\item \code{txpValueNamesLower(TxpModel)}: Return \code{list} of \code{txpValueNamesLower} slots for the
 contained \link{TxpSliceList} object, or \code{vector} when \code{simplify = TRUE}
 
-\item \code{txpUpperNames(TxpModel)}: Return \code{list} of \code{txpUpperNames} slots for the
+\item \code{txpValueNamesUpper(TxpModel)}: Return \code{list} of \code{txpValueNamesUpper} slots for the
 contained \link{TxpSliceList} object, or \code{vector} when \code{simplify = TRUE}
 
 \item \code{negativeHandling(TxpModel)}: Return \code{negativeHandling} slot
