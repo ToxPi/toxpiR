@@ -22,6 +22,8 @@
 \alias{txpSlices,TxpResult-method}
 \alias{txpTransFuncs,TxpResult-method}
 \alias{txpValueNames,TxpResult-method}
+\alias{txpValueNamesLower,TxpResult-method}
+\alias{txpValueNamesUpper,TxpResult-method}
 \alias{[,TxpResult,logical,missing-method}
 \alias{[,TxpResult,integer,missing-method}
 \alias{[,TxpResult,numeric,missing-method}
@@ -68,6 +70,10 @@
 \S4method{txpTransFuncs}{TxpResult}(x, level, simplify = FALSE)
 
 \S4method{txpValueNames}{TxpResult}(x, simplify = FALSE)
+
+\S4method{txpValueNamesLower}{TxpResult}(x, simplify = FALSE)
+
+\S4method{txpValueNamesUpper}{TxpResult}(x, simplify = FALSE)
 
 \S4method{[}{TxpResult,logical,missing}(x, i, j, ..., drop = FALSE)
 
@@ -171,6 +177,12 @@ shortcut for \code{txpTransFuncs(txpModel(x))}
 
 \item \code{txpValueNames(TxpResult)}: Return \code{txpValueNames} slot from slices --
 shortcut for \code{txpValueNames(txpSlices(txpModel(x)))}
+
+\item \code{txpValueNamesLower(TxpResult)}: Return \code{txpValueNamesLower} slot from slices --
+shortcut for \code{txpValueNamesLower(txpSlices(txpModel(x)))}
+
+\item \code{txpValueNamesUpper(TxpResult)}: Return \code{txpValueNamesUpper} slot from slices --
+shortcut for \code{txpValueNamesUpper(txpSlices(txpModel(x)))}
 
 \item \code{length(TxpResult)}: Return the number of observations; shortcut for
 \code{length(txpScores(x))}
