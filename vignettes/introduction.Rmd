@@ -1,14 +1,17 @@
 ---
 title: "toxpiR Introduction"
 output: 
-  rmarkdown::html_vignette:
-    fig_caption: yes
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{toxpiR Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-<style type="text/css">
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, fig.retina = 2)
+```
+
+```{css, echo=FALSE}
 
 h1.title {
   font-size: 28px;
@@ -29,15 +32,10 @@ h4 { /* Header 4 */
 code.r{ /* Code block */
     font-size: 12px;
 }
-</style>
-
-
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.retina = 6
-)
+.center-figs > p {
+  display: flex;
+  justify-content: center;
+}
 ```
 
 ## Introduction
@@ -48,10 +46,10 @@ This document introduces ToxPi and describes how to use the `toxpiR` package to 
 
 The Toxicological Prioritization Index (ToxPi) is a statistical modeling framework that allows transparent integration and visualization of data across disparate sources (i.e. multimodal or multiscale information). This framework aggregates related features into scored ‘slices’, rescales individual slice scores to range 0–1, and then develops an overall score for each sample using a weighted model. The slice weights can be interpreted as the "importance" of categorized features when predicting sample scores and associated ranks. The resulting scores for each sample are visualized as ToxPi profiles (see image below). Slice weights are represented as the angle of the slice, slice scores are represented as the radius, and the overall sample scores are represented by the combination of slice angles and radii (arc-length). These visualizations allow for quick comparison of overall feature importance, feature impacts driving a specific sample, relative impact ranking of common features between samples, and overall ranking between samples. As a flexible method capable of integrating data from any source, it has been applied to problems in several different fields. Additional information is linked from [toxpi.org](https://toxpi.org).   
 
-<center>
+<div class="center-figs">
 ![](embeddedFigures/txp_explain1.png){width=700px}
 
-</center>
+</div>
 
 ## Outline
 
@@ -116,15 +114,15 @@ remotes::install_github("ToxPi/toxpiR")
 
 ## **Launching package in R**
 
-```{r packages, warning=FALSE}
+```{r load, warning=FALSE}
 library(toxpiR)
 ```
 
 
 ## Flowchart 
-<center>
+<div class="center-figs">
 ![](embeddedFigures/toxpiR-flowchart.svg){height=100% width=100%}
-</center>
+</div>
 
 This flowchart details the basic steps necessary to analyze data using `toxpiR`. A separate vignette describes how to load and work with the CSV data file using txpImportCSV() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:  
   
@@ -373,22 +371,16 @@ This method uses the `ggplot2` package to draw highly customizable ToxPi profile
 **Usage**
 
 Depending on export method, plot resolution may end up poor. SVG and PDF images tend to produce better results than PNG. Usage and example plot output are shown below.
-```{r, eval=FALSE}
-library("ggplot2")
+
+<div class="center-figs">
+```{r, fig.show='hold', fig.width=4, fig.height=4}
 #If you skipped the model building tutorial section
 f.results <- txp_example_results_CI
 
 # Default plot
 plot(f.results, package = "gg") # Using ggplot package
 ```
-<center>
-```{r, fig.show='hold', fig.width=4, fig.height=4, echo=FALSE}
-library("ggplot2")
-
-# Default plot
-plot(f.results, package = "gg") # Using ggplot package
-```
-</center>
+</div>
 
 Sometimes the inner circle of the ToxPi figure can show plotting artifacts. A possible workaround for this is to create a wrapper function around `ggplot2:::coord_munch` as shown below. The ggplot package is working on fixing this and will push their own patch in a new update.
 
@@ -426,162 +418,107 @@ plot(f.results["1"], package = "gg")
 assignInNamespace("coord_munch", coord_munch_orig, ns = "ggplot2")
 ```
 
-<center>
+<div class="center-figs">
 ![](embeddedFigures/coord_munch_orig.png)
 ![](embeddedFigures/coord_munch_new.png)
-</center>
+</div>
 
 <br>
 **Customization examples**
 
 #### Coloration Options
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Changing the slice colors
 colors <- c("orange", "green", "magenta", "lightblue")
 plot(f.results["2"], package = "gg", fills = colors)
 plot(f.results["2"], package = "gg", fills = NULL)
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Changing the slice colors
-colors <- c("orange", "green", "magenta", "lightblue")
-plot(f.results["2"], package = "gg", fills = colors)
-plot(f.results["2"], package = "gg", fills = NULL)
-```
-</center>
+</div>
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Changing the background color
 plot(f.results["2"], package = "gg", bgColor = "lightskyblue")
 plot(f.results["2"], package = "gg", bgColor = NULL)
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Changing the background color
-plot(f.results["2"], package = "gg", bgColor = "lightskyblue")
-plot(f.results["2"], package = "gg", bgColor = NULL)
-```
-</center>
+</div>
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Changing the max radius ring color
 plot(f.results["2"], package = "gg", borderColor = "black")
 plot(f.results["2"], package = "gg", borderColor = NULL)
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Changing the max radius ring color
-plot(f.results["2"], package = "gg", borderColor = "black")
-plot(f.results["2"], package = "gg", borderColor = NULL)
-```
-</center>
+</div>
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Changing the slice border color
 plot(f.results["2"], package = "gg", sliceBorderColor = "magenta")
 plot(f.results["2"], package = "gg", sliceBorderColor = NULL)
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Changing the slice border color
-plot(f.results["2"], package = "gg", sliceBorderColor = "magenta")
-plot(f.results["2"], package = "gg", sliceBorderColor = NULL)
-```
-</center>
+</div>
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Adding slice guidelines 
 plot(f.results["2"], package = "gg", sliceLineColor = "red")
 plot(f.results["2"], package = "gg", sliceLineColor = NULL) 
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Adding slice guidelines 
-plot(f.results["2"], package = "gg", sliceLineColor = "red")
-plot(f.results["2"], package = "gg", sliceLineColor = NULL) 
-```
-</center>
+</div>
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Adding visible slice scores
 plot(f.results["2"], package = "gg", sliceValueColor = "brown")
 plot(f.results["2"], package = "gg", sliceValueColor = NULL)
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Adding visible slice scores
-plot(f.results["2"], package = "gg", sliceValueColor = "brown")
-plot(f.results["2"], package = "gg", sliceValueColor = NULL)
-```
-</center>
+</div>
 
 #### Binary Options
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Hiding inner circle
 plot(f.results["2"], package = "gg", showCenter = TRUE)
 plot(f.results["2"], package = "gg", showCenter = FALSE)
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Hiding inner circle
-plot(f.results["2"], package = "gg", showCenter = TRUE)
-plot(f.results["2"], package = "gg", showCenter = FALSE)
-```
-</center>
+</div>
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Hiding missing data information (pure white inner circle)
 plot(f.results["2"], package = "gg", showMissing = TRUE)
 plot(f.results["2"], package = "gg", showMissing = FALSE)
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Hiding missing data information (pure white inner circle)
-plot(f.results["2"], package = "gg", showMissing = TRUE)
-plot(f.results["2"], package = "gg", showMissing = FALSE)
-```
-</center>
+</div>
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Hiding the overall profile scores
 plot(f.results["2"], package = "gg", showScore = TRUE)
 plot(f.results["2"], package = "gg", showScore = FALSE) 
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Hiding the overall profile scores
-plot(f.results["2"], package = "gg", showScore = TRUE)
-plot(f.results["2"], package = "gg", showScore = FALSE) 
-```
-```{r, eval=FALSE}
+</div> 
+
+<div class="center-figs">
+```{r, fig.show="hold"}
 #Hiding the lower and upper bounds
 plot(f.results["2"], package = "gg", showLower = FALSE, showUpper = FALSE) 
 
 # Hiding the main slice
 plot(f.results["2"], package = "gg", showMain = FALSE)
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-#Hiding the lower and upper bounds
-plot(f.results["2"], package = "gg", showLower = FALSE, showUpper = FALSE) 
+</div>
 
-# Hiding the main slice
-plot(f.results["2"], package = "gg", showMain = FALSE)
-```
-</center>
-
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Coloring the bounds
 plot(f.results["2"], package = "gg", sliceBoundColor = "black")
 plot(f.results["2"], package = "gg", sliceBoundColor = NULL) 
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Coloring the bounds
-plot(f.results["2"], package = "gg", sliceBoundColor = "white")
-plot(f.results["2"], package = "gg", sliceBoundColor = NULL) 
-```
+</div>
 
 #### Format/Theme Options
 
@@ -590,32 +527,27 @@ plot(f.results["2"], package = "gg", sliceBoundColor = NULL)
 plot(f.results, package = "gg", ncol = 5) 
 ```
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold", fig.height=5}
 # Moving the legend using ggplot built in theme functions
-plot(f.results, package = "gg", ncol = 5) + theme(legend.position = "bottom") 
-plot(f.results, package = "gg", ncol = 2) + theme(legend.position = "left")
+plot(f.results, package = "gg", ncol = 5) + ggplot2::theme(legend.position = "bottom") 
+plot(f.results, package = "gg", ncol = 2) + ggplot2::theme(legend.position = "left")
 ```
-<center>
-```{r, fig.show="hold", fig.height=5, echo=FALSE}
-# Moving the legend using ggplot built in theme functions
-plot(f.results, package = "gg", ncol = 5) + theme(legend.position = "bottom") 
-plot(f.results, package = "gg", ncol = 2) + theme(legend.position = "left")
-```
-</center>
+</div>
 
 ```{r, fig.align='center'}
 # Removing plot margins
-plot(f.results, package = "gg") + theme(plot.margin = margin(0, 0, 0, 0, "cm"))
+plot(f.results, package = "gg") + ggplot2::theme(plot.margin = ggplot2::margin(0, 0, 0, 0, "cm"))
 # Removing spacing between panels
-plot(f.results, package = "gg") + theme(panel.spacing = unit(0, "lines"))
+plot(f.results, package = "gg") + ggplot2::theme(panel.spacing = ggplot2::unit(0, "lines"))
 # Removing text labels
-plot(f.results, package = "gg") + theme(strip.text.x = element_blank())
+plot(f.results, package = "gg") + ggplot2::theme(strip.text.x = ggplot2::element_blank())
 # A combination of the above for a rank ordered plot
 plot(f.results[order(txpRanks(f.results)[1:9])], package = "gg") +
-  theme(
-    plot.margin = margin(0, 0, 0, 0, "cm"),
-    panel.spacing = unit(0, "lines"),
-    strip.text.x = element_blank(),
+  ggplot2::theme(
+    plot.margin = ggplot2::margin(0, 0, 0, 0, "cm"),
+    panel.spacing = ggplot2::unit(0, "lines"),
+    strip.text.x = ggplot2::element_blank(),
     legend.position = "none"
   )
 ```
@@ -662,33 +594,24 @@ grid.edit("pie-10::slice3", gp = gpar(fill = "#FC0FC0"))
 
 #### ggplot vs grid Comparison
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 #Single sample
 plot(f.results["2"])
 plot(f.results["2"], package = "gg") 
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-#Single sample
-plot(f.results["2"])
-plot(f.results["2"], package = "gg") 
-```
-</center>
+</div>
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 # Subset plots, Profiles ranked 1-4
 plot(f.results[order(txpRanks(f.results))[1:4]]) 
 plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") 
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-# Subset plots, Profiles ranked 1-4
-plot(f.results[order(txpRanks(f.results))[1:4]]) 
-plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") 
-```
-</center>
+</div>
 
-```{r, eval=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 ## Long sample names for cramped plots
 
 #change the first sample name in f.results
@@ -699,72 +622,36 @@ plot(f.results, package = "gg") #ggplot for all samples
 
 txpIDs(f.results)[1] <- "1" # Change the sample name back
 ```
-<center>
-```{r, fig.show="hold", echo=FALSE}
-## Long sample names for cramped plots
+</div>
 
-#change the first sample name in f.results
-txpIDs(f.results)[1] <- "I am a long sample name"
-
-plot(f.results) #grid plot for all samples
-plot(f.results, package = "gg") #ggplot for all samples
-
-txpIDs(f.results)[1] <- "1" # Change the sample name back
-```
-</center>
-
-```{r, eval=FALSE}
-## Long slice names for cramped plots
-
-#change first slice name in model slot
-names(f.results@txpModel)[1] <- "long slice name"
-#change first slice name in scores slot
-colnames(f.results@txpSliceScores)[1] <- "long slice name"
-#change first slice name in missing data slot
-names(f.results@txpMissing)[1] <- "long slice name"
-
-#plot results using grid
-plot(f.results)
-#plot results using ggplot
-plot(f.results, package = "gg") + theme(
-  legend.position = "bottom",
-  legend.title = element_text(size = 10),
-  legend.text = element_text(size = 6)
-)
-
-#change slice name back
-names(f.results@txpModel)[1] <- "s1"
-colnames(f.results@txpSliceScores)[1] <- "s1"
-names(f.results@txpMissing)[1] <- "s1"
-```
-<center>
-```{r, fig.show="hold", echo=FALSE}
+<div class="center-figs">
+```{r, fig.show="hold"}
 ## Long slice names for cramped plots
 
 #change first slice name. Note: changing models/results is not recommended for 
 #actual results objects. Please create a new model with real data
 names(f.results@txpModel)[1] <- "long slice name"
 colnames(f.results@txpSliceScores)[1] <- "long slice name"
-colnames(f.results@txpSliceScoresLower)[1] <- "long slice name_low"
-colnames(f.results@txpSliceScoresUpper)[1] <- "long slice name_up"
+colnames(f.results@txpSliceScoresLower)[1] <- "long slice name_lower"
+colnames(f.results@txpSliceScoresUpper)[1] <- "long slice name_upper"
 
 #plot results using grid
 plot(f.results)
 #plot results using ggplot
-plot(f.results, package = "gg") + theme(
+plot(f.results, package = "gg") + ggplot2::theme(
   legend.position = "bottom",
-  legend.title = element_text(size = 10),
-  legend.text = element_text(size = 6)
+  legend.title = ggplot2::element_text(size = 10),
+  legend.text = ggplot2::element_text(size = 6)
 )
 
 #change slice name back
 names(f.results@txpModel)[1] <- "ExampleA"
 colnames(f.results@txpSliceScores)[1] <- "ExampleA"
-colnames(f.results@txpSliceScoresLower)[1] <- "ExampleA_low"
-colnames(f.results@txpSliceScoresUpper)[1] <- "ExampleA_up"
+colnames(f.results@txpSliceScoresLower)[1] <- "ExampleA_lower"
+colnames(f.results@txpSliceScoresUpper)[1] <- "ExampleA_upper"
 
 ```
-</center>
+</div>
 
 #### Statistic Plots
 ```{r fig.width=5, fig.height=4, fig.align='center'}
