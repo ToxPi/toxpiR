@@ -19,12 +19,19 @@ This vignette will show how to load a data model file that was saved using eithe
 ```{r setup}
 library(toxpiR)
 # Get the path to the example toxpiR data model csv file
-toxpiR_path <- system.file("extdata", "txp_example_input_CI.csv", package = "toxpiR")
+toxpiR_path <- system.file("extdata", 
+                           "txp_example_input_CI.csv", 
+                           package = "toxpiR")
 
-# Optionally download the 'format_C.csv' data model csv file from the toxpi gui github for use in place of toxpiR
+# Optionally download the 'format_C.csv' data model csv file from the toxpi gui 
+# github for use in place of toxpiR
 fmtc <- tempfile()
 ghuc <- "https://raw.githubusercontent.com"
-fmtcUrl <- file.path(ghuc, "ToxPi", "ToxPi-example-files", "main", "format_C.csv")
+fmtcUrl <- file.path(ghuc, 
+                     "ToxPi", 
+                     "ToxPi-example-files", 
+                     "main", 
+                     "format_C.csv")
 download.file(url = fmtcUrl, destfile = fmtc, quiet = TRUE)
 ```
 
@@ -46,9 +53,13 @@ toxpiR$fills
 We calculate ToxPi scores using the `txpCalculateScores` function, which takes a model and input `data.frame`.  
 
 ```{r}
-## Calculate ToxPi scores; Note: if using gui, id.var is under the column "Name", thus use id.var = "Name"
-res <- txpCalculateScores(model = toxpiR$model, input = toxpiR$input, id.var = 1)
-#res <- txpCalculateScores(model = gui$model, input = gui$input, id.var = "Name")
+## Calculate ToxPi scores; Note: if using gui, id.var is under the column 
+## "Name", thus use id.var = "Name"
+res <- txpCalculateScores(model = toxpiR$model, 
+                          input = toxpiR$input, 
+                          id.var = 1)
+# res <- txpCalculateScores(model = gui$model, 
+#                           input = gui$input, id.var = "Name")
 
 ## Overall ToxPi scores
 txpScores(res)
@@ -74,7 +85,8 @@ plot(sort(res), package = "gg", fills = toxpiR$fills)
 
 ```{r fig.width = 7, fig.height = 4}
 plot(res, txpRanks(res))
-plot(res, txpRanks(res), labels = 1:10, pch = 16, size = grid::unit(0.75, "char"))
+plot(res, txpRanks(res), labels = 1:10, 
+     pch = 16, size = grid::unit(0.75, "char"))
 ```
 
 The basic clustering methods offered in the Java GUI can also be recreated.

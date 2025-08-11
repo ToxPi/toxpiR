@@ -175,7 +175,7 @@ The first step is to specify information about each slice before creating a Toxp
 
 ```{r}
 
-## Goal - Create three slices with transformation functions and increasing complexity
+## Goal - Create three slices with transformations and increasing complexity
 # Slice 1 (No bounds): Slice1_M1 (no transformation)
 # Slice 2 (No bounds): Slice2_M1 (square) 
 # Slice 3: Slice3_M1 and Slice3_M2 (no transformation)
@@ -188,10 +188,14 @@ slice3.upper.trans <- TxpTransFuncList(func1 = function(x) x^2, func2 = NULL)
 f.slices <- TxpSliceList(Slice1 = TxpSlice(txpValueNames = "Slice1_M1"), 
                          Slice2 = TxpSlice(txpValueNames = "Slice2_M1", 
                                            txpTransFuncs = slice2.trans),
-                         Slice3 = TxpSlice(txpValueNames = c("Slice3_M1", "Slice3_M2"),
-                                           txpValueNamesLower = c("Slice3_L1", "Slice3_L2"),
-                                           txpValueNamesUpper = c("Slice3_U1", "Slice3_U2"),
-                                           txpTransFuncsUpper = slice3.upper.trans))
+                         Slice3 = TxpSlice(txpValueNames = c("Slice3_M1", 
+                                                             "Slice3_M2"),
+                                           txpValueNamesLower = c("Slice3_L1", 
+                                                                  "Slice3_L2"),
+                                           txpValueNamesUpper = c("Slice3_U1", 
+                                                                  "Slice3_U2"),
+                                           txpTransFuncsUpper = 
+                                             slice3.upper.trans))
 
 ```
 
@@ -259,7 +263,9 @@ The txpModel object can be exported along with the data that it is intended to b
 
 ```{r, eval=FALSE}
 # Export the data model
-txpExportCSV(fileName = "txp_vignette_model.csv", model = f.model, input = txp_example_input_CI)
+txpExportCSV(fileName = "txp_vignette_model.csv", 
+             model = f.model, 
+             input = txp_example_input_CI)
 ```
 
 ### Calculate ToxPi scores
@@ -284,9 +290,11 @@ Calculate ToxPi Scores for the given ToxPi model and input data. This input data
 
 
 ```{r}
-f.model <- txp_example_model_CI #Load a more complex model than we created previously
+#Load a more complex model than we created previously
+f.model <- txp_example_model_CI 
 
-#Calculate results, integer 1 is provided for id.var specifying the first column is the id column in the input
+#Calculate results, integer 1 is provided for id.var specifying the first column
+#is the id column in the input
 f.results <- txpCalculateScores(model = f.model,
                                 input = txp_example_input_CI,
                                 id.var = 1) 
@@ -617,12 +625,15 @@ plot(f.results[order(txpRanks(f.results)[1:9])], package = "gg") +
 ## Creating an example with more variable missing data amounts
 f.input <- txp_example_input_CI
 
-# Add more missing data to slice 2 via metrics named Slice2_M1 and Slice2_M2 in the raw data
+# Add more missing data to slice 2 via metrics named Slice2_M1 and Slice2_M2 in 
+# the raw data
 f.input[2:8, "Slice2_M1"] <- NA
 f.input[3:10, "Slice2_M2"] <- NA
 
 # Modify metric transformation functions for slice 3
-txpTransFuncs(txpSlices(f.model)[[3]]) <- TxpTransFuncList(f1 = \(x) sqrt(x - 1.5), f2 = \(x) x)
+fun1 <- \(x) sqrt(x - 1.5)
+fun2 <- \(x) x
+txpTransFuncs(txpSlices(f.model)[[3]]) <- TxpTransFuncList(f1 = fun1, f2 = fun2)
 
 # Calculate new ToxPi results
 f.results_missing <- txpCalculateScores(f.model, f.input, id.var = 1)
@@ -665,15 +676,15 @@ plot(f.results["2"], package = "gg")
 </center>
 
 ```{r, eval=FALSE}
-# Subset plots
-plot(f.results[order(txpRanks(f.results))[1:4]]) #Profiles ranked 1-4
-plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") #Profiles ranked 1-4
+# Subset plots, Profiles ranked 1-4
+plot(f.results[order(txpRanks(f.results))[1:4]]) 
+plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") 
 ```
 <center>
 ```{r, fig.show="hold", echo=FALSE}
-# Subset plots
-plot(f.results[order(txpRanks(f.results))[1:4]]) #Profiles ranked 1-4
-plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") #Profiles ranked 1-4
+# Subset plots, Profiles ranked 1-4
+plot(f.results[order(txpRanks(f.results))[1:4]]) 
+plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") 
 ```
 </center>
 
@@ -730,7 +741,8 @@ names(f.results@txpMissing)[1] <- "s1"
 ```{r, fig.show="hold", echo=FALSE}
 ## Long slice names for cramped plots
 
-#change first slice name. Note: changing models/results is not recommended for actual results objects. Please create a new model with real data
+#change first slice name. Note: changing models/results is not recommended for 
+#actual results objects. Please create a new model with real data
 names(f.results@txpModel)[1] <- "long slice name"
 colnames(f.results@txpSliceScores)[1] <- "long slice name"
 colnames(f.results@txpSliceScoresLower)[1] <- "long slice name_low"

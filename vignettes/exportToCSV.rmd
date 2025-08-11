@@ -39,19 +39,33 @@ This vignette will show how to save toxpiR data models for sharing and recreatio
 
 ```{r, eval=FALSE}
 # Export a data model
-txpExportCSV(fileName = "txp_vignette_CI_model.csv", model = txp_example_model_CI, input = txp_example_input_CI)
+txpExportCSV(fileName = "txp_vignette_CI_model.csv", 
+             model = txp_example_model_CI, 
+             input = txp_example_input_CI)
 
 #Export a data model with a named id column in the input data
-txpExportCSV(fileName = "txp_vignette_model.csv", model = txp_example_model, input = txp_example_input, id.var = "name")
+txpExportCSV(fileName = "txp_vignette_model.csv", 
+             model = txp_example_model, 
+             input = txp_example_input, 
+             id.var = "name")
 
 #Export a data model with custom slice colors
-txpExportCSV(fileName = "txp_vignette_model_fills.csv", model = txp_example_model, input = txp_example_input, id.var = "name", fills = c("blue", "red", "purple", "green"))
+txpExportCSV(fileName = "txp_vignette_model_fills.csv", 
+             model = txp_example_model, 
+             input = txp_example_input, 
+             id.var = "name", 
+             fills = c("blue", "red", "purple", "green"))
 
-#Export a data model for use with the Java GUI; Note: The model is being adjusted first for compatibility with the Java GUI, discussed later
+#Export a data model for use with the Java GUI; Note: The model is being 
+#adjusted first for compatibility with the Java GUI, discussed later
 guiModel <- txp_example_model
 negativeHandling(guiModel) <- "missing"
 txpTransFuncs(guiModel) <- NULL
-txpExportCSV(fileName = "txp_vignette_model_gui.csv", model = guiModel, input = txp_example_input, id.var = "name", format = "gui")
+txpExportCSV(fileName = "txp_vignette_model_gui.csv", 
+             model = guiModel, 
+             input = txp_example_input, 
+             id.var = "name", 
+             format = "gui")
 ```
 
 ### toxpiR data model csv format 
