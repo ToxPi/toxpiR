@@ -55,9 +55,9 @@ The Toxicological Prioritization Index (ToxPi) is a statistical modeling framewo
 
 There are three main steps in using this package: 
 
-- **Loading data**: Calculating scores requires a data frame in which the data is formatted where column names are the feature/metric names and raw sample data are rows. An id column with unique features names is also suggested to be included in the data frame. Users often obtain this data frame by reading in a csv file with read.csv(file, header = TRUE). Alternatively, if a user has exported a data model to a csv from either toxpiR or the ToxPi Java GUI, both the data and model can be read in from the file using txpImportCSV(file), which returns a list where the data is contained under input. This is highly recommended if the data is planned to be shared with the model for recreation. For more info about csv data models, see [vignette("importFromCSV", package = "mypackage")].
+- **Loading data**: Calculating scores requires a data frame in which the data is formatted where column names are the feature/metric names and raw sample data are rows. An id column with unique features names is also suggested to be included in the data frame. Users often obtain this data frame by reading in a csv file with read.csv(file, header = TRUE). Alternatively, if a user has exported a data model to a csv from either toxpiR or the ToxPi Java GUI, both the data and model can be read in from the file using txpImportCSV(file), which returns a list where the data is contained under input. This is highly recommended if the data is planned to be shared with the model for recreation. For more info about importing csv data models, see [Import ToxPi CSV files](https://cran.r-project.org/package=toxpiR/vignettes/importFromCSV.html).
 
-- **Creating ToxPi Model**: ToxPi models can be created by first building TxpSlice objects, which are fed into TxpModel() to create a TxpModel object. Each slice can be made up of one or more, optionally transformed, features from the input data and can contain lower and upper bound feature data as well. When creating TxpModel objects, you should also name the slices, provide their weights, optionally provide any slice transformations, and specify how the model should handle negative data and rank ties. Alternatively, if a user has exported a data model to a csv either from toxpiR using txpExportCSV() or from the ToxPi Java GUI, both the data and model can be read in using txpImportCSV(), which returns a list where the model is contained under model. For more info about importing csv data models, see [vignette("importFromCSV", package = "toxpiR")].
+- **Creating ToxPi Model**: ToxPi models can be created by first building TxpSlice objects, which are fed into TxpModel() to create a TxpModel object. Each slice can be made up of one or more, optionally transformed, features from the input data and can contain lower and upper bound feature data as well. When creating TxpModel objects, you should also name the slices, provide their weights, optionally provide any slice transformations, and specify how the model should handle negative data and rank ties. Alternatively, if a user has exported a data model to a csv either from toxpiR using txpExportCSV() or from the ToxPi Java GUI, both the data and model can be read in using txpImportCSV(), which returns a list where the model is contained under model. For more info about exporting csv data models, see [Export ToxPi CSV files](https://cran.r-project.org/package=toxpiR/vignettes/exportToCSV.html).
 
 - **Computing ToxPi Scores**: Sample scores can be computed per slice as well as overall using txpCalculateScores(). The S4 object resulting from this step will combine and store the ToxPi model and scores all in one place. This final object will contain all the information needed for plotting. 
 
@@ -88,8 +88,8 @@ install.packages("toxpiR")
 
 ### **Installation from GitHub**
 
-Any new features will be first added to the GitHub version of the package. However, it may be less stable than the release on CRAN. Before attempting a direct installation from GitHub, please make sure you have `devtools` package on your system. 
-Note, Windows users will need Rtools to install directly from GitHub. 
+Any new features will be first added to the GitHub version of the package. However, it may be less stable than the release on CRAN. Before attempting a direct installation from GitHub, please make sure you have `remotes` package installed. 
+Note, Windows users may need Rtools to install packages directly from GitHub. 
  
 ```{r, eval = FALSE}
 # Manually install bioconductor packages if not already installed
@@ -125,12 +125,14 @@ library(toxpiR)
 </div>
 
 This flowchart details the basic steps necessary to analyze data using `toxpiR`. A separate vignette describes how to load and work with the CSV data file using txpImportCSV() function. Usage for all other functions is described below using an example data set. To view a list of all functions available in this package, please run:  
-  
-> lsf.str("package:toxpiR")   
+
+```{r, eval = FALSE}
+lsf.str("package:toxpiR")
+```  
 
 ## Example usage
 
-Data must be entered as a data frame where column names are features. This is usually obtained from read.csv() if a model has not been previously created, or txpImportCSV() if the csv file has header lines specifying model information. If you are using the GUI header format, please refer to the [Import ToxPi GUI files](https://cran.r-project.org/package=toxpiR/vignettes/importFromGui.html) vignette. 
+Data must be entered as a data frame where column names are features. This is usually obtained from read.csv() if a model has not been previously created, or txpImportCSV() if the csv file has header lines specifying model information. If you are using the GUI header format, or would like more information about toxpiR csv files, please refer to the [Export ToxPi CSV files](https://cran.r-project.org/package=toxpiR/vignettes/exportToCSV.html) vignette. 
 
 The standard data input is a standard R dataframe with rows as your datapoints and columns as features that may be turned into ToxPi slices. Two simple example data sets called *txp_example_input* and *txp_example_input_CI* are available within the package. We will use the CI (confidence interval) toy data to walk through a simple analysis and explain the functions available in this package. These metrics that we have specified can be in completely different scales and data type, but first we will show a simple example of the package usage.
 
@@ -241,7 +243,7 @@ f.model <- TxpModel(txpSlices = f.slices,
 
 ### Export toxpiR data model (recommended)
 
-The txpModel object can be exported along with the data that it is intended to be used on in a specially formatted csv file using *txpExportCSV()*. This is an important step, as it allows easy recreation of both models and results. Here we will provide a quick overview on how to export data models for later use with the toxpiR package, but models can also be exported for use with the Java GUI if they are compatible. For more info about importing csv data models, see [vignette("exportToCSV", package = "toxpiR")].
+The txpModel object can be exported along with the data that it is intended to be used on in a specially formatted csv file using *txpExportCSV()*. This is an important step, as it allows easy recreation of both models and results. Here we will provide a quick overview on how to export data models for later use with the toxpiR package, but models can also be exported for use with the Java GUI if they are compatible. For more info about exporting csv data models, see [Export ToxPi CSV files](https://cran.r-project.org/package=toxpiR/vignettes/exportToCSV.html).
 
 #### txpExportCSV()
 
