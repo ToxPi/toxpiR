@@ -299,6 +299,22 @@ setMethod("txpValueNames", "TxpResult", function(x, simplify = FALSE) {
   txpValueNames(txpSlices(txpModel(x)), simplify = simplify)
 })
 
+#' @describeIn TxpResult-class Return `txpValueNamesLower` slot from slices --
+#' shortcut for `txpValueNamesLower(txpSlices(txpModel(x)))`
+#' @export
+
+setMethod("txpValueNamesLower", "TxpResult", function(x, simplify = FALSE) {
+  txpValueNamesLower(txpSlices(txpModel(x)), simplify = simplify)
+})
+
+#' @describeIn TxpResult-class Return `txpValueNamesUpper` slot from slices --
+#' shortcut for `txpValueNamesUpper(txpSlices(txpModel(x)))`
+#' @export
+
+setMethod("txpValueNamesUpper", "TxpResult", function(x, simplify = FALSE) {
+  txpValueNamesUpper(txpSlices(txpModel(x)), simplify = simplify)
+})
+
 .TxpResult.squareBracket <- function(x, i, j, ..., drop = FALSE) {
   ss <- txpSliceScores(x, adjusted = FALSE)[i, , drop = FALSE]
   ls <- txpSliceScoresLower(x, adjusted = FALSE)[i, , drop = FALSE]
