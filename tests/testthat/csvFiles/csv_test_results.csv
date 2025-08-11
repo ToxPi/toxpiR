@@ -1,4 +1,4 @@
-ExampleA_low,ExampleA,ExampleA_up,ExampleB_low,ExampleB,ExampleB_up,ExampleC_low,ExampleC,ExampleC_up,score_low,score,score_up,rank_low,rank,rank_up,id
+ExampleA_lower,ExampleA,ExampleA_upper,ExampleB_lower,ExampleB,ExampleB_upper,ExampleC_lower,ExampleC,ExampleC_upper,score_lower,score,score_upper,rank_lower,rank,rank_upper,id
 0,0.430676559,0.682606195,0,0,0,0,0,1,0,0.21533828,0.674636431,4,4,4,1
 0.430676559,0.430676559,0.682606195,0,0,1,0,0.577350269,1,0.21533828,0.407788369,0.841303098,3,2,2,2
 0.682606195,0.682606195,0.861353116,0.077016353,0.077016353,0.444444444,0,0,1,0.354139156,0.354139156,0.838083965,1,3,3,3

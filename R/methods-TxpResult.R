@@ -176,7 +176,7 @@ setMethod("txpSliceScoresUpper", "TxpResult", function(x, adjusted = TRUE) {
   if(is.null(scr)){return(NULL)}
   if (adjusted) {
     nms <- names(txpSlices(x))
-    up_nms <- paste0(nms, "_up")
+    up_nms <- paste0(nms, "_upper")
     val_ind <- which(up_nms %in% colnames(scr))
     wts <- txpWeights(x, adjusted = TRUE)[val_ind]
     scr <- scr*rep(wts, each = NROW(scr))
@@ -195,7 +195,7 @@ setMethod("txpSliceScoresLower", "TxpResult", function(x, adjusted = TRUE) {
   if(is.null(scr)){return(NULL)}
   if (adjusted) {
     nms <- names(txpSlices(x))
-    low_nms <- paste0(nms, "_low")
+    low_nms <- paste0(nms, "_lower")
     val_ind <- which(low_nms %in% colnames(scr))
     wts <- txpWeights(x, adjusted = TRUE)[val_ind]
     scr <- scr*rep(wts, each = NROW(scr))
@@ -515,17 +515,17 @@ setValidity2("TxpResult", .TxpResult.validity)
   }
   
   if(!is.null(txpScoresLower(x))){
-    df[[paste0(score.name, "_low")]] <- txpScoresLower(x)
-    df[[paste0(rank.name, "_low")]] <- txpRanksLower(x)
+    df[[paste0(score.name, "_lower")]] <- txpScoresLower(x)
+    df[[paste0(rank.name, "_lower")]] <- txpRanksLower(x)
     df <- cbind(df, txpSliceScoresLower(x, adjusted = adjusted))
-    outCols <- c(outCols, paste0(score.name, "_low"), paste0(rank.name, "_low"), colnames(txpSliceScoresLower(x)))
+    outCols <- c(outCols, paste0(score.name, "_lower"), paste0(rank.name, "_lower"), colnames(txpSliceScoresLower(x)))
   }
   
   if(!is.null(txpScoresUpper(x))){
-    df[[paste0(score.name, "_up")]] <- txpScoresUpper(x)
-    df[[paste0(rank.name, "_up")]] <- txpRanksUpper(x)
+    df[[paste0(score.name, "_upper")]] <- txpScoresUpper(x)
+    df[[paste0(rank.name, "_upper")]] <- txpRanksUpper(x)
     df <- cbind(df, txpSliceScoresUpper(x, adjusted = adjusted))
-    outCols <- c(outCols, paste0(score.name, "_up"), paste0(rank.name, "_up"), colnames(txpSliceScoresUpper(x)))
+    outCols <- c(outCols, paste0(score.name, "_upper"), paste0(rank.name, "_upper"), colnames(txpSliceScoresUpper(x)))
   }
 
   if (!is.null(txpIDs(x))) {

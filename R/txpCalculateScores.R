@@ -163,7 +163,7 @@ NULL
   # Extract each component into a named list
   slc <- lapply(names(x), function(name) {
     val <- x[[name]]
-    val <- stats::setNames(lapply(cols, function(col) val[[col]]), paste0(name, c("", "_low", "_up")))
+    val <- stats::setNames(lapply(cols, function(col) val[[col]]), paste0(name, c("", "_lower", "_upper")))
     val <- Filter(Negate(is.null), val)
     val <- as.matrix(as.data.frame(do.call(cbind, val)))
   })
@@ -206,14 +206,14 @@ NULL
   }
   if(!is.null(txpValueNamesLower(model))){
     slc_low <- matrix(ncol = length(model), nrow = nrow(slc[[1]]))
-    colnames(slc_low) <- paste0(names(model), "_low")
+    colnames(slc_low) <- paste0(names(model), "_lower")
     rownames(slc_low) <- id_names
   } else {
     slc_low <- NULL
   }
   if(!is.null(txpValueNamesUpper(model))){
     slc_up <- matrix(ncol = length(model), nrow = nrow(slc[[1]]))
-    colnames(slc_up) <- paste0(names(model), "_up")
+    colnames(slc_up) <- paste0(names(model), "_upper")
     rownames(slc_up) <- id_names
   } else {
     slc_up <- NULL
@@ -223,8 +223,8 @@ NULL
   for (mat in slc) {
     mat_cols <- colnames(mat)
     main_col <- intersect(names(x), mat_cols)
-    low_col  <- intersect(paste0(names(x), "_low"), mat_cols)
-    up_col   <- intersect(paste0(names(x), "_up"), mat_cols)
+    low_col  <- intersect(paste0(names(x), "_lower"), mat_cols)
+    up_col   <- intersect(paste0(names(x), "_upper"), mat_cols)
 
     if (!is.null(slc_main)) {
       slc_main[, main_col] <- mat[, main_col]
@@ -289,7 +289,7 @@ NULL
     score <- NULL
   }
   if (!is.null(slc_low)) {
-    nms <- paste0(names(txpSlices(model)), "_low")
+    nms <- paste0(names(txpSlices(model)), "_lower")
     val_ind <- which(nms %in% colnames(slc_low))
     aligned_wts <- wts[val_ind]
     score_low <- rowSums(slc_low*rep(aligned_wts, each = NROW(slc_low)), na.rm = TRUE)
@@ -297,7 +297,7 @@ NULL
     score_low <- NULL
   }
   if (!is.null(slc_up)) {
-    nms <- paste0(names(txpSlices(model)), "_up")
+    nms <- paste0(names(txpSlices(model)), "_upper")
     val_ind <- which(nms %in% colnames(slc_up))
     aligned_wts <- wts[val_ind]
     score_up <- rowSums(slc_up*rep(aligned_wts, each = NROW(slc_up)), na.rm = TRUE)

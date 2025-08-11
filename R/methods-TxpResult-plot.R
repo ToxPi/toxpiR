@@ -239,8 +239,8 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
   toxResultDF <- as.data.frame(x)
 
   nms <- names(txpModel(x))
-  low_nms <- paste0(nms, "_low")
-  up_nms <- paste0(nms, "_up")
+  low_nms <- paste0(nms, "_lower")
+  up_nms <- paste0(nms, "_upper")
   missing_cols <- setdiff(c(nms, low_nms, up_nms), colnames(toxResultDF))
   for (col in missing_cols) {
     toxResultDF[[col]] <- NA
@@ -455,13 +455,13 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 #get dataframe containing all necessary info for selected samples
 .getPlotList <- function(wts, sliceNames, data, showLower, showMain, showUpper) {
   pos <- .getSlicePositions(wts)
-  low_nms <- paste0(sliceNames, "_low")
-  up_nms <- paste0(sliceNames, "_up")
+  low_nms <- paste0(sliceNames, "_lower")
+  up_nms <- paste0(sliceNames, "_upper")
   
   do.call(rbind, lapply(1:nrow(data), function(x) {
     if(!showMain){score <- NULL} else {score <- data[x, "score"]}
-    if(!showLower){score_low <- NULL} else {score_low <- data[x, "score_low"]}
-    if(!showUpper){score_up <- NULL} else {score_up <- data[x, "score_up"]}
+    if(!showLower){score_low <- NULL} else {score_low <- data[x, "score_lower"]}
+    if(!showUpper){score_up <- NULL} else {score_up <- data[x, "score_upper"]}
     .generateProfileDF(
       pos$start, pos$end, 
       unlist(data[x, sliceNames]), sliceNames, 
