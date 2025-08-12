@@ -26,7 +26,7 @@
   showMissing = TRUE,
   showCenter = TRUE,
   showLower = TRUE,
-  showMain = TRUE,
+  showBest = TRUE,
   showUpper = TRUE,
   sliceBoundColor = "black"
 )
@@ -76,7 +76,7 @@ profiles. When set to False overrides showMissing}
 
 \item{showLower}{Boolean for showing lower confidence interval dotted arcs if they are in the results}
 
-\item{showMain}{Boolean for showing main color filled slices if they are in the results}
+\item{showBest}{Boolean for showing best estimate color filled slices if they are in the results}
 
 \item{showUpper}{Boolean for showing upper confidence interval dashed arcs if they are in the results}
 

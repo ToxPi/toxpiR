@@ -32,7 +32,7 @@
 #' @param showCenter Boolean for showing inner circle in ggplot2 ToxPi 
 #' profiles. When set to False overrides showMissing
 #' @param showLower Boolean for showing lower confidence interval dotted arcs if they are in the results
-#' @param showMain Boolean for showing main color filled slices if they are in the results
+#' @param showBest Boolean for showing best estimate color filled slices if they are in the results
 #' @param showUpper Boolean for showing upper confidence interval dashed arcs if they are in the results
 #' 
 #' @details
@@ -98,7 +98,7 @@ NULL
     showMissing = TRUE,
     showCenter = TRUE,
     showLower = TRUE,
-    showMain = TRUE,
+    showBest = TRUE,
     showUpper = TRUE,
     sliceBoundColor= "black") {
 
@@ -111,7 +111,7 @@ NULL
     .TxpResult.toxpiGGPlot(
       x, fills, showScore, ncol, bgColor, borderColor,
       sliceBorderColor, sliceValueColor, sliceLineColor, showMissing, 
-      showCenter, showLower, showMain, showUpper, sliceBoundColor
+      showCenter, showLower, showBest, showUpper, sliceBoundColor
     )
   } else {
     .TxpResult.toxpiGridPlot(
@@ -223,7 +223,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     showMissing = TRUE,
     showCenter = TRUE,
     showLower = TRUE,
-    showMain = TRUE,
+    showBest = TRUE,
     showUpper = TRUE,
     sliceBoundColor = "black"
     ) {
@@ -245,7 +245,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
   for (col in missing_cols) {
     toxResultDF[[col]] <- NA
   }
-  profileDF <- .getPlotList(txpWeights(x), nms, toxResultDF, showLower, showMain, showUpper)
+  profileDF <- .getPlotList(txpWeights(x), nms, toxResultDF, showLower, showBest, showUpper)
 
   #make plot
   if(showCenter){
@@ -308,8 +308,8 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     )
   }
   
-  if(showMain && !is.null(x@txpSliceScores)){
-    main_df <- profileDF[!is.na(profileDF$radii),]
+  if(showBest && !is.null(x@txpSliceScores)){
+    best_df <- profileDF[!is.na(profileDF$radii),]
     if(is.null(x@txpSliceScoresLower) && is.null(x@txpSliceScoresUpper)){
       linetype <- NULL
     } else {
@@ -317,14 +317,14 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       upperShown <- !is.null(x@txpSliceScoresUpper) && showUpper
       if((!is.null(sliceBorderColor) && !is.null(sliceBoundColor)) &&
          (sliceBorderColor == sliceBoundColor) && 
-         (lowerShown || upperShown)){warning("<sliceBorderColor> == <sliceBoundColor>, thus bounds of 0 or equivalent to the main slice score cannot be seen.")}
+         (lowerShown || upperShown)){warning("<sliceBorderColor> == <sliceBoundColor>, thus bounds of 0 or equivalent to the best estimate slice score cannot be seen.")}
       if((!is.null(borderColor) && !is.null(sliceBoundColor)) &&
          (borderColor == sliceBoundColor) && 
          (lowerShown || upperShown)){warning("<borderColor> == <sliceBoundColor>, thus bounds of 1 cannot be seen.")}
-      linetype <- "Main"
+      linetype <- "Best Estimate"
     }
     if (!is.null(sliceBorderColor)) { #slice outlines w/interior fills
-      plot <- plot + ggplot2::geom_rect(data = main_df,
+      plot <- plot + ggplot2::geom_rect(data = best_df,
                                         ggplot2::aes(
                                           xmin = left,
                                           xmax = right,
@@ -337,7 +337,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
                                         linewidth = 0.5
       )
     } else { #interior fills
-      plot <- plot + ggplot2::geom_rect(data = main_df,
+      plot <- plot + ggplot2::geom_rect(data = best_df,
                                         ggplot2::aes(
                                           xmin = left,
                                           xmax = right,
@@ -358,7 +358,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 
   if(showLower && !is.null(x@txpSliceScoresLower) && !is.null(sliceBoundColor)){ #slice lower bound dotted line
     low_df <- profileDF[!is.na(profileDF$radii_low),]
-    if(!is.null(x@txpSliceScores) && showMain){
+    if(!is.null(x@txpSliceScores) && showBest){
       plot <- plot + 
         geom_segment(data = low_df, aes(x = left, xend = right, y = innerRad + radii_low * (1 - innerRad), linetype = "Lower"), colour = sliceBoundColor)
     } else {
@@ -369,7 +369,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 
   if(showUpper && !is.null(x@txpSliceScoresUpper) && !is.null(sliceBoundColor)){ #slice upper bound dashed line
     up_df <- profileDF[!is.na(profileDF$radii_up),]
-    if(!is.null(x@txpSliceScores) && showMain){
+    if(!is.null(x@txpSliceScores) && showBest){
       plot <- plot + 
         geom_segment(data = up_df, aes(x = left, xend = right, y = innerRad + radii_up * (1 - innerRad),  linetype = "Upper"), colour = sliceBoundColor)
     } else {
@@ -378,7 +378,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
     }  
   }
   
-  if(showMain && !is.null(x@txpSliceScores)){
+  if(showBest && !is.null(x@txpSliceScores)){
     if (!is.null(sliceValueColor)) { #slice score text visual
       plot <- plot + ggplot2::geom_text(
         ggplot2::aes(
@@ -391,11 +391,11 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
       )
     } 
   } else {
-    if(!is.null(sliceValueColor)){warning("<sliceValueColor> cannot be shown when is.null(txpSliceScores(<txpResult>)) or showMain = FALSE")}
+    if(!is.null(sliceValueColor)){warning("<sliceValueColor> cannot be shown when is.null(txpSliceScores(<txpResult>)) or showBest = FALSE")}
   }
   
-  if(is.null(x@txpSliceScores) || !showMain){
-    plot <- plot + ggplot2::scale_colour_manual( #color bounds when main is NULL
+  if(is.null(x@txpSliceScores) || !showBest){
+    plot <- plot + ggplot2::scale_colour_manual( #color bounds when best is NULL
       breaks = unique(profileDF$Slices),
       values = fills,
       guide = guide_legend(order = 1)
@@ -405,7 +405,7 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
   if(!is.null(x@txpSliceScoresLower) || !is.null(x@txpSliceScoresUpper)){ #order legend
     plot <- plot + scale_linetype_manual(
       name = "Bound Type",
-      values = c("Lower" = "21", "Main" = "solid", "Upper" = "62"),
+      values = c("Lower" = "21", "Best Estimate" = "solid", "Upper" = "62"),
       guide = guide_legend(order = 2)
     )
   }
@@ -453,13 +453,13 @@ setMethod("plot", c("TxpResult", "numeric"), .TxpResult.rankPlot)
 }
 
 #get dataframe containing all necessary info for selected samples
-.getPlotList <- function(wts, sliceNames, data, showLower, showMain, showUpper) {
+.getPlotList <- function(wts, sliceNames, data, showLower, showBest, showUpper) {
   pos <- .getSlicePositions(wts)
   low_nms <- paste0(sliceNames, "_lower")
   up_nms <- paste0(sliceNames, "_upper")
   
   do.call(rbind, lapply(1:nrow(data), function(x) {
-    if(!showMain){score <- NULL} else {score <- data[x, "score"]}
+    if(!showBest){score <- NULL} else {score <- data[x, "score"]}
     if(!showLower){score_low <- NULL} else {score_low <- data[x, "score_lower"]}
     if(!showUpper){score_up <- NULL} else {score_up <- data[x, "score_upper"]}
     .generateProfileDF(
