@@ -5,9 +5,9 @@
 * `TxpSlice` now contains slots `txpValueNamesLower`, `txpTransFuncsLower`, `txpValueNamesUpper`, `txpTransFuncsUpper` 
 * `TxpSlice` now allows `txpValueNames` to be NULL as long as at least one other names slot is provided 
 * `TxpModel` now has accessor functions `txpValueNamesLower()` and `txpValueNamesUpper()` for viewing defined slice metrics in confidence intervals 
-* `txpCalculateScores` now aggregates individual slices by averaging instead of summing 
+* `txpCalculateScores` now divides by the number of metrics used in aggregation after slice transformations.
 This change mathematically does not effect slice scores of existing models without bounds, 
-while also allowing confidence level scores within a slice to be accurately compared when they 
+while also allowing bound scores within a slice to be accurately compared when they 
 have differing number of features in their definition 
 * `txpCalculateScores` now treats missing data as follows:
   * Missing data in lower bounds after aggregation and re-scaling are set to 0 

@@ -146,8 +146,11 @@ head(txp_example_input_CI)
 
 ### Specify slice information 
 
-The first step is to specify information about each slice before creating a Toxpi model. This can be done using the **TxpSliceList()** and **TxpSlice()** functions. These slices can be made up of one or more features from the input dataset and are specified by listing the features that go into each slice in the **TxpSlice()** function. We can also specify how we want to transform the features with the  **TxpTransFuncList()** function. This means we can do a different transformation per feature instead of having to transform the entire input dataset within a slice. Upper and lower confidence interval features can also be provided with the slice. Features must not intersect between the main slice, its lower interval, and its upper interval, and at least one of the three levels must be provided.
+The first step is to specify information about each slice before creating a Toxpi model. This can be done using the **TxpSliceList()** and **TxpSlice()** functions. These slices can be made up of one or more features from the input dataset and are specified by listing the features that go into each slice in the **TxpSlice()** function. We can also specify how we want to transform the features with the  **TxpTransFuncList()** function. This means we can do a different transformation per feature instead of having to transform the entire input dataset within a slice. Upper and lower bounds for features can also be provided with the slice. Features must not intersect between the slices best estimate, its lower bound, and its upper bound, and at least one of the three levels must be provided. More information about bounds is provided directly below and in the Calculate ToxPi Scores section. 
 
+#### toxpiR Slice Bounds
+
+The toxpiR package allows for users to provide metrics to be included in lower and upper bounds for slices via *txpValueNamesLower* and *txpValueNamesUpper*. These bounds follow the same methodology as the original framework, which is considered the best estimate and is still provided via *txpValueNames*. At least one of the lower bound, best estimate, and upper bound must be provided in a slice. Transformation functions can also be provided to the bounds via the *txpTransFuncLower* and *txpTransFuncUpper* slots. 
 
 #### TxpSlice(txpValueNames, txpTransFuncs, txpValueNamesLower, txpTransFuncsLower, txpValueNamesUpper, txpTransFuncsUpper)
 
@@ -201,7 +204,7 @@ f.slices <- TxpSliceList(Slice1 = TxpSlice(txpValueNames = "Slice1_M1"),
 
 ### Create ToxPi model
 
-The ToxPi model object is core for specifying how the created slices should behave when the scores are calculated. In this step, we need to specify what the slices we created above are and assign those slices weights. We can also assign transformation functions to overall slices after feature aggregation.
+The ToxPi model object is core for specifying how the created slices should behave when the scores are calculated. In this step, we need to specify what the slices we created above are and assign those slices weights. We can also assign slice transformation functions to overall slices after feature aggregation. The specified slice transformation will apply to each of the lower bound, best estimate, and upper bound if provided.
 The model should also specify how both negative data and rank ties should be handled. The model is essential to the analysis because it is going to specify how our calculations are performed and allow for recreation of results. 
 
 #### TxpModel()
@@ -272,6 +275,19 @@ txpExportCSV(fileName = "txp_vignette_model.csv",
 
 Calculate ToxPi Scores for the given ToxPi model and input data. This input data is what we loaded in previously as a data frame, which can be obtained in several ways including *read.csv()* on a basic csv or the input obtained from a compatible data model csv and *txpImportCSV()*. This step uses the model we have created or read in to specify how the ToxPi scores should be calculated. The results object that is created also stores the model used, allowing for easy reference when you are dealing with many models and results. 
 
+#### Calculations
+The original ToxPi framework calculates slice scores by performing specified metric transformations, summing all (best estimate) metrics within a slice to get unscaled slice scores, optionally performing specified slice transformations (toxpiR only), and then rescaling each slice across samples so that it's score ranges from 0-1 across the dataset. After this step, any (best estimate) missing data is treated as 0. After this, slice weights are rescaled so that they sum to 1, and overall scores are calculated for samples as a linear combination of slice weights and slice scores, resulting in overall ToxPi scores for samples ranging 0-1. 
+
+The toxpiR package also provides the option for users to provide metrics as lower and upper bounds for slices. Because of this, the original ToxPi framework for calculations has been slightly updated for toxpiR in a manner that can replicate old results while also allowing for more complex models and calculations. Firstly, when the new method sums metrics for aggregating slices, each of the lower bound, best estimate, and upper bound are summed independently and create three separate slice scores. Furthermore, during this step, any missing data in the upper bound is treated as the maximum metric value across samples prior to summation to ensure deflation of the upper bound doesn't occur. The new ToxPi framework also adds a step after slice transformations in which the transformed slice scores are divided by the number of metrics defined in the previous summation. This step does not effect the 0-1 scaled slice scores in the original framework, while also ensuring that slices with differing number of metrics between their bounds and best estimate aren't accidentally inflated or deflated when comparing bounds and the best estimate. When rescaling slice scores 0-1, the rescaling occurs across all of the lower bound, best estimate, and upper bound together, ensuring that scores across bound levels remain proportional. Finally, when calculating the overall ToxPi scores, the lower bound, best estimate, and upper bound each independently calculate an overall score if they are provided for at least one slice. If any of the three don't appear in any of the slices, that level won't be calculated and is not a part of the analysis. If any of the three appear in some slices but not others, the slices lacking the level will treat it as missing data, with the lower bound mapping missing slice scores to 0, the best estimate mapping missing slice scores to the lower bound score (or 0 if lower bound is unprovided), and the upper bound mapping missing slice scores to 1. Thus the calculation steps are as follows:
+
+1. If metric transformations exist for a slice, transform metrics for that slice by their specified transformations
+2. If upper bound metrics exist, replace missing or infinite data with the maximum value for that metric in the dataset
+3. Sum the specified metrics within a slice independently for provided lower bound, best estimate, or upper bound metrics to create up to 3 slice scores
+4. If slice transformations are provided, transform all slice scores within a slice by the slice transformation
+5. Divide each slice score by the number of metrics used in its summation in step 3 (ie the average after transforming the sum)
+6. Rescale all slice scores within a slice 0-1 together, such that the lower bound, best estimate, and upper bound slice scores remain proportional with the highest score across any of the 3 provided mapping to one and the lowest score mapping to 0.
+7. Calculate overall ToxPi scores as a linear combination of slice weight and slice score for each of the 3 bound levels that appear somewhere in the model, remapping any missing data to 0 for the lower bound, to the lower bound (0 if the lower bound is unprovided) for the best estimate, and to 1 for the upper bound. If any of these levels don't exist anywhere in the model, they will not be a part of the analysis, will not have been used in any of the previous steps, and will not have slice scores nor an overall score.
+
 #### txpCalculateScores()
 
 **Arguments**
@@ -307,10 +323,9 @@ txpWeights(f.results) #Print weights
 txpMissing(f.results) #Proportion of missing data within each slice
 ```
 
-
 ### Visualization
 
-Two paths exist for visualization, **ggplot** methods and **grid** methods. The ggplot method uses the `ggplot2` package and allows for highly customizable profiles allowing for several visualization experiences, as well as the ability to visualize confidence intervals. The grid method uses advanced `grid` graphics and can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preferred. 
+Two paths exist for visualization, **ggplot** methods and **grid** methods. The ggplot method uses the `ggplot2` package and allows for highly customizable profiles allowing for several visualization experiences, as well as the ability to visualize lower and upper slice bounds. The grid method uses advanced `grid` graphics and can be implemented using pieGrob objects that are compatible with the grid system. Additional plots can be made such as a rank plot by using the data stored in the results object. The results object also allows for the flexibility to use other R plotting packages if preferred. 
 
 <br>
 **Summary**: The ggPlot graphics path will be the best option for users wanting to create ToxPi profiles, with many options for customization. The grid graphics path is for users wanting to modify very specific, basic elements of ToxPi profiles and/or recombine profiles with other graphics. The `ggplot2` package (high-level) is built atop `grid` graphics (low-level), so the two systems interact well.
@@ -322,7 +337,7 @@ Two paths exist for visualization, **ggplot** methods and **grid** methods. The 
 * Examples shown in this vignette produce a "look-and-feel" that is closer to the graphics output of the familiar [ToxPi GUI](https://toxpi.org)
 * Aesthetics are easy to customize 
 * Includes missing data visuals (center circle à la ToxPi GUI output)
-* Includes ability to visualize confidence intervals
+* Includes ability to visualize lower and upper slice bounds
 </div>
 
 <div >
@@ -365,9 +380,9 @@ This method uses the `ggplot2` package to draw highly customizable ToxPi profile
 
 > *showMain* : Boolean to plot main slices, which are represented as color filled areas. Defaults to TRUE.
 
-> *showLower* : Boolean to plot lower confidence intervals, which are represented as dotted lines. Defaults to TRUE.
+> *showLower* : Boolean to plot lower slice bounds, which are represented as dotted lines. Defaults to TRUE.
 
-> *showUpper* : Boolean to plot upper confidence intervals, which are represented as dashed lines. Defaults to TRUE.
+> *showUpper* : Boolean to plot upper slice bounds, which are represented as dashed lines. Defaults to TRUE.
 
 <br>
 **Usage**
