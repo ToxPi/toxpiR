@@ -65,5 +65,48 @@
   rgb(red = mat[1, ], green = mat[2, ], blue = mat[3, ], maxColorValue = 255)
 }
 
+# replicated pryr functions
+
+.to_env <- function(x, quiet = FALSE) {
+  if (is.environment(x)) {
+    x
+  } else if (is.list(x)) {
+    list2env(x)
+  } else if (is.function(x)) {
+    environment(x)
+  } else if (length(x) == 1 && is.character(x)) {
+    if (!quiet) message("Using environment ", x)
+    as.environment(x)
+  } else if (length(x) == 1 && is.numeric(x) && x > 0) {
+    if (!quiet) message("Using environment ", search()[x])
+    as.environment(x)
+  } else {
+    stop("Input can not be coerced to an environment", call. = FALSE)
+  }
+}
+
+.substitute_q <- function(x, env) {
+  stopifnot(is.language(x))
+  env <- .to_env(env)
+  
+  call <- substitute(substitute(x, env), list(x = x))
+  eval(call)
+  
+}
+
+.make_function <- function(args, body, env = parent.frame()) {
+  args <- as.pairlist(args)
+  stopifnot(
+    .all_named(args),
+    is.language(body))
+  env <- .to_env(env)
+  
+  eval(call("function", args, body), env)
+}
+
+.all_named <- function(x) {
+  if (length(x) == 0) return(TRUE)
+  !is.null(names(x)) && all(names(x) != "")
+}
 ##----------------------------------------------------------------------------##
 
