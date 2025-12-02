@@ -506,7 +506,7 @@ plot output are shown below.</p>
 <span><span class="co"># Default plot</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="co"># Using ggplot package</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-8-1.png" width="384">
+<img src="introduction_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="384">
 </center>
 <p>Sometimes the inner circle of the ToxPi figure can show plotting
 artifacts. A possible workaround for this is to create a wrapper
@@ -557,42 +557,42 @@ function around <code>ggplot2:::coord_munch</code> as shown below.</p>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, fills <span class="op">=</span> <span class="va">colors</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, fills <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-11-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-11-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-11-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Changing the background color</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, bgColor <span class="op">=</span> <span class="st">"lightskyblue"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, bgColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-13-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-13-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-13-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Changing the max radius ring color</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, borderColor <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, borderColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-15-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-15-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-15-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Changing the slice border color</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceBorderColor <span class="op">=</span> <span class="st">"magenta"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceBorderColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-17-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-17-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-17-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Adding slice guidelines </span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceLineColor <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceLineColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> </span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-19-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-19-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-19-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Adding visible slice scores</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceValueColor <span class="op">=</span> <span class="st">"brown"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, sliceValueColor <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-21-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-21-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-21-2.png" class="r-plt" width="700">
 </center>
 </div>
 <div class="section level4">
@@ -603,21 +603,21 @@ function around <code>ggplot2:::coord_munch</code> as shown below.</p>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showCenter <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showCenter <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-23-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-23-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-23-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Hiding missing data information (pure white inner circle)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showMissing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showMissing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-25-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-25-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-25-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-25-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Hiding the overall profile scores</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showScore <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span>, showScore <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-27-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-27-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-27-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-27-2.png" class="r-plt" width="700">
 </center>
 </div>
 <div class="section level4">
@@ -626,26 +626,26 @@ function around <code>ggplot2:::coord_munch</code> as shown below.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Specifying the number of columns in the plot</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-28-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Moving the legend using ggplot built in theme functions</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-30-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-30-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-30-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-30-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Removing plot margins</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">margin</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-31-1.png" width="700" style="display: block; margin: auto;"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-31-1.png" class="r-plt" width="700" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Removing spacing between panels</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>panel.spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"lines"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-31-2.png" width="700" style="display: block; margin: auto;"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-31-2.png" class="r-plt" width="700" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Removing text labels</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>strip.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-31-3.png" width="700" style="display: block; margin: auto;"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-31-3.png" class="r-plt" width="700" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A combination of the above for a rank ordered plot</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span><span class="op">)</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -655,7 +655,7 @@ function around <code>ggplot2:::coord_munch</code> as shown below.</p>
 <span>    strip.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    legend.position <span class="op">=</span> <span class="st">"none"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-31-4.png" width="700" style="display: block; margin: auto;"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-31-4.png" class="r-plt" width="700" style="display: block; margin: auto;"></p>
 <p><strong>Missing Data Examples</strong></p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Creating an example with more variable missing data amounts</span></span>
@@ -678,7 +678,7 @@ function around <code>ggplot2:::coord_munch</code> as shown below.</p>
 <span></span>
 <span><span class="co"># View new result profile</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results_missing</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-32-1.png" width="700" style="display: block; margin: auto;"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-32-1.png" class="r-plt" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="piegrob-method">pieGrob Method<a class="anchor" aria-label="anchor" href="#piegrob-method"></a>
@@ -692,18 +692,18 @@ Methods for highlighting information after plotting is shown below.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span> <span class="co"># Load library</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span> <span class="co"># ToxPi visuals</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-33-1.png" width="672"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-33-1.png" class="r-plt" width="672"></p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># grid.ls() #List grid info</span></span>
 <span></span>
 <span><span class="co"># Highlight one figure using its label</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-1"</span>, fills <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>, <span class="st">"brown"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-33-2.png" width="672"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-33-2.png" class="r-plt" width="672"></p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Or just one slice in a figure</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/grid/grid.edit.html" class="external-link">grid.edit</a></span><span class="op">(</span><span class="st">"pie-10::slice1"</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#FC0FC0"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-33-3.png" width="672"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-33-3.png" class="r-plt" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="ggplot-vs-grid-comparison">ggplot vs grid Comparison<a class="anchor" aria-label="anchor" href="#ggplot-vs-grid-comparison"></a>
@@ -713,14 +713,14 @@ Methods for highlighting information after plotting is shown below.</p>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="st">"chem02"</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> </span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-35-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-35-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-35-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-35-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Subset plots</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="co">#Profiles ranked 1-4</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, package <span class="op">=</span> <span class="st">"gg"</span><span class="op">)</span> <span class="co">#Profiles ranked 1-4</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-37-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-37-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-37-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-37-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Long sample names for cramped plots</span></span>
@@ -733,7 +733,7 @@ Methods for highlighting information after plotting is shown below.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/txpGenerics.html">txpIDs</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"chem01"</span> <span class="co"># Change the sample name back</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-39-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-39-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-39-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-39-2.png" class="r-plt" width="700">
 </center>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Long slice names for cramped plots</span></span>
@@ -759,7 +759,7 @@ Methods for highlighting information after plotting is shown below.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">@</span><span class="va">txpSliceScores</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"s1"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">@</span><span class="va">txpMissing</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"s1"</span></span></code></pre></div>
 <center>
-<img src="introduction_files/figure-html/unnamed-chunk-41-1.png" width="700"><img src="introduction_files/figure-html/unnamed-chunk-41-2.png" width="700">
+<img src="introduction_files/figure-html/unnamed-chunk-41-1.png" class="r-plt" width="700"><img src="introduction_files/figure-html/unnamed-chunk-41-2.png" class="r-plt" width="700">
 </center>
 </div>
 <div class="section level4">
@@ -768,14 +768,14 @@ Methods for highlighting information after plotting is shown below.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Rank plot</span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.results</span>, y <span class="op">=</span> <span class="fu"><a href="../reference/txpGenerics.html">txpRanks</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-42-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-42-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Hierarchical Clustering</span></span>
 <span><span class="va">f.hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="fu"><a href="../reference/txpGenerics.html">txpSliceScores</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/TxpResult-plot.html">plot</a></span><span class="op">(</span><span class="va">f.hc</span>, hang <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="../reference/txpGenerics.html">txpIDs</a></span><span class="op">(</span><span class="va">f.results</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">''</span>, sub <span class="op">=</span> <span class="st">''</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-42-2.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-42-2.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
@@ -796,7 +796,7 @@ currently in review)</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

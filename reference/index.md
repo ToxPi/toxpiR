@@ -1,0 +1,106 @@
+# Package index
+
+## All functions
+
+- [`TxpModel()`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`txpSlices(`*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`` `txpSlices<-`( ``*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`txpWeights(`*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`` `txpWeights<-`( ``*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`txpTransFuncs(`*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`` `txpTransFuncs<-`( ``*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`txpValueNames(`*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`names(`*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`` `names<-`( ``*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`length(`*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  [`merge(`*`<TxpModel>`*`,`*`<TxpModel>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModel-class.md)
+  : ToxPi Model
+- [`TxpModelList()`](https://toxpi.github.io/toxpiR/reference/TxpModelList-class.md)
+  [`duplicated(`*`<TxpModelList>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpModelList-class.md)
+  [`as.TxpModelList()`](https://toxpi.github.io/toxpiR/reference/TxpModelList-class.md)
+  : List of TxpModel objects
+- [`txpScores(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpSliceScores(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpRanks(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpMissing(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpResultParam(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpModel(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpIDs(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`` `txpIDs<-`( ``*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpWeights(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpSlices(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpTransFuncs(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`txpValueNames(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`` `[`( ``*`<TxpResult>`*`,`*`<logical>`*`,`*`<missing>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`` `[`( ``*`<TxpResult>`*`,`*`<integer>`*`,`*`<missing>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`` `[`( ``*`<TxpResult>`*`,`*`<numeric>`*`,`*`<missing>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`` `[`( ``*`<TxpResult>`*`,`*`<character>`*`,`*`<missing>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`length(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`sort(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`names(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`` `names<-`( ``*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  [`as.data.frame(`*`<TxpResult>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-class.md)
+  : ToxPi Result
+- [`plot(`*`<TxpResult>`*`,`*`<missing>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-plot.md)
+  [`plot(`*`<TxpResult>`*`,`*`<numeric>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResult-plot.md)
+  : Plot TxpResult objects
+- [`TxpResultList()`](https://toxpi.github.io/toxpiR/reference/TxpResultList-class.md)
+  [`duplicated(`*`<TxpResultList>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpResultList-class.md)
+  [`as.TxpResultList()`](https://toxpi.github.io/toxpiR/reference/TxpResultList-class.md)
+  : List of TxpResult objects
+- [`TxpResultParam-class`](https://toxpi.github.io/toxpiR/reference/TxpResultParam-class.md)
+  [`TxpResultParam`](https://toxpi.github.io/toxpiR/reference/TxpResultParam-class.md)
+  : ToxPi Result Parameters
+- [`TxpSlice()`](https://toxpi.github.io/toxpiR/reference/TxpSlice-class.md)
+  [`txpValueNames(`*`<TxpSlice>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpSlice-class.md)
+  [`` `txpValueNames<-`( ``*`<TxpSlice>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpSlice-class.md)
+  [`txpTransFuncs(`*`<TxpSlice>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpSlice-class.md)
+  [`` `txpTransFuncs<-`( ``*`<TxpSlice>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpSlice-class.md)
+  [`length(`*`<TxpSlice>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpSlice-class.md)
+  [`merge(`*`<TxpSlice>`*`,`*`<TxpSlice>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpSlice-class.md)
+  : ToxPi Slice
+- [`TxpSliceList()`](https://toxpi.github.io/toxpiR/reference/TxpSliceList-class.md)
+  [`txpValueNames(`*`<TxpSliceList>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpSliceList-class.md)
+  [`txpTransFuncs(`*`<TxpSliceList>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpSliceList-class.md)
+  [`duplicated(`*`<TxpSliceList>`*`)`](https://toxpi.github.io/toxpiR/reference/TxpSliceList-class.md)
+  [`as.TxpSliceList()`](https://toxpi.github.io/toxpiR/reference/TxpSliceList-class.md)
+  : List of TxpSlice objects
+- [`TxpTransFunc()`](https://toxpi.github.io/toxpiR/reference/TxpTransFunc-class.md)
+  : Numeric transformation function
+- [`TxpTransFuncList()`](https://toxpi.github.io/toxpiR/reference/TxpTransFuncList-class.md)
+  [`as.TxpTransFuncList()`](https://toxpi.github.io/toxpiR/reference/TxpTransFuncList-class.md)
+  : List of TxpTransFunc objects
+- [`boxLegendGrob()`](https://toxpi.github.io/toxpiR/reference/boxLegendGrob.md)
+  : Create a filled-box legend
+- [`pieGridGrob()`](https://toxpi.github.io/toxpiR/reference/pieGridGrob.md)
+  [`grid.pieGridGrob()`](https://toxpi.github.io/toxpiR/reference/pieGridGrob.md)
+  : Make grid of pieGrobs
+- [`pieGrob()`](https://toxpi.github.io/toxpiR/reference/pieGrob.md)
+  [`grid.pieGrob()`](https://toxpi.github.io/toxpiR/reference/pieGrob.md)
+  : Create a pie grob
+- [`txp_example_input`](https://toxpi.github.io/toxpiR/reference/toxpiR-datasets.md)
+  [`txp_example_model`](https://toxpi.github.io/toxpiR/reference/toxpiR-datasets.md)
+  : toxpiR data objects
+- [`txpCalculateScores()`](https://toxpi.github.io/toxpiR/reference/txpCalculateScores.md)
+  : Calculate ToxPi Scores for the given model and input data
+- [`txpExportGui()`](https://toxpi.github.io/toxpiR/reference/txpExportGui.md)
+  : Export comma-separated file intended for ToxPi GUI
+- [`txpValueNames()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`` `txpValueNames<-`() ``](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpTransFuncs()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`` `txpTransFuncs<-`() ``](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpSlices()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`` `txpSlices<-`() ``](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpWeights()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`` `txpWeights<-`() ``](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpScores()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpSliceScores()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpModel()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpIDs()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`` `txpIDs<-`() ``](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpRanks()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpMissing()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  [`txpResultParam()`](https://toxpi.github.io/toxpiR/reference/txpGenerics.md)
+  : toxpiR package generics
+- [`txpImportGui()`](https://toxpi.github.io/toxpiR/reference/txpImportGui.md)
+  : Import data file generated by ToxPi GUI
