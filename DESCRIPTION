@@ -1,7 +1,9 @@
 Package: toxpiR
 Type: Package
 Title: Create ToxPi Prioritization Models
-Version: 1.3.0
+Version: 1.3.1
+Author: Jonathon F Fleming [aut, cre]
+Maintainer: Jonathon F Fleming <jffleming0129@gmail.com>
 Authors@R: 
     c(person("Jonathon F", "Fleming",
              role = c("aut","cre"),
@@ -48,7 +50,7 @@ Imports:
     ggplot2
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Depends: 
     R (>= 4.0)
