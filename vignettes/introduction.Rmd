@@ -42,11 +42,11 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-This document introduces ToxPi and describes how to use the `toxpiR` package to easily import, recombine, analyze, and visualize high dimensional data. The `toxpiR` package is an R implementation of ToxPi that offers new features over what was previously available for data handling, recombination, and customization; provides formally packaged, open-source code for ToxPi; extends the application domain by supporting rapid analysis of massive datasets; and bridges with the stand-alone, [Graphical User Interface (GUI)](https://toxpi.org) Java application and [ArcGIS Toolkit](https://github.com/ToxPi/ToxPi-GIS). 
+This document introduces ToxPi and describes how to use the `toxpiR` package to easily import, recombine, analyze, and visualize high dimensional data. The `toxpiR` package is an R implementation of ToxPi that offers new features over what was previously available for data handling, recombination, and customization; provides formally packaged, open-source code for ToxPi; extends the application domain by supporting rapid analysis of massive datasets; and bridges with the stand-alone, [Graphical User Interface (GUI)](https://toxpi.github.io/) Java application and [ArcGIS Toolkit](https://github.com/ToxPi/ToxPi-GIS). 
 
 ## What is ToxPi?
 
-The Toxicological Prioritization Index (ToxPi) is a statistical modeling framework that allows transparent integration and visualization of data across disparate sources (i.e. multimodal or multiscale information). This framework aggregates related features into scored ‘slices’, rescales individual slice scores to range 0–1, and then develops an overall score for each sample using a weighted model. The slice weights can be interpreted as the "importance" of categorized features when predicting sample scores and associated ranks. The resulting scores for each sample are visualized as ToxPi profiles (see image below). Slice weights are represented as the arc-width, slice scores are represented as the radius, and the overall sample scores are represented by the combination of slice weights and radii. These visualizations allow for quick comparison of overall feature importance, feature impacts driving a specific sample, relative impact ranking of common features between samples, and overall ranking between samples. As a flexible method capable of integrating data from any source, it has been applied to problems in several different fields. Additional information is linked from [toxpi.org](https://toxpi.org).   
+The Toxicological Prioritization Index (ToxPi) is a statistical modeling framework that allows transparent integration and visualization of data across disparate sources (i.e. multimodal or multiscale information). This framework aggregates related features into scored ‘slices’, rescales individual slice scores to range 0–1, and then develops an overall score for each sample using a weighted model. The slice weights can be interpreted as the "importance" of categorized features when predicting sample scores and associated ranks. The resulting scores for each sample are visualized as ToxPi profiles (see image below). Slice weights are represented as the arc-width, slice scores are represented as the radius, and the overall sample scores are represented by the combination of slice weights and radii. These visualizations allow for quick comparison of overall feature importance, feature impacts driving a specific sample, relative impact ranking of common features between samples, and overall ranking between samples. As a flexible method capable of integrating data from any source, it has been applied to problems in several different fields. Additional information is linked from [toxpi.github.io](https://toxpi.github.io/).   
 
 <center>
 ![](embeddedFigures/txp_explain1.png){width=700px}
@@ -230,7 +230,7 @@ Two paths exist for visualization, **ggplot** methods and **grid** methods. The 
 
 <div >
 <h3>ggPlot</h3>
-* Examples shown in this vignette produce a "look-and-feel" that is closer to the graphics output of the familiar [ToxPi GUI](https://toxpi.org)
+* Examples shown in this vignette produce a "look-and-feel" that is closer to the graphics output of the familiar [ToxPi GUI](https://toxpi.github.io/)
 * Aesthetics are easy to customize 
 * Includes missing data visuals (center circle à la ToxPi GUI output)
 </div>

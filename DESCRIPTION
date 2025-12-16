@@ -2,8 +2,6 @@ Package: toxpiR
 Type: Package
 Title: Create ToxPi Prioritization Models
 Version: 1.3.1
-Author: Jonathon F Fleming [aut, cre]
-Maintainer: Jonathon F Fleming <jffleming0129@gmail.com>
 Authors@R: 
     c(person("Jonathon F", "Fleming",
              role = c("aut","cre"),
@@ -31,7 +29,7 @@ Description:
   Enables users to build 'ToxPi' prioritization models and provides 
   functionality within the grid framework for plotting ToxPi graphs.
   'toxpiR' allows for more customization than the 'ToxPi GUI' 
-  (<https://toxpi.org>) and integration into existing workflows for greater 
+  (<https://toxpi.github.io/>) and integration into existing workflows for greater 
   ease-of-use, reproducibility, and transparency.
   toxpiR package behaves nearly identically to the GUI; the package 
   documentation includes notes about all differences.
