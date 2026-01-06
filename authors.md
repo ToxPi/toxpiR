@@ -25,14 +25,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/ToxPi/toxpiR/blob/main/DESCRIPTION)
 
-Fleming J, Filer D, Lloyd D, Thunga P, Marvel S, Reif D (2025). *toxpiR:
+Fleming J, Filer D, Lloyd D, Thunga P, Marvel S, Reif D (2026). *toxpiR:
 Create ToxPi Prioritization Models*. R package version 1.3.1,
 <https://github.com/ToxPi/toxpiR>.
 
     @Manual{,
       title = {toxpiR: Create ToxPi Prioritization Models},
       author = {Jonathon F Fleming and Dayne L Filer and Dillon T Lloyd and Preethi Thunga and Skylar W Marvel and David M Reif},
-      year = {2025},
+      year = {2026},
       note = {R package version 1.3.1},
       url = {https://github.com/ToxPi/toxpiR},
     }

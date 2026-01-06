@@ -3,7 +3,7 @@
 Enables users to build 'ToxPi' prioritization models and provides
 functionality within the grid framework for plotting ToxPi graphs.
 'toxpiR' allows for more customization than the 'ToxPi GUI'
-(<https://toxpi.org>) and integration into existing workflows for
+(<https://toxpi.github.io/>) and integration into existing workflows for
 greater ease-of-use, reproducibility, and transparency. toxpiR package
 behaves nearly identically to the GUI; the package documentation
 includes notes about all differences. The vignettes download example

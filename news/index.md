@@ -1,5 +1,13 @@
 # Changelog
 
+## toxpiR 1.3.1
+
+CRAN release: 2025-12-16
+
+- Removed pryr dependency as it is scheduled for removal from CRAN
+- Updated toxpi web links to a github.io address
+- Minor updates to github workflow
+
 ## toxpiR 1.3.0
 
 CRAN release: 2024-09-12

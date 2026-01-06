@@ -9,8 +9,8 @@ that offers new features over what was previously available for data
 handling, recombination, and customization; provides formally packaged,
 open-source code for ToxPi; extends the application domain by supporting
 rapid analysis of massive datasets; and bridges with the stand-alone,
-[Graphical User Interface (GUI)](https://toxpi.org) Java application and
-[ArcGIS Toolkit](https://github.com/ToxPi/ToxPi-GIS).
+[Graphical User Interface (GUI)](https://toxpi.github.io/) Java
+application and [ArcGIS Toolkit](https://github.com/ToxPi/ToxPi-GIS).
 
 ## What is ToxPi?
 
@@ -31,7 +31,7 @@ a specific sample, relative impact ranking of common features between
 samples, and overall ranking between samples. As a flexible method
 capable of integrating data from any source, it has been applied to
 problems in several different fields. Additional information is linked
-from [toxpi.org](https://toxpi.org).
+from [toxpi.github.io](https://toxpi.github.io/).
 
 ![](embeddedFigures/txp_explain1.png)
 
@@ -298,7 +298,7 @@ graphics (low-level), so the two systems interact well.
 
 - Examples shown in this vignette produce a “look-and-feel” that is
   closer to the graphics output of the familiar [ToxPi
-  GUI](https://toxpi.org)
+  GUI](https://toxpi.github.io/)
 - Aesthetics are easy to customize
 - Includes missing data visuals (center circle à la ToxPi GUI output)
 

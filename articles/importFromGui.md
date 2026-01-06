@@ -1,10 +1,11 @@
 # Import ToxPi GUI Files
 
 This vignette will show how to load a data file that was saved using the
-ToxPi Java GUI, which can be downloaded from [here](https://toxpi.org/).
-The ToxPi Java GUI will save data files using file format “C” described
-in the ToxPi User Manual. This vignette will use the “format_C.csv” file
-to demonstrate how to import GUI data.
+ToxPi Java GUI, which can be downloaded from
+[here](https://toxpi.github.io/). The ToxPi Java GUI will save data
+files using file format “C” described in the ToxPi User Manual. This
+vignette will use the “format_C.csv” file to demonstrate how to import
+GUI data.
 
 ``` r
 library(toxpiR)

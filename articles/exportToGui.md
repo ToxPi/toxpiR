@@ -2,9 +2,9 @@
 
 This vignette will show how to save a toxpiR model that will be
 compatible with the ToxPi Java GUI, which can be downloaded from
-[here](https://toxpi.org/). The toxpiR package and ToxPi Java GUI are
-not directly compatible and there are several key differences to keep in
-mind.
+[here](https://toxpi.github.io/). The toxpiR package and ToxPi Java GUI
+are not directly compatible and there are several key differences to
+keep in mind.
 
 ## Key differences between Java GUI and toxpiR
 
