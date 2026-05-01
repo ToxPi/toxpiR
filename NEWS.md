@@ -1,3 +1,7 @@
+# toxpiR 1.3.2
+
+* Fixed an issue where `txp_example_model` contained embedded namespace references 
+
 # toxpiR 1.3.1
 
 * Removed pryr dependency as it is scheduled for removal from CRAN
