@@ -70,6 +70,7 @@ You can install `toxpiR` from
 with:
 
 ``` r
+
 install.packages("toxpiR")
 ```
 
@@ -82,12 +83,14 @@ attempting a direct installation from GitHub, please make sure you have
 to install directly from GitHub.
 
 ``` r
+
 remotes::install_github("ToxPi/toxpiR")
 ```
 
 ## **Launching package in R**
 
 ``` r
+
 library(toxpiR)
 ```
 
@@ -122,6 +125,7 @@ data type, but first we will show a simple example of the package usage.
 ### Load the dataset
 
 ``` r
+
 data(txp_example_input, package = "toxpiR")
 head(txp_example_input)
 #>     name metric1 metric2 metric3 metric4 metric5 metric6 metric7 metric8
@@ -168,6 +172,7 @@ dataset.
 
 ``` r
 
+
 ## Goal - Create two slices with transformation functions 
 # Slice 1: Metric 1, No transformation 
 # Slice 2: Metric 2 (square) and Metric 3 (no transformation)
@@ -207,6 +212,7 @@ going to specify how our calculations are performed.
 **Usage**
 
 ``` r
+
 
 ## Goal - Create ToxPi model.
 # Slice 1, weight = 2
@@ -251,6 +257,7 @@ when you are dealing with many models and results.
 **Usage**
 
 ``` r
+
 f.model <- txp_example_model #Load a more complex 4 slice model
 f.results <- txpCalculateScores(model = f.model,
                                 input = txp_example_input,
@@ -365,6 +372,7 @@ images tend to produce better results than PNG. Usage and example plot
 output are shown below.
 
 ``` r
+
 library("ggplot2")
 
 # Default plot
@@ -378,6 +386,7 @@ artifacts. A possible workaround for this is to create a wrapper
 function around `ggplot2:::coord_munch` as shown below.
 
 ``` r
+
 ## Optional code to make smoother lines
 
 # Plot before updating coord_munch
@@ -419,6 +428,7 @@ plot(f.results["chem01"], package = "gg")
 #### Coloration Options
 
 ``` r
+
 # Changing the slice colors
 colors <- c("orange", "green", "magenta", "lightblue")
 plot(f.results["chem02"], package = "gg", fills = colors)
@@ -428,6 +438,7 @@ plot(f.results["chem02"], package = "gg", fills = NULL)
 ![](introduction_files/figure-html/unnamed-chunk-11-1.png)![](introduction_files/figure-html/unnamed-chunk-11-2.png)
 
 ``` r
+
 # Changing the background color
 plot(f.results["chem02"], package = "gg", bgColor = "lightskyblue")
 plot(f.results["chem02"], package = "gg", bgColor = NULL)
@@ -436,6 +447,7 @@ plot(f.results["chem02"], package = "gg", bgColor = NULL)
 ![](introduction_files/figure-html/unnamed-chunk-13-1.png)![](introduction_files/figure-html/unnamed-chunk-13-2.png)
 
 ``` r
+
 # Changing the max radius ring color
 plot(f.results["chem02"], package = "gg", borderColor = "black")
 plot(f.results["chem02"], package = "gg", borderColor = NULL)
@@ -444,6 +456,7 @@ plot(f.results["chem02"], package = "gg", borderColor = NULL)
 ![](introduction_files/figure-html/unnamed-chunk-15-1.png)![](introduction_files/figure-html/unnamed-chunk-15-2.png)
 
 ``` r
+
 # Changing the slice border color
 plot(f.results["chem02"], package = "gg", sliceBorderColor = "magenta")
 plot(f.results["chem02"], package = "gg", sliceBorderColor = NULL)
@@ -452,6 +465,7 @@ plot(f.results["chem02"], package = "gg", sliceBorderColor = NULL)
 ![](introduction_files/figure-html/unnamed-chunk-17-1.png)![](introduction_files/figure-html/unnamed-chunk-17-2.png)
 
 ``` r
+
 # Adding slice guidelines 
 plot(f.results["chem02"], package = "gg", sliceLineColor = "red")
 plot(f.results["chem02"], package = "gg", sliceLineColor = NULL) 
@@ -460,6 +474,7 @@ plot(f.results["chem02"], package = "gg", sliceLineColor = NULL)
 ![](introduction_files/figure-html/unnamed-chunk-19-1.png)![](introduction_files/figure-html/unnamed-chunk-19-2.png)
 
 ``` r
+
 # Adding visible slice scores
 plot(f.results["chem02"], package = "gg", sliceValueColor = "brown")
 plot(f.results["chem02"], package = "gg", sliceValueColor = NULL)
@@ -470,6 +485,7 @@ plot(f.results["chem02"], package = "gg", sliceValueColor = NULL)
 #### Binary Options
 
 ``` r
+
 # Hiding inner circle
 plot(f.results["chem02"], package = "gg", showCenter = TRUE)
 plot(f.results["chem02"], package = "gg", showCenter = FALSE)
@@ -478,6 +494,7 @@ plot(f.results["chem02"], package = "gg", showCenter = FALSE)
 ![](introduction_files/figure-html/unnamed-chunk-23-1.png)![](introduction_files/figure-html/unnamed-chunk-23-2.png)
 
 ``` r
+
 # Hiding missing data information (pure white inner circle)
 plot(f.results["chem02"], package = "gg", showMissing = TRUE)
 plot(f.results["chem02"], package = "gg", showMissing = FALSE)
@@ -486,6 +503,7 @@ plot(f.results["chem02"], package = "gg", showMissing = FALSE)
 ![](introduction_files/figure-html/unnamed-chunk-25-1.png)![](introduction_files/figure-html/unnamed-chunk-25-2.png)
 
 ``` r
+
 # Hiding the overall profile scores
 plot(f.results["chem02"], package = "gg", showScore = TRUE)
 plot(f.results["chem02"], package = "gg", showScore = FALSE) 
@@ -496,6 +514,7 @@ plot(f.results["chem02"], package = "gg", showScore = FALSE)
 #### Format/Theme Options
 
 ``` r
+
 # Specifying the number of columns in the plot
 plot(f.results, package = "gg", ncol = 5) 
 ```
@@ -503,6 +522,7 @@ plot(f.results, package = "gg", ncol = 5)
 ![](introduction_files/figure-html/unnamed-chunk-28-1.png)
 
 ``` r
+
 # Moving the legend using ggplot built in theme functions
 plot(f.results, package = "gg", ncol = 5) + theme(legend.position = "bottom") 
 plot(f.results, package = "gg", ncol = 2) + theme(legend.position = "left")
@@ -511,6 +531,7 @@ plot(f.results, package = "gg", ncol = 2) + theme(legend.position = "left")
 ![](introduction_files/figure-html/unnamed-chunk-30-1.png)![](introduction_files/figure-html/unnamed-chunk-30-2.png)
 
 ``` r
+
 # Removing plot margins
 plot(f.results, package = "gg") + theme(plot.margin = margin(0, 0, 0, 0, "cm"))
 ```
@@ -518,6 +539,7 @@ plot(f.results, package = "gg") + theme(plot.margin = margin(0, 0, 0, 0, "cm"))
 ![](introduction_files/figure-html/unnamed-chunk-31-1.png)
 
 ``` r
+
 # Removing spacing between panels
 plot(f.results, package = "gg") + theme(panel.spacing = unit(0, "lines"))
 ```
@@ -525,6 +547,7 @@ plot(f.results, package = "gg") + theme(panel.spacing = unit(0, "lines"))
 ![](introduction_files/figure-html/unnamed-chunk-31-2.png)
 
 ``` r
+
 # Removing text labels
 plot(f.results, package = "gg") + theme(strip.text.x = element_blank())
 ```
@@ -532,6 +555,7 @@ plot(f.results, package = "gg") + theme(strip.text.x = element_blank())
 ![](introduction_files/figure-html/unnamed-chunk-31-3.png)
 
 ``` r
+
 # A combination of the above for a rank ordered plot
 plot(f.results[order(txpRanks(f.results)[1:9])], package = "gg") +
   theme(
@@ -547,6 +571,7 @@ plot(f.results[order(txpRanks(f.results)[1:9])], package = "gg") +
 **Missing Data Examples**
 
 ``` r
+
 ## Creating an example with more variable missing data amounts
 f.input <- txp_example_input
 
@@ -581,6 +606,7 @@ profiles or slices that have significant importance in their results.
 Methods for highlighting information after plotting is shown below.
 
 ``` r
+
 library(grid) # Load library
 plot(f.results) # ToxPi visuals
 ```
@@ -588,6 +614,7 @@ plot(f.results) # ToxPi visuals
 ![](introduction_files/figure-html/unnamed-chunk-33-1.png)
 
 ``` r
+
 # grid.ls() #List grid info
 
 # Highlight one figure using its label
@@ -598,6 +625,7 @@ grid.edit("pie-1", fills = c("red", "blue", "black", "brown"))
 
 ``` r
 
+
 # Or just one slice in a figure
 grid.edit("pie-10::slice1", gp = gpar(fill = "#FC0FC0"))
 ```
@@ -607,6 +635,7 @@ grid.edit("pie-10::slice1", gp = gpar(fill = "#FC0FC0"))
 #### ggplot vs grid Comparison
 
 ``` r
+
 #Single sample
 plot(f.results["chem02"])
 plot(f.results["chem02"], package = "gg") 
@@ -615,6 +644,7 @@ plot(f.results["chem02"], package = "gg")
 ![](introduction_files/figure-html/unnamed-chunk-35-1.png)![](introduction_files/figure-html/unnamed-chunk-35-2.png)
 
 ``` r
+
 # Subset plots
 plot(f.results[order(txpRanks(f.results))[1:4]]) #Profiles ranked 1-4
 plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") #Profiles ranked 1-4
@@ -623,6 +653,7 @@ plot(f.results[order(txpRanks(f.results))[1:4]], package = "gg") #Profiles ranke
 ![](introduction_files/figure-html/unnamed-chunk-37-1.png)![](introduction_files/figure-html/unnamed-chunk-37-2.png)
 
 ``` r
+
 ## Long sample names for cramped plots
 
 #change the first sample name in f.results
@@ -637,6 +668,7 @@ txpIDs(f.results)[1] <- "chem01" # Change the sample name back
 ![](introduction_files/figure-html/unnamed-chunk-39-1.png)![](introduction_files/figure-html/unnamed-chunk-39-2.png)
 
 ``` r
+
 ## Long slice names for cramped plots
 
 #change first slice name in model slot
@@ -666,6 +698,7 @@ names(f.results@txpMissing)[1] <- "s1"
 #### Statistic Plots
 
 ``` r
+
 # Rank plot
 plot(f.results, y = txpRanks(f.results), labels = 1:10)
 ```
@@ -673,6 +706,7 @@ plot(f.results, y = txpRanks(f.results), labels = 1:10)
 ![](introduction_files/figure-html/unnamed-chunk-42-1.png)
 
 ``` r
+
 
 # Hierarchical Clustering
 f.hc <- hclust(dist(txpSliceScores(f.results)))

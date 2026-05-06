@@ -1,5 +1,12 @@
 # Changelog
 
+## toxpiR 1.3.2
+
+CRAN release: 2026-05-01
+
+- Fixed an issue where `txp_example_model` contained embedded namespace
+  references
+
 ## toxpiR 1.3.1
 
 CRAN release: 2025-12-16

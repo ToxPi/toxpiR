@@ -10,6 +10,7 @@ NIH)](https://www.niehs.nih.gov/research/atniehs/labs/ptb/staff/reif).
 Current stable release (CRAN):
 
 ``` r
+
 install.packages("toxpiR")
 ```
 

@@ -55,6 +55,7 @@ First create a toxpiR model with accompanying data. Here we’ll load the
 function.
 
 ``` r
+
 library(toxpiR)
 
 # Load example model from "Import ToxPi GUI Files" vignette
@@ -73,6 +74,7 @@ Now we can use to export function to create a new data file. Notice the
 warnings for negative and missing values.
 
 ``` r
+
 # Export back into GUI format
 data_exported <- tempfile()
 txpExportGui(
@@ -98,43 +100,43 @@ Take a moment to observe differences between the original data file
 
 **`data_format_C`**
 
-| V1                               | V2       | V3          | V4     | V5      | V6      | V7      | V8      |
-|:---------------------------------|:---------|:------------|:-------|:--------|:--------|:--------|:--------|
-| \# Slice1!4!0xFF69B4!-log10(x)+6 |          |             |        |         | x       | x       |         |
-| \# Slice2!4!0x6959CD!-ln(x)      |          |             |        |         |         | x       |         |
-| \# Slice3!4!0xCDC1C5!-ln(x)      |          |             |        | x       | x       | x       |         |
-| \# Slice4!5!0xFF6347!-log10(x)+6 |          |             |        | x       | x       |         | x       |
-| Row                              | Source   | CASRN       | Name   | metric1 | metric2 | metric3 | metric4 |
-| 1                                | source01 | 11-111-1111 | chem01 | 25      | 91      | NA      | NA      |
-| 2                                | source02 | 22-222-2222 | chem02 | NA      | 46      | 51      | 48      |
-| 3                                | source03 | 33-333-3333 | chem03 | 44      | NA      | 9       | 34      |
-| 4                                | source04 | 44-444-4444 | chem04 | 26      | 64      | 27      | 9       |
-| 5                                | source05 | 55-555-5555 | chem05 | 33      | 36      | 69      | 88      |
-| 6                                | source06 | 66-666-6666 | chem06 | 94      | 46      | NA      | 54      |
-| 7                                | source07 | 77-777-7777 | chem07 | 37      | 31      | NA      | 7       |
-| 8                                | source08 | 88-888-8888 | chem08 | 58      | 29      | 9       | 46      |
-| 9                                | source09 | 99-999-9999 | chem09 | 95      | 24      | 78      | 46      |
-| 10                               | source10 | 11-222-3333 | chem10 | 68      | 54      | 43      | 25      |
+| V1 | V2 | V3 | V4 | V5 | V6 | V7 | V8 |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| \# Slice1!4!0xFF69B4!-log10(x)+6 |  |  |  |  | x | x |  |
+| \# Slice2!4!0x6959CD!-ln(x) |  |  |  |  |  | x |  |
+| \# Slice3!4!0xCDC1C5!-ln(x) |  |  |  | x | x | x |  |
+| \# Slice4!5!0xFF6347!-log10(x)+6 |  |  |  | x | x |  | x |
+| Row | Source | CASRN | Name | metric1 | metric2 | metric3 | metric4 |
+| 1 | source01 | 11-111-1111 | chem01 | 25 | 91 | NA | NA |
+| 2 | source02 | 22-222-2222 | chem02 | NA | 46 | 51 | 48 |
+| 3 | source03 | 33-333-3333 | chem03 | 44 | NA | 9 | 34 |
+| 4 | source04 | 44-444-4444 | chem04 | 26 | 64 | 27 | 9 |
+| 5 | source05 | 55-555-5555 | chem05 | 33 | 36 | 69 | 88 |
+| 6 | source06 | 66-666-6666 | chem06 | 94 | 46 | NA | 54 |
+| 7 | source07 | 77-777-7777 | chem07 | 37 | 31 | NA | 7 |
+| 8 | source08 | 88-888-8888 | chem08 | 58 | 29 | 9 | 46 |
+| 9 | source09 | 99-999-9999 | chem09 | 95 | 24 | 78 | 46 |
+| 10 | source10 | 11-222-3333 | chem10 | 68 | 54 | 43 | 25 |
 
 **`data_exported`**
 
-| V1                             | V2             | V3             | V4             | V5             | V6             | V7             | V8             | V9             | V10     |
-|:-------------------------------|:---------------|:---------------|:---------------|:---------------|:---------------|:---------------|:---------------|:---------------|:--------|
-| \# Slice1!4!0xFF69B4!linear(x) | x              | x              |                |                |                |                |                |                |         |
-| \# Slice2!4!0x6959CD!linear(x) |                |                | x              |                |                |                |                |                |         |
-| \# Slice3!4!0xCDC1C5!linear(x) |                |                |                | x              | x              | x              |                |                |         |
-| \# Slice4!5!0xFF6347!linear(x) |                |                |                |                |                |                | x              | x              | x       |
-|                                | metric2_slice1 | metric3_slice1 | metric3_slice2 | metric1_slice3 | metric2_slice3 | metric3_slice3 | metric1_slice4 | metric2_slice4 | metric4 |
-| chem01                         | 4.0410         | NA             | NA             | 1.7811         | 0.4891         | 5.0000         | 4.6021         | 4.0410         | NA      |
-| chem02                         | 4.3372         | 4.2924         | 1.0682         | 5.0000         | 1.1714         | 1.0682         | NA             | 4.3372         | 4.3188  |
-| chem03                         | NA             | 5.0458         | 2.8028         | 1.2158         | 5.0000         | 2.8028         | 4.3565         | NA             | 4.4685  |
-| chem04                         | 4.1938         | 4.5686         | 1.7042         | 1.7419         | 0.8411         | 1.7042         | 4.5850         | 4.1938         | 5.0458  |
-| chem05                         | 4.4437         | 4.1612         | 0.7659         | 1.5035         | 1.4165         | 0.7659         | 4.4815         | 4.4437         | 4.0555  |
-| chem06                         | 4.3372         | NA             | NA             | 0.4567         | 1.1714         | 5.0000         | 4.0269         | 4.3372         | 4.2676  |
-| chem07                         | 4.5086         | NA             | NA             | 1.3891         | 1.5660         | 5.0000         | 4.4318         | 4.5086         | 5.1549  |
-| chem08                         | 4.5376         | 5.0458         | 2.8028         | 0.9396         | 1.6327         | 2.8028         | 4.2366         | 4.5376         | 4.3372  |
-| chem09                         | 4.6198         | 4.1079         | 0.6433         | 0.4461         | 1.8219         | 0.6433         | 4.0223         | 4.6198         | 4.3372  |
-| chem10                         | 4.2676         | 4.3665         | 1.2388         | 0.7805         | 1.0110         | 1.2388         | 4.1675         | 4.2676         | 4.6021  |
+| V1 | V2 | V3 | V4 | V5 | V6 | V7 | V8 | V9 | V10 |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| \# Slice1!4!0xFF69B4!linear(x) | x | x |  |  |  |  |  |  |  |
+| \# Slice2!4!0x6959CD!linear(x) |  |  | x |  |  |  |  |  |  |
+| \# Slice3!4!0xCDC1C5!linear(x) |  |  |  | x | x | x |  |  |  |
+| \# Slice4!5!0xFF6347!linear(x) |  |  |  |  |  |  | x | x | x |
+|  | metric2_slice1 | metric3_slice1 | metric3_slice2 | metric1_slice3 | metric2_slice3 | metric3_slice3 | metric1_slice4 | metric2_slice4 | metric4 |
+| chem01 | 4.0410 | NA | NA | 1.7811 | 0.4891 | 5.0000 | 4.6021 | 4.0410 | NA |
+| chem02 | 4.3372 | 4.2924 | 1.0682 | 5.0000 | 1.1714 | 1.0682 | NA | 4.3372 | 4.3188 |
+| chem03 | NA | 5.0458 | 2.8028 | 1.2158 | 5.0000 | 2.8028 | 4.3565 | NA | 4.4685 |
+| chem04 | 4.1938 | 4.5686 | 1.7042 | 1.7419 | 0.8411 | 1.7042 | 4.5850 | 4.1938 | 5.0458 |
+| chem05 | 4.4437 | 4.1612 | 0.7659 | 1.5035 | 1.4165 | 0.7659 | 4.4815 | 4.4437 | 4.0555 |
+| chem06 | 4.3372 | NA | NA | 0.4567 | 1.1714 | 5.0000 | 4.0269 | 4.3372 | 4.2676 |
+| chem07 | 4.5086 | NA | NA | 1.3891 | 1.5660 | 5.0000 | 4.4318 | 4.5086 | 5.1549 |
+| chem08 | 4.5376 | 5.0458 | 2.8028 | 0.9396 | 1.6327 | 2.8028 | 4.2366 | 4.5376 | 4.3372 |
+| chem09 | 4.6198 | 4.1079 | 0.6433 | 0.4461 | 1.8219 | 0.6433 | 4.0223 | 4.6198 | 4.3372 |
+| chem10 | 4.2676 | 4.3665 | 1.2388 | 0.7805 | 1.0110 | 1.2388 | 4.1675 | 4.2676 | 4.6021 |
 
 ### Compare results
 
@@ -142,6 +144,7 @@ Although the data files are visually different, they will result in the
 same toxpi and slice scores.
 
 ``` r
+
 gui2 <- txpImportGui(data_exported)
 
 res1 <- txpCalculateScores(gui1$model, gui1$input)

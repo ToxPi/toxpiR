@@ -8,6 +8,7 @@ vignette will use the “format_C.csv” file to demonstrate how to import
 GUI data.
 
 ``` r
+
 library(toxpiR)
 
 ## Create a tempfile and download 'format_C.csv'
@@ -23,6 +24,7 @@ slices, so the user gets a warning when creating a model with duplicate
 inputs.
 
 ``` r
+
 ## Import file into R
 gui <- txpImportGui(fmtc)
 #> Warning in method(object): The following 'input' columns are duplicated in the model:
@@ -35,6 +37,7 @@ for calculating ToxPi scores; and `$fills`, an array of slice colors for
 plotting.
 
 ``` r
+
 gui$model
 #> TxpModel with 4 slices.
 #>   txpSlices(4): Slice1 Slice2 Slice3 Slice4
@@ -63,6 +66,7 @@ default. To replicate the GUI functionailty, we set
 `negative.value.handling = "missing"`.
 
 ``` r
+
 ## Calculate ToxPi scores
 res <- txpCalculateScores(model = gui$model, input = gui$input, id.var = "Name",negative.value.handling = "missing")
 
@@ -92,6 +96,7 @@ A results output similar to that given by the Java GUI can be obtained
 by combining score components.
 
 ``` r
+
 out <- as.data.frame(res, adjusted = FALSE)
 out <- out[order(out$score, decreasing = TRUE), ]
 out
@@ -111,18 +116,21 @@ out
 ToxPi images and overall score rank plot can also be produced.
 
 ``` r
+
 plot(sort(res), fills = gui$fills)
 ```
 
 ![](importFromGui_files/figure-html/unnamed-chunk-6-1.png)
 
 ``` r
+
 plot(res, txpRanks(res))
 ```
 
 ![](importFromGui_files/figure-html/unnamed-chunk-7-1.png)
 
 ``` r
+
 plot(res, txpRanks(res), labels = 1:10, pch = 16, size = grid::unit(0.75, "char"))
 ```
 
@@ -132,6 +140,7 @@ The basic clustering methods offered in the Java GUI can also be
 recreated.
 
 ``` r
+
 ## Hierarchical Clustering
 hc <- hclust(dist(txpSliceScores(res)), method = 'complete')
 plot(hc, hang = -1, labels = txpIDs(res), xlab = 'Name', sub = '')
@@ -140,6 +149,7 @@ plot(hc, hang = -1, labels = txpIDs(res), xlab = 'Name', sub = '')
 ![](importFromGui_files/figure-html/unnamed-chunk-8-1.png)
 
 ``` r
+
 ## K-Means Clustering, plotted using principal components
 nClusters <- 3
 km <- kmeans(txpSliceScores(res), nClusters)
