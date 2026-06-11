@@ -10,7 +10,7 @@
 <!-- badges: end -->
 
 R package for the Toxicological Priority Index (ToxPi) prioritization algorithm. 
-Package developed and maintained by the [Reif Lab](http://reif-lab.org). 
+Package developed and maintained by the [Reif Lab](http://reif-lab.org) (Note that [David Reif has moved to NIH)](https://www.niehs.nih.gov/research/atniehs/labs/ptb/staff/reif). 
 
 ### Installation
 

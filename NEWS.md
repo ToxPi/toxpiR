@@ -62,6 +62,18 @@ to avoid unnecessary warnings when altering other parts of the model
 * Added more testing
 * Updated readME for specifying biocManager installs
 
+
+# toxpiR 1.3.2
+
+* Fixed an issue where `txp_example_model` contained embedded namespace references 
+
+# toxpiR 1.3.1
+
+* Removed pryr dependency as it is scheduled for removal from CRAN
+* Updated toxpi web links to a github.io address 
+* Minor updates to github workflow
+
+
 # toxpiR 1.3.0
 
 * Added 'txpMissing' slot to TxpResult; this stores information regarding the 

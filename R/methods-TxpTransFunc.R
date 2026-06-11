@@ -117,14 +117,11 @@ setAs("function", "TxpTransFunc", .TxpTransFunc.coerce.from.function)
 
 ##----------------------------------------------------------------------------##
 ## utilities
-
-#' @importFrom pryr substitute_q make_function
-
 .convertPrimitive <- function(somePrimitive) {
   warning("Using primitive functions obscures behavior; ",
           "see ?TxpTransFunc for more details.")
   f <- function(y) somePrimitive(y)
-  f <- make_function(formals(f), substitute_q(body(f), environment(f)))
+  f <- .make_function(formals(f), .substitute_q(body(f), environment(f)))
 }
 
 ##----------------------------------------------------------------------------##
